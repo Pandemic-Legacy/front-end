@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <>
       {/* NOTE: Move GeoJSON to a hook inside Map */}
-      <Map geoJson={geoJson} property={property} rotateX={rotateX} rotateY={rotateY} />;
+      <Map geoJson={geoJson} property={property} rotateX={rotateX} rotateY={rotateY} />
       <select value={property} onChange={({ target }) => setProperty(target.value)}>
         <option value="pop_est">Population</option>
         <option value="name_len">Name Length</option>

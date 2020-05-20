@@ -1,8 +1,8 @@
 import React, { Component, useRef, useEffect, useState } from 'react';
-import request from 'superagent';
 import styles from './LineGraph.css';
-import JSONdata from '../../data/daily-test.json';
+// import JSONdata from '../../data/daily-test.json';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear } from 'd3';
+import { useCovidData } from '../../hooks/covidHooks';
 
 function formatDate(badDate) {
   return badDate.toString().slice(5, 6) + '/' + badDate.toString().slice(6);
@@ -10,40 +10,26 @@ function formatDate(badDate) {
 
 function LineGraph() {
   
-  const [positiveData, setPositiveData] = useState(JSONdata.map(item => item.positive));
-  const [dateData, setDateData] = useState(JSONdata.map(item => item.date));
-
-  console.log('PositiveData: ', positiveData);
-
   const svgRef = useRef();
-
+  const { dateData, positiveData } = useCovidData();
+  
   useEffect(() => {
-    
-    // const fetchData = async() => {
-    //   const result = await request.get('https://covidtracking.com/api/v1/us/daily.json');
-    //   const resultObj = JSON.parse(result.text);
-    //   console.log('Data is:', resultObj);
-    //   setPositiveData(resultObj.map(item => item.positive));
-    //   setDateData(resultObj.map(item => item.date));
-    // }
-
-    // Looks like I'm running a loop here, let's just stick with local data...
-    // fetchData();
+    if(!dateData || !positiveData) return;
 
     const svg = select(svgRef.current);
     
     const xScale = scaleLinear()
       .domain([0, positiveData.length - 1])
-      .range([0, 600]);
+      .range([600, 0]);
     const yScale = scaleLinear()
       .domain([0, Math.max(...positiveData)])
       .range([400, 0]);
   
     const xAxis = axisBottom(xScale)
-      .ticks(positiveData.length)
+      .ticks(positiveData.length / 5)
       .tickFormat(index => formatDate(dateData[index]));
     const yAxis = axisRight(yScale)
-      .ticks(positiveData.length);
+      .ticks(positiveData.length / 5);
 
     svg
       .select('.x-axis')
@@ -69,7 +55,7 @@ function LineGraph() {
       .attr('d', value => myLine(value))
       .attr('fill', 'none')
       .attr('stroke', 'blue');
-  }, []);
+  }, [dateData, positiveData]);
 
   return (   
     <div className={styles.LineGraph}>
