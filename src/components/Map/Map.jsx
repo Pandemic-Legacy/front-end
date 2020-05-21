@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { select, geoPath, geoMercator, min, max, scaleSequential, interpolateWarm, interpolateRainbow, scaleSqrt, geoOrthographic, scaleLinear } from 'd3';
+import { select, geoPath, geoMercator, min, max, scaleSequential, interpolateWarm, interpolateRainbow, scaleSqrt, geoOrthographic, scaleLinear, geoGraticule, event, mouse, drag } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 import style from './Map.css';
@@ -13,8 +13,52 @@ const GeoChart = () => {
   const [property, setProperty] = useState('residentialChange');
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+  // const [rotate, setRotate] = useState([0, 0, 0]);
 
   const geoJson = useWorldMobilityData('2020-05-01T00:00:00.000+00:00');
+
+  // code for mouse coordinates modified from http://bl.ocks.org/1392560
+  // let mouseStart, rotationStart;
+  // function mousedown() {
+  //   // mouseStart = [event.pageX, event.pageY];
+  //   mouseStart = mouse(svgRef);
+  //   rotationStart = rotate;
+  //   // event.preventDefault();
+  // }
+
+  // function mousemove() {
+  //   if(mouseStart) {
+  //     // const mouseEnd = [event.pageX, event.pageY];
+  //     const mouseEnd = mouse(svgRef);
+  //     const rotationEnd = [rotationStart[0] + (mouseEnd[0] - mouseStart[0]) / 6, rotationStart[1] + (mouseStart[1] - mouseEnd[1]) / 6];
+  //     rotationEnd[1] = rotationEnd[1] > 30  ? 30  :
+  //       rotationEnd[1] < -30 ? -30 :
+  //         rotationEnd[1];
+  //     setRotate(rotationEnd);
+  //   }
+  // }
+  // function mouseup() {
+  //   if(mouseStart) {
+  //     mousemove();
+  //     mouseStart = null;
+  //   }
+  // }
+
+  // select(window)
+  //   .on('mousemove', mousemove)
+  //   .on('mouseup', mouseup);
+
+  var deltaX, deltaY;
+  var dragHandler = drag()
+    .on('start', function() {
+      var current = select(svgRef.current);
+      deltaX = current.attr('x') - event.x;
+      deltaY = current.attr('y') - event.y;
+    })
+    .on('drag', function() {
+      setRotateX(event.x + deltaX);
+      setRotateY(event.y + deltaY);
+    });
 
   useEffect(() => {
     if(!geoJson.features) return;
@@ -35,10 +79,28 @@ const GeoChart = () => {
     //   .rotate([rotateX, rotateY, 0])
     //   .precision(100);
 
-    
-    const pathGenerator = geoPath().projection(projection);
-    
+    // const graticule = geoGraticule();
 
+    const pathGenerator = geoPath().projection(projection);
+
+    // svg
+    //   .selectAll('path.graticule')
+    //   .data([graticule()])
+    //   .join('path')
+    //   .attr('class', 'graticule')
+    //   .attr('d', line => pathGenerator(line));
+
+    svg
+      .selectAll('circle')
+      .data(['spot'])
+      .enter()
+      .append('circle')
+      .data([1])
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', projection.scale())
+      .style('fill', 'orange');
+  
     svg
       .selectAll('.country')
       .data(geoJson.features)
@@ -54,7 +116,9 @@ const GeoChart = () => {
         : 'grey'
       )
       .attr('d', country => pathGenerator(country));
-
+      
+    dragHandler(svg);
+      
   }, [geoJson, dimensions, property, selectedCountry, rotateX, rotateY]);
 
   return (
