@@ -4,18 +4,22 @@ import { select, geoPath, geoMercator, min, max, scaleSequential, interpolateWar
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 import style from './Map.css';
+import { useWorldMobilityData } from '../../hooks/mobilityHooks';
 
-const GeoChart = ({ geoJson, property, rotateX, rotateY }) => {
+const GeoChart = ({ property = 'residentialChange', rotateX, rotateY }) => {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
+  const geoJson = useWorldMobilityData('2020-04-19T00:00:00.000+00:00');
+
   useEffect(() => {
+    if(!geoJson.features) return;
     const svg = select(svgRef.current);
 
-    const minProp = min(geoJson.features, feature => feature.properties[property]);
-    const maxProp = max(geoJson.features, feature => feature.properties[property]);
+    const minProp = -100;
+    const maxProp = 100;
     // const colorScale = scaleSqrt().domain([minProp, maxProp]).range(['green', 'red']);
     const colorScale = scaleSequential().domain([minProp, maxProp]).interpolator(interpolateRainbow);
     // domain([min, middle, max]).range(['red', 'purple', 'blue'])
@@ -39,14 +43,17 @@ const GeoChart = ({ geoJson, property, rotateX, rotateY }) => {
       .selectAll('.country')
       .data(geoJson.features)
       .join('path')
-      .on('click', feature => {
-        setSelectedCountry(selectedCountry === feature ? null : feature);
+      .on('click', clickedCountry => {
+        setSelectedCountry(selectedCountry === clickedCountry ? null : clickedCountry);
         //change a countries position in memory with rotation so zoom will work
       })
       .attr('class', 'country')
       // .transition() //take off while rotating
-      .attr('fill', feature => colorScale(feature.properties[property]))
-      .attr('d', feature => pathGenerator(feature));
+      .attr('fill', country => country.mobilityData[property] 
+        ? colorScale(country.mobilityData[property])
+        : 'grey'
+      )
+      .attr('d', country => pathGenerator(country));
 
   }, [geoJson, dimensions, property, selectedCountry, rotateX, rotateY]);
 
