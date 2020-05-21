@@ -14,7 +14,7 @@ const GeoChart = () => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
-  const geoJson = useWorldMobilityData('2020-04-30T00:00:00.000+00:00');
+  const geoJson = useWorldMobilityData('2020-05-01T00:00:00.000+00:00');
 
   useEffect(() => {
     if(!geoJson.features) return;
@@ -22,7 +22,7 @@ const GeoChart = () => {
 
     const minProp = -100;
     const maxProp = 100;
-    const colorScale = scaleLinear().domain([minProp, maxProp]).range(['blue', 'red']);
+    const colorScale = scaleLinear().domain([minProp, 0, maxProp]).range(['blue', 'rgb(243, 240, 225)', 'green']);
 
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
 
