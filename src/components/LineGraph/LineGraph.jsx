@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styles from './LineGraph.css';
 // import JSONdata from '../../data/daily-test.json';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear } from 'd3';
