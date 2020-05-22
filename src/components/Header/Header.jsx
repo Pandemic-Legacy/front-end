@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, TextField } from '@material-ui/core';
 import { useStyles } from './Header.styles';
 // import logo from '';
 import { Links } from '../Links/Links';
@@ -13,6 +13,7 @@ export const Header = () => {
         <Grid item xs={12} className={classes.titleContainer}>
           <Typography variant="h1" className={classes.title}>Pandemic Legacy</Typography>
           <Typography variant="h2" className={classes.heading}>Quarantine Mobility Metrics</Typography>
+          {/* <TextField id="search" label="Search for country" /> */}
         </Grid>
       </Grid>
       <Links />
