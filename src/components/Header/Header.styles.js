@@ -8,7 +8,6 @@ export const useStyles = makeStyles((theme) => ({
     height: '7rem',
     boxShadow: '2px 2px 2px #0c7982',       
     position: 'fixed',
-    left: '0',
   },
   titleContainer: {
     display: 'flex',

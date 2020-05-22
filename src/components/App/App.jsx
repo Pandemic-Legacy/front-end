@@ -4,6 +4,8 @@ import { Container, CssBaseline } from '@material-ui/core';
 import { useStyles } from './App.styles';
 import Home from '../Home/Home';
 import { Header } from '../Header/Header';
+import { Footer } from '../Footer/Footer';
+import { individualCountry } from '../individualCountry/individualCountry';
 
 export default function App() {
   const styles = useStyles();
@@ -14,9 +16,10 @@ export default function App() {
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />
-          {/* <Route path="/individualCountry" component={} /> */}
+          <Route path="/country" component={individualCountry} />
+          {/* <Route path="/search" component={search} /> */}
         </Switch>
-        {/* <Footer /> */}
+        <Footer />
       </Container>
     </BrowserRouter>
   );

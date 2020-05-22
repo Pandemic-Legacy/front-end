@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: '0 .4rem 0 .4rem',
     fontWeight: '550',
     fontSize: '1.2rem',
-    color: theme.palette.common.green.main, //green
+    color: theme.palette.common.green.main, 
     '&:hover': {
       color: theme.palette.common.blue.main,
     },
