@@ -1,25 +1,40 @@
 .Map {
-
-  margin-bottom: 2rem;
-
   svg {
-    background-color: rgb(237, 226, 226);
+    background-color: rgb(238, 229, 229);
     display: block;
     width: 100%;
     height: 50vh;
   }
 
+<<<<<<< HEAD
   svg circle {
     z-index: -1;
   }
 
+=======
+  svg circle:hover {
+    cursor: grab;
+  }
+  svg path {
+    stroke: rgba(159, 142, 160, 0.1);
+  }
+>>>>>>> d71a4cb7409a1d950312d600fbc9935b3ff6493d
   svg path:hover {
-    stroke: black;
-    stroke-width: 1px;
+    stroke: rgba(0, 0, 0, 0.3);
+    stroke-width: 0.6px;
     cursor: pointer;
   }
 
+<<<<<<< HEAD
   .sphere {
     color: orange;   
+=======
+  svg circle:active {
+    cursor: grabbing;
+  }
+
+  svg path:active {
+    cursor: grabbing;
+>>>>>>> d71a4cb7409a1d950312d600fbc9935b3ff6493d
   }
 }
