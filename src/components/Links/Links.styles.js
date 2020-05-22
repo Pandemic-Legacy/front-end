@@ -31,6 +31,7 @@ export const useStyles = makeStyles((theme) => ({
     width: '12rem',
     borderRadius: '1rem',
     color: theme.palette.common.green.main, 
+
   }
 }
 ));
