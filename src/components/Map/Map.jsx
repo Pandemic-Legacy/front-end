@@ -13,6 +13,8 @@ const GeoChart = () => {
   const [property, setProperty] = useState('residentialChange');
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
+  const [deltaX, setDeltaX] = useState(null);
+  const [deltaY, setDeltaY] = useState(null);
   // const [rotate, setRotate] = useState([0, 0, 0]);
 
   const geoJson = useWorldMobilityData('2020-05-01T00:00:00.000+00:00');
@@ -30,11 +32,11 @@ const GeoChart = () => {
   //   if(mouseStart) {
   //     // const mouseEnd = [event.pageX, event.pageY];
   //     const mouseEnd = mouse(svgRef);
-  //     const rotationEnd = [rotationStart[0] + (mouseEnd[0] - mouseStart[0]) / 6, rotationStart[1] + (mouseStart[1] - mouseEnd[1]) / 6];
-  //     rotationEnd[1] = rotationEnd[1] > 30  ? 30  :
-  //       rotationEnd[1] < -30 ? -30 :
-  //         rotationEnd[1];
-  //     setRotate(rotationEnd);
+  // const rotationEnd = [rotationStart[0] + (mouseEnd[0] - mouseStart[0]) / 6, rotationStart[1] + (mouseStart[1] - mouseEnd[1]) / 6];
+  // rotationEnd[1] = rotationEnd[1] > 30  ? 30  :
+  //   rotationEnd[1] < -30 ? -30 :
+  //     rotationEnd[1];
+  // setRotate(rotationEnd);
   //   }
   // }
   // function mouseup() {
@@ -48,16 +50,21 @@ const GeoChart = () => {
   //   .on('mousemove', mousemove)
   //   .on('mouseup', mouseup);
 
-  var deltaX, deltaY;
-  var dragHandler = drag()
+  const dragHandler = drag()
     .on('start', function() {
-      var current = select(svgRef.current);
-      deltaX = current.attr('x') - event.x;
-      deltaY = current.attr('y') - event.y;
+      // let current = select(svgRef.current);
+      setDeltaX(rotateX - event.x);
+      setDeltaY(rotateY - event.y);
     })
     .on('drag', function() {
-      setRotateX(event.x + deltaX);
-      setRotateY(event.y + deltaY);
+      setRotateX((event.x + deltaX) / 6);
+      setRotateY((event.y + deltaY) / -6);
+      console.log('deltaX', deltaX);
+      console.log('deltaY', deltaY);
+    })
+    .on('end', function() {
+      setDeltaX(rotateX);
+      setDeltaY(rotateY);
     });
 
   useEffect(() => {
@@ -99,7 +106,7 @@ const GeoChart = () => {
       .attr('cx', width / 2)
       .attr('cy', height / 2)
       .attr('r', projection.scale())
-      .style('fill', 'orange');
+      .style('fill', 'turquoise');
   
     svg
       .selectAll('.country')
