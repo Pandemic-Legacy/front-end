@@ -6,4 +6,8 @@
     https://pandemic-legacy.herokuapp.com/api/v1/mobility/${date}
 
 ### CovidData
-  * GET 
+  * GET all documents:
+    https://pandemic-legacy.herokuapp.com/api/v1/covid/
+
+  * GET documents by country (or use 'Worldwide') for all dates, excluding subregions (NB: country is case sensitive!):
+    https://pandemic-legacy.herokuapp.com/api/v1/covid/${country}
