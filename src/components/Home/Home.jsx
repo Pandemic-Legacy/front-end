@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
       <Map mapData={worldMobilityData}/>
-      {/* <LineGraph /> */}
+      <LineGraph />
     </>
   );
 };

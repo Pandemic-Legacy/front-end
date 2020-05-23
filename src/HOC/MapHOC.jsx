@@ -14,6 +14,7 @@ const Map = ({ mapData, countryCode = '' }) => {
 
   const svgRef = useRef();
   const wrapperRef = useRef();
+  const legendRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
   // const isMobile = useIsMobile();
   
@@ -69,6 +70,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .attr('r', projection.scale())
       .style('fill', 'url(#linear-gradient)');
 
+    
     svg.call(drag()
       .on('start', () => { setRotating(true);})
       .on('drag', () => {
@@ -115,13 +117,26 @@ const Map = ({ mapData, countryCode = '' }) => {
         .attr('d', country => pathGenerator(country));
     }
     
-      
+    const legend = select(legendRef.current)
+      .attr('class', 'legendColor');
+
+    const legendText = [-100, -75, -50, -25, 0, 25, 50, 75, 100];
+
+    const keys = legend.selectAll('span')
+      .data([-100, -75, -50, -25, 0, 25, 50, 75, 100]);
+
+    keys.enter().append('span')
+      .attr('class', 'legendSpan')
+      .style('background', (d) => colorScale(d))
+    // .text(legendText.forEach(number => number));
+      .text((d, i) => legendText[i]);
       
   }, [mapData, dimensions, property, rotateX, rotateY]);
 
   return (
     <div ref={wrapperRef} className={style.Map} >
       <svg ref={svgRef}></svg>
+      <div ref={legendRef}>Map legend:</div>
       <select value={property} onChange={({ target }) => setProperty(target.value)}>
         <option value="residentialChange">Residential</option>
         <option value="groceryChange">Grocery</option>
