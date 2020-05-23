@@ -1,11 +1,12 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, List } from '@material-ui/core';
 import { useStyles } from './HighScore.styles';
 import { Links } from '../Links/Links';
 import { useState } from 'react';
 import { useCovidData } from '../../hooks/covidHooks';
 import { useMobilityDataByDate, useWorldMobilityData } from '../../hooks/mobilityHooks';
 
+const getOrZero = prop => prop ?? 0;
 export const HighScore = () => {
   const classes = useStyles();
   const [averageMobility, setAverageMobility] = useState();
@@ -13,55 +14,40 @@ export const HighScore = () => {
   // const { dateData, positiveData, recoveredData, deathData } = useCovidData();
   // console.log(deathData);
 
-  const mobilityData = useMobilityDataByDate('2020-04-30T00:00:00.000+00:00');
-  console.log(mobilityData);
-
-  // console.log(mobilityData[0]);
-  // const mobility = useWorldMobilityData();
+  // const mobilityData = useMobilityDataByDate('2020-04-30T00:00:00.000+00:00');
+  // if(!mobilityData) return 
+  
+  // console.log(mobilityData['countryCode']);
+  const mobility = useWorldMobilityData('2020-04-30T00:00:00.000+00:00');
+  if(!mobility.features) return <h1>loading</h1>;
+  console.log(mobility.features[0].mobilityData);
   
   // console.log(mobilityData[0]['parksChange']);
   
-  const data = 
-  [{ countryCode: 'AE',
-    countryName: 'United Arab Emirates',
-    date: '2020-04-30T00:00:00.000Z',
-    groceryChange: -26,
-    parksChange: -71,
-    residentialChange: 31,
-    retailChange: -57,
-    subRegion1: null,
-    subRegion2: null,
-    transitChange: -66,
-    workplacesChange: -47,
-    __v: 0,
-    _id: '5ec4f4c3a0a8806585c85794' },
-  { countryCode: 'AF',
-    countryName: 'Afghanistan',
-    date: '2020-04-30T00:00:00.000Z',
-    groceryChange: -30,
-    parksChange: -19,
-    residentialChange: 17,
-    retailChange: -47,
-    subRegion1: null,
-    subRegion2: null,
-    transitChange: -48,
-    workplacesChange: -33,
-    __v: 0,
-    _id: '5ec4f4c4a0a8806585c85a3c'
-  }];
+  // 
   
   const result = 
-  data.reduce((r, d) => r + Math.abs(d.parksChange + d.residentialChange + d.groceryChange + d.retailChange + d.transitChange + d.workplacesChange), 0);
+    mobility.features.reduce((r, d) => {
+      const sumMetric = Math.abs(getOrZero(d.mobilityData.parksChange) + getOrZero(d.mobilityData.residentialChange) + getOrZero(d.mobilityData.groceryChange) + getOrZero(d.mobilityData.retailChange) + getOrZero(d.mobilityData.transitChange) + getOrZero(d.mobilityData.workplacesChange));
+      r[d.mobilityData.countryName] = { sumMetric, ...d.mobilityData};
+      return r;
+    }, {});
   
-  const mappedData = data.map(metric => Math.abs(metric.residentialChange + metric.parksChange + metric.groceryChange + metric.retailChange + metric.transitChange + metric.workplacesChange));
+  const mappedData = Object.entries(result).sort((a, b) => b[1].sumMetric - a[1].sumMetric);
+  
+  // const mapMobility = mobilityData.map(item => item);
+  // console.log(mapMobility);
+
   console.log(mappedData);
 
   console.log('absolute change in metrics', result);
 
 
-  const list = mappedData.map(item => {
+  const list = mappedData.map(([countryName, data]) => {
     return (
-      <p key={item.countryCode}>• {item}</p>
+      <div key={countryName}>
+        <p>•{countryName} {data.sumMetric} {data.residentialChange}</p>
+      </div>
     );
   });
 
@@ -70,7 +56,7 @@ export const HighScore = () => {
       <Grid item xs={12} className={classes.container} >
         <Grid item xs={12} className={classes.titleContainer}>
           <Typography variant="h1" className={classes.title}>Country Metric Comparison</Typography>
-          <Typography variant="h3" className={classes.bullets}>{list}</Typography>
+          <List>{list}</List>
         </Grid>
       </Grid>
     </Grid>
