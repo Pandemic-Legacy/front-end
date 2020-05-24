@@ -7,7 +7,7 @@ const Home = () => {
   const worldMobilityData = useWorldMobilityData('2020-04-01T00:00:00.000+00:00');
   return (
     <>
-      <Map mapData={worldMobilityData}/>
+      <Map mapData={worldMobilityData} />
       <LineGraph />
     </>
   );
