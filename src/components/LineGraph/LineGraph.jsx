@@ -7,7 +7,7 @@ import { useMobilityDataByDate } from '../../hooks/mobilityHooks';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 
-function LineGraph({ dataset }) {
+function LineGraph({ dataset, yAxisConstraints }) {
   
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -69,17 +69,17 @@ function LineGraph({ dataset }) {
     const svg = select(svgRef.current);
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     const xScale = scaleLinear()
-      .domain([0, dataset[property].length - 1])
+      .domain([0, dataset['date'].length - 1])
       .range([width, 0]);
     const yScale = scaleLinear()
-      .domain([0, Math.max(...dataset['positive'])])
+      .domain([yAxisConstraints[0], yAxisConstraints[1]])
       .range([height, 0]);
   
     const xAxis = axisBottom(xScale)
       .ticks(dataset['date'].length / 5)
       .tickFormat(index => formatDate(dataset.date[index]));
     const yAxis = axisRight(yScale)
-      .ticks(dataset[property].length / 5);
+      .ticks(height / 20);
 
     svg
       .select('.x-axis')
@@ -203,7 +203,8 @@ function LineGraph({ dataset }) {
 }
 
 LineGraph.propTypes = {
-  dataset: PropTypes.object.isRequired
+  dataset: PropTypes.object.isRequired,
+  yAxisConstraints: PropTypes.array.isRequired
 };
 
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchWorldMobilityData } from '../services/mobility';
+import { fetchWorldMobilityData, fetchMobilityDataByCountryCode } from '../services/mobility';
 import geoJson from '../data/World-map-lo-res.geo.json';
 
 export const useWorldMobilityData = (date) => {
@@ -68,8 +68,30 @@ export const useMobilityDataByCounty = (date, subRegion1, subRegion2) => {
   return mobilityData;
 };
 
-// TBDev'd: Hits backend route that gives mobility metrics over all time for a country by code (with filtered out subregions)
-export const useMobilityDataByCountryCode = (countryCode) => {};
+// Hits backend route that gives mobility metrics over all time for a country by code (with filtered out subregions)
+export const useMobilityDataByCountryCode = (countryCode) => {
+
+  const [mobilityData, setMobilityData] = useState(null);
+
+  useEffect(() => {    
+    const mobilityDataTemp = {};
+    fetchMobilityDataByCountryCode(countryCode)
+      .then(res => {
+        mobilityDataTemp.date = res.map(item => item.date);
+        mobilityDataTemp.countryCode = res[0].countryCode;
+        mobilityDataTemp.countryName = res[0].countryName;
+        mobilityDataTemp.retailChange = res.map(item => item.retailChange ?? 0);
+        mobilityDataTemp.groceryChange = res.map(item => item.groceryChange ?? 0);
+        mobilityDataTemp.parksChange = res.map(item => item.parksChange ?? 0);
+        mobilityDataTemp.transitChange = res.map(item => item.transitChange ?? 0);
+        mobilityDataTemp.workplacesChange = res.map(item => item.workplacesChange ?? 0);
+        mobilityDataTemp.residentialChange = res.map(item => item.residentialChange ?? 0);
+        setMobilityData(mobilityDataTemp);
+      });
+  }, []);
+
+  return mobilityData;
+};
 
 // TBDev'd: Hits backend route that gives mobility metrics over all time for a country by name (with filtered out subregions)
 export const useMobilityDataByCountryName = (countryCode) => {};
