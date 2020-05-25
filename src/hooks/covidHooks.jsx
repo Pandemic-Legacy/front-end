@@ -11,9 +11,11 @@ export const useCovidData = () => {
   useEffect(() => {    
     fetchGlobalCovidData()
       .then(resultObj => {
-        const trimmedDate = resultObj.map(item => item.date.substr(0, 10));
-        const formattedDate = trimmedDate;
-        // const formattedDate = trimmedDate.replace(/\/, ''/);
+        const formattedDate = resultObj.map(item => {
+          return item.date.substr(0, 10);
+          // const formattedDate = trimmedDate.replace(/\/, ''/);
+        });
+        console.log(formattedDate);
         setDateData(formattedDate);
         setPositiveData(resultObj.map(item => { if(item.totalCases) return item.totalCases; else return 0; }));
         setRecoveredData(resultObj.map(item => { if(item.totalRecovered) return item.totalRecovered; else return 0; }));
