@@ -63,40 +63,40 @@ function LineGraph({ dataset, yAxisConstraints }) {
     const svg = select(svgRef.current);
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     
+    // Define scales
     const xScale = scaleLinear()
       .domain([0, dataset['date'].length - 1]) // range of data
       .range([0, width]); // range of pixels
     const yScale = scaleLinear()
       .domain([yAxisConstraints[0], yAxisConstraints[1]])
       .range([height, 0]);
+    const colorScale = scaleOrdinal(schemeCategory10)
+      .domain(filteredKeys(dataset));
   
+    // Define axis
     const xAxis = axisBottom(xScale)
       .ticks(dataset['date'].length / 5)
       .tickFormat(index => formatDate(dataset.date[index]));
     const yAxis = axisRight(yScale)
       .ticks(height / 20);
 
-    const colorScale = scaleOrdinal(schemeCategory10)
-      .domain(filteredKeys(dataset));
-
-      console.log('filteredKeys: ', filteredKeys(dataset));
-
+    // Draw axis on pre-existing elements
     svg
       .select('.x-axis')
       .style('transform', `translateY(${height}px)`)
       .call(xAxis);
-
     svg
       .select('.y-axis')
       .style('transform', `translateX(${width}px)`)
       .call(yAxis);
 
-    
+    // Define line
     const myLine = line()
       .x((value, index) => xScale(index))
-      .y((yScale))
+      .y(yScale)
       .curve(curveCardinal);
-   
+
+    // Draw line
     svg
       .selectAll('.graphLine')
       .data(filteredData(dataset, checkedOptions))
