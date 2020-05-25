@@ -3,7 +3,7 @@ import { SET_GLOBAL_MAP_MOBILITY_BY_DATE, SET_COVID_CHART_DATA, SET_SELECTED_COU
 const initialState = {
   globalMapMobilityByDate: {},
   covidChartData: {},
-  selectedCountryCode: null
+  selectedCountryCode: ''
 };
 
 export default function reducer(state = initialState, { type, payload }) {

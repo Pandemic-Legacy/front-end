@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Map from '../../HOC/MapHOC';
+import Map from '../Map/Map';
 import LineGraph from '../LineGraph/LineGraph';
 // import { useWorldMobilityData } from '../../hooks/mobilityHooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGlobalMobilityDataByDate } from '../../actions/globalActions';
-import { getGlobalMapMobilityByDate } from '../../selectors/globalSelectors';
+import { setGlobalMobilityDataByDate } from '../../actions/actions';
+import { getGlobalMapMobilityByDate } from '../../selectors/selectors';
 import style from './Home.css';
 import { getCovidChartData, getSelectedCountryCode } from '../../selectors/selectors';
 import { setCovidChartData } from '../../actions/actions';
