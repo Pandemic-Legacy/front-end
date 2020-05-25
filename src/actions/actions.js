@@ -49,3 +49,11 @@ export const setCovidChartData = (countryCode) => dispatch => {
       });
     });
 };
+
+export const SET_SELECTED_COUNTRY_CODE = 'SET_SELECTED_COUNTRY_CODE';
+export const setSelectedCountryCode = (countryCode) => dispatch => {
+  dispatch({
+    type: SET_SELECTED_COUNTRY_CODE,
+    payload: countryCode.toUppercase()
+  });
+};
