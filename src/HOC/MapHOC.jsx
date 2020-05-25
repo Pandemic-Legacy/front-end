@@ -100,8 +100,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         //code for when a country is clicked
       })
       .attr('class', 'country');
-
-    //if rotating no transition
+    
     if(rotating) {
       map
         .attr('fill', country => country.mobilityData[property] 
@@ -112,7 +111,6 @@ const Map = ({ mapData, countryCode = '' }) => {
     } else {
       map
         .transition()
-        // .duration(500)
         .attr('fill', country => country.mobilityData[property] 
           ? colorScale(country.mobilityData[property])
           : 'rgba(150, 150, 150, 0.3)'

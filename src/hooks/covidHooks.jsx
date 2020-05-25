@@ -1,25 +1,35 @@
 import { useState, useEffect } from 'react';
-import { fetchCovidData } from '../services/covid';
+import { fetchCovidData, fetchGlobalCovidData } from '../services/covid';
 
 export const useCovidData = () => {
 
-  const [dateData, setDateData] = useState(null);
-  const [positiveData, setPositiveData] = useState(null);
-  const [recoveredData, setRecoveredData] = useState(null);
-  const [deathData, setDeathData] = useState(null);
+  const [covidData, setCovidData] = useState(null);
 
   useEffect(() => {    
-    fetchCovidData()
+//     const covidDataTemp = {};
+//    fetchCovidData()
+//      .then(res => {
+//        covidDataTemp.date = res.map(item => item.date);
+//        covidDataTemp.positive = res.map(item => item.positive ?? 0);
+//        covidDataTemp.recovered = res.map(item => item.recovered ?? 0);
+//        covidDataTemp.death = res.map(item => item.death ?? 0);
+//        setCovidData(covidDataTemp);
+//      });
+//  }, []);
+//
+//  return covidData;
+
+    fetchGlobalCovidData()
       .then(resultObj => {
-        setDateData(resultObj.map(item => item.date));
-        setPositiveData(resultObj.map(item => { if(item.positive) return item.positive; else return 0; }));
-        setRecoveredData(resultObj.map(item => { if(item.recovered) return item.recovered; else return 0; }));
-        // setRecoveredData(resultObj.map((item, index) => { 
-        //   if(item.recovered && positiveData[index]) 
-        //     return (positiveData[index] - item.recovered); 
-        //   else return 0; 
-        // }));
-        setDeathData(resultObj.map(item => { if(item.death) return item.death; else return 0; }));
+        const formattedDate = resultObj.map(item => {
+          return item.date.substr(0, 10);
+          // const formattedDate = trimmedDate.replace(/\/, ''/);
+        });
+        console.log(formattedDate);
+        setDateData(formattedDate);
+        setPositiveData(resultObj.map(item => { if(item.totalCases) return item.totalCases; else return 0; }));
+        setRecoveredData(resultObj.map(item => { if(item.totalRecovered) return item.totalRecovered; else return 0; }));
+        setDeathData(resultObj.map(item => { if(item.totalDeaths) return item.totalDeaths; else return 0; }));
       });    
   }, []);
 
