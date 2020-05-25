@@ -64,9 +64,8 @@ function LineGraph({ dataSet }) {
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     
     // Define scales
-    // make yAxisMin and yAxisMax take dynamic variables
-    const yAxisMin = min(dataSet.totalCases);
-    const yAxisMax = max(dataSet.totalCases);
+    const yAxisMin = min(dataSet.totalCases ?? -100);
+    const yAxisMax = max(dataSet.totalCases ?? 100);
 
     const xScale = scaleLinear()
       .domain([0, dataSet['date'].length - 1]) // range of data
