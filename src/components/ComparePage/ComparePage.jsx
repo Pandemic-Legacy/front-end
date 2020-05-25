@@ -20,7 +20,7 @@ export const ComparePage = () => {
     setSelectedCountry(target.value);
   };
 
-  // Violates the rules of hooks?
+  // Violates the rules of hooks? Help!
   // useEffect(() => {
   //   const fetchedData = useMobilityDataByCountryCode(selectedCountry);
   //   setMobilityData(fetchedData);
@@ -28,21 +28,54 @@ export const ComparePage = () => {
 
   useEffect(() => {
     const mobilityDataTemp = {};
-    fetchMobilityDataByCountryCode(selectedCountry)
-      .then(res => {
-        const sortedRes = res.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-        mobilityDataTemp.date = sortedRes.map(item => item.date);
-        mobilityDataTemp.countryCode = sortedRes[0].countryCode;
-        mobilityDataTemp.countryName = sortedRes[0].countryName;
-        mobilityDataTemp.retailChange = sortedRes.map(item => item.retailChange ?? 0);
-        mobilityDataTemp.groceryChange = sortedRes.map(item => item.groceryChange ?? 0);
-        mobilityDataTemp.parksChange = sortedRes.map(item => item.parksChange ?? 0);
-        mobilityDataTemp.transitChange = sortedRes.map(item => item.transitChange ?? 0);
-        mobilityDataTemp.workplacesChange = sortedRes.map(item => item.workplacesChange ?? 0);
-        mobilityDataTemp.residentialChange = sortedRes.map(item => item.residentialChange ?? 0);
-        console.log({ mobilityDataTemp });
-        setMobilityData(mobilityDataTemp);
-      });
+    if(selectedCountry !== 'Compare') {
+      fetchMobilityDataByCountryCode(selectedCountry)
+        .then(res => {
+          const sortedRes = res.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+          mobilityDataTemp.date = sortedRes.map(item => item.date);
+          mobilityDataTemp.countryCode = sortedRes[0].countryCode;
+          mobilityDataTemp.countryName = sortedRes[0].countryName;
+          mobilityDataTemp.retailChange = sortedRes.map(item => item.retailChange ?? 0);
+          mobilityDataTemp.groceryChange = sortedRes.map(item => item.groceryChange ?? 0);
+          mobilityDataTemp.parksChange = sortedRes.map(item => item.parksChange ?? 0);
+          mobilityDataTemp.transitChange = sortedRes.map(item => item.transitChange ?? 0);
+          mobilityDataTemp.workplacesChange = sortedRes.map(item => item.workplacesChange ?? 0);
+          mobilityDataTemp.residentialChange = sortedRes.map(item => item.residentialChange ?? 0);
+          setMobilityData(mobilityDataTemp);
+        });
+    } else {
+      const mobilityDataUSTemp = {};
+      const mobilityDataGBTemp = {};
+      fetchMobilityDataByCountryCode('US')
+        .then(res => {
+          const sortedRes = res.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+          mobilityDataUSTemp.date = sortedRes.map(item => item.date);
+          mobilityDataUSTemp.countryCode = sortedRes[0].countryCode;
+          mobilityDataUSTemp.countryName = sortedRes[0].countryName;
+          mobilityDataUSTemp.retailChange = sortedRes.map(item => item.retailChange ?? 0);
+          mobilityDataUSTemp.groceryChange = sortedRes.map(item => item.groceryChange ?? 0);
+          mobilityDataUSTemp.parksChange = sortedRes.map(item => item.parksChange ?? 0);
+          mobilityDataUSTemp.transitChange = sortedRes.map(item => item.transitChange ?? 0);
+          mobilityDataUSTemp.workplacesChange = sortedRes.map(item => item.workplacesChange ?? 0);
+          mobilityDataUSTemp.residentialChange = sortedRes.map(item => item.residentialChange ?? 0);
+        });
+      fetchMobilityDataByCountryCode('GB')
+        .then(res => {
+          const sortedRes = res.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+          mobilityDataGBTemp.date = sortedRes.map(item => item.date);
+          mobilityDataGBTemp.countryCode = sortedRes[0].countryCode;
+          mobilityDataGBTemp.countryName = sortedRes[0].countryName;
+          mobilityDataGBTemp.retailChange = sortedRes.map(item => item.retailChange ?? 0);
+          mobilityDataGBTemp.groceryChange = sortedRes.map(item => item.groceryChange ?? 0);
+          mobilityDataGBTemp.parksChange = sortedRes.map(item => item.parksChange ?? 0);
+          mobilityDataGBTemp.transitChange = sortedRes.map(item => item.transitChange ?? 0);
+          mobilityDataGBTemp.workplacesChange = sortedRes.map(item => item.workplacesChange ?? 0);
+          mobilityDataGBTemp.residentialChange = sortedRes.map(item => item.residentialChange ?? 0);
+        });
+      mobilityDataTemp.US = mobilityDataUSTemp;
+      mobilityDataTemp.GB = mobilityDataGBTemp;
+      setMobilityData(mobilityDataTemp);
+    }
   }, [selectedCountry]);
 
 
@@ -56,6 +89,8 @@ export const ComparePage = () => {
         <label htmlFor="radioUS">United States</label>
         <input type="radio" id="radioGB" name="country" value="GB" onChange={handleRadioChange} checked={selectedCountry === 'GB'} />
         <label htmlFor="radioGB">Great Britain</label>
+        <input type="radio" id="radioCompare" name="country" value="Compare" onChange={handleRadioChange} checked={selectedCountry === 'Compare'} />
+        <label htmlFor="radioCompare">Compare</label>
       </Container>
     </>
   );

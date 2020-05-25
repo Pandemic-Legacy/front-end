@@ -98,10 +98,10 @@ function LineGraph({ dataset, yAxisConstraints }) {
 
     // Draw line
     svg
-      .selectAll('.graphLine')
+      .selectAll(`.graphLine-${dataset.countryCode}`)
       .data(filteredData(dataset, checkedOptions))
       .join('path')
-      .attr('class', 'graphLine')
+      .attr('class', `graphLine-${dataset.countryCode}`)
       .attr('d', value => myLine(value))
       .attr('fill', 'none')
       .attr('stroke', d => colorScale(d));
