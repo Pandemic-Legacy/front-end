@@ -36,6 +36,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .rotate([rotateX, rotateY, 0])
       .translate([width / 2, height / 2])
       .precision(100);
+
     
 
     const selectedCountry = mapData.features
@@ -100,8 +101,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         //code for when a country is clicked
       })
       .attr('class', 'country');
-
-    //if rotating no transition
+    
     if(rotating) {
       map
         .attr('fill', country => country.mobilityData[property] 
@@ -112,7 +112,6 @@ const Map = ({ mapData, countryCode = '' }) => {
     } else {
       map
         .transition()
-        // .duration(500)
         .attr('fill', country => country.mobilityData[property] 
           ? colorScale(country.mobilityData[property])
           : 'rgba(150, 150, 150, 0.3)'
@@ -135,6 +134,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .text((d, i) => legendText[i]);
       
   }, [mapData, dimensions, property]);
+
 
   return (
     <div ref={wrapperRef} className={style.Map} >
