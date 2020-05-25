@@ -9,34 +9,24 @@ import { useMobilityDataByDate, useWorldMobilityData } from '../../hooks/mobilit
 const getOrZero = prop => prop ?? 0;
 export const HighScore = () => {
   const classes = useStyles();
-  const [averageMobility, setAverageMobility] = useState();
+  // const [averageMobility, setAverageMobility] = useState();
 
   // const { dateData, positiveData, recoveredData, deathData } = useCovidData();
   // console.log(deathData);
 
-  // const mobilityData = useMobilityDataByDate('2020-04-30T00:00:00.000+00:00');
-  // if(!mobilityData) return 
-  
-  // console.log(mobilityData['countryCode']);
   const mobility = useWorldMobilityData('2020-04-30T00:00:00.000+00:00');
   if(!mobility.features) return <h1>loading</h1>;
   console.log(mobility.features[0].mobilityData);
   
-  // console.log(mobilityData[0]['parksChange']);
-  
-  // 
-  
   const result = 
     mobility.features.reduce((r, d) => {
       const sumMetric = Math.abs(getOrZero(d.mobilityData.parksChange) + getOrZero(d.mobilityData.residentialChange) + getOrZero(d.mobilityData.groceryChange) + getOrZero(d.mobilityData.retailChange) + getOrZero(d.mobilityData.transitChange) + getOrZero(d.mobilityData.workplacesChange));
-      r[d.mobilityData.countryName] = { sumMetric, ...d.mobilityData};
+      r[d.mobilityData.countryName] = { sumMetric, ...d.mobilityData };
       return r;
     }, {});
   
   const mappedData = Object.entries(result).sort((a, b) => b[1].sumMetric - a[1].sumMetric);
-  
-  // const mapMobility = mobilityData.map(item => item);
-  // console.log(mapMobility);
+
 
   console.log(mappedData);
 
@@ -56,7 +46,7 @@ export const HighScore = () => {
       <Grid item xs={12} className={classes.container} >
         <Grid item xs={12} className={classes.titleContainer}>
           <Typography variant="h1" className={classes.title}>Country Metric Comparison</Typography>
-          <List>{list}</List>
+          <List className={classes.list}>{list}</List>
         </Grid>
       </Grid>
     </Grid>
