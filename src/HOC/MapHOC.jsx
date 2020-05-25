@@ -76,14 +76,14 @@ const Map = ({ mapData, countryCode = '' }) => {
       .on('drag', () => {
 
         const rotate = projection.rotate();
-        const k = 50 / projection.scale();
+        const sensitivity = 50 / projection.scale();
 
         projection.rotate([
-          rotate[0] + event.dx * k, 
-          rotate[1] - event.dy * k,
+          rotate[0] + event.dx * sensitivity, 
+          rotate[1] - event.dy * sensitivity,
         ]);
-        setRotateX(rotate[0] + event.dx * k);
-        setRotateY(rotate[1] - event.dy * k);
+        setRotateX(rotate[0] + event.dx * sensitivity);
+        setRotateY(rotate[1] - event.dy * sensitivity);
 
         const path = geoPath().projection(projection);
         svg.selectAll('path').attr('d', path);
@@ -128,8 +128,7 @@ const Map = ({ mapData, countryCode = '' }) => {
     const keys = legend.selectAll('span')
       .data([-100, -75, -50, -25, 0, 25, 50, 75, 100]);
 
-    // could just .join('span') instead
-    keys.enter().append('span')
+    keys.join('span')
       .attr('class', 'legendSpan')
       .style('background', (d) => colorScale(d))
     // .text(legendText.forEach(number => number));

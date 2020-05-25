@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <section className={style.Home}>
       <Map mapData={worldMobilityData} />
-      <span>date: </span><input type="range" min="1" max="30" value={dateNum} onChange={({ target }) => setDateNum(target.value)}/>
+      <span>date: </span><input type="range" min="1" max="9" value={dateNum} onChange={({ target }) => setDateNum(target.value)}/>
       <LineGraph />
     </section>
   );
