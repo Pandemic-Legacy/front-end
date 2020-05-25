@@ -11,7 +11,7 @@ const ComparePage = () => {
   // const covidData = useCovidData();
   // const covidYAxis = [0, Math.max(...covidData['positive'])];
   const mobilityData = useMobilityDataByCountryCode('US');
-  const mobilityYAxis = [-100, 100];
+  const mobilityYAxis = [-100, 50];
   const styles = useStyles();
 
   return (

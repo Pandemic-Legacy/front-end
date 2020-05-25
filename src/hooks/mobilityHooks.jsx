@@ -77,15 +77,18 @@ export const useMobilityDataByCountryCode = (countryCode) => {
     const mobilityDataTemp = {};
     fetchMobilityDataByCountryCode(countryCode)
       .then(res => {
-        mobilityDataTemp.date = res.map(item => item.date);
-        mobilityDataTemp.countryCode = res[0].countryCode;
-        mobilityDataTemp.countryName = res[0].countryName;
-        mobilityDataTemp.retailChange = res.map(item => item.retailChange ?? 0);
-        mobilityDataTemp.groceryChange = res.map(item => item.groceryChange ?? 0);
-        mobilityDataTemp.parksChange = res.map(item => item.parksChange ?? 0);
-        mobilityDataTemp.transitChange = res.map(item => item.transitChange ?? 0);
-        mobilityDataTemp.workplacesChange = res.map(item => item.workplacesChange ?? 0);
-        mobilityDataTemp.residentialChange = res.map(item => item.residentialChange ?? 0);
+        console.log('res:', res);
+        const sortedRes = res.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+        console.log('sortedRes:', sortedRes);
+        mobilityDataTemp.date = sortedRes.map(item => item.date);
+        mobilityDataTemp.countryCode = sortedRes[0].countryCode;
+        mobilityDataTemp.countryName = sortedRes[0].countryName;
+        mobilityDataTemp.retailChange = sortedRes.map(item => item.retailChange ?? 0);
+        mobilityDataTemp.groceryChange = sortedRes.map(item => item.groceryChange ?? 0);
+        mobilityDataTemp.parksChange = sortedRes.map(item => item.parksChange ?? 0);
+        mobilityDataTemp.transitChange = sortedRes.map(item => item.transitChange ?? 0);
+        mobilityDataTemp.workplacesChange = sortedRes.map(item => item.workplacesChange ?? 0);
+        mobilityDataTemp.residentialChange = sortedRes.map(item => item.residentialChange ?? 0);
         setMobilityData(mobilityDataTemp);
       });
   }, []);
