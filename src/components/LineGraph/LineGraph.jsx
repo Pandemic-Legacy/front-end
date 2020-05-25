@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './LineGraph.css';
-import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse } from 'd3';
+import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse, scaleOrdinal, schemeCategory10 } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 
@@ -22,7 +22,7 @@ function LineGraph({ dataset, yAxisConstraints }) {
     const myKeys = filteredKeys(data);
     return myKeys.map((myKey, i) => 
       <div key={i}>
-        <input type='checkbox' id={myKey} name={myKey} value={myKey} onChange={handleCheckbox} />
+        <input type='checkbox' id={myKey} name={myKey} value={myKey} onChange={handleCheckbox} checked={checkedOptions.includes(myKey)} />
         <label htmlFor={myKey}>{myKey}</label>
       </div>
     );
@@ -49,7 +49,8 @@ function LineGraph({ dataset, yAxisConstraints }) {
 
   const filteredKeys = (data) => {
     const keys = Object.keys(data);
-    return keys.filter(item => item !== 'date');
+    // Refactor: Apparently, item !== ('date' || 'countryCode' || 'countryName') doesn't work?
+    return keys.filter(item => (item !== 'date' && item !== 'countryCode' && item !== 'countryName'));
   };
   
 
@@ -61,9 +62,10 @@ function LineGraph({ dataset, yAxisConstraints }) {
 
     const svg = select(svgRef.current);
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
+    
     const xScale = scaleLinear()
-      .domain([0, dataset['date'].length - 1])
-      .range([0, width]);
+      .domain([0, dataset['date'].length - 1]) // range of data
+      .range([0, width]); // range of pixels
     const yScale = scaleLinear()
       .domain([yAxisConstraints[0], yAxisConstraints[1]])
       .range([height, 0]);
@@ -73,6 +75,11 @@ function LineGraph({ dataset, yAxisConstraints }) {
       .tickFormat(index => formatDate(dataset.date[index]));
     const yAxis = axisRight(yScale)
       .ticks(height / 20);
+
+    const colorScale = scaleOrdinal(schemeCategory10)
+      .domain(filteredKeys(dataset));
+
+      console.log('filteredKeys: ', filteredKeys(dataset));
 
     svg
       .select('.x-axis')
@@ -97,7 +104,7 @@ function LineGraph({ dataset, yAxisConstraints }) {
       .attr('class', 'graphLine')
       .attr('d', value => myLine(value))
       .attr('fill', 'none')
-      .attr('stroke', 'blue');
+      .attr('stroke', d => colorScale(d));
 
 
     // // Mouseover bubbles
