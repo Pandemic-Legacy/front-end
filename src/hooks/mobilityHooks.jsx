@@ -72,14 +72,13 @@ export const useMobilityDataByCounty = (date, subRegion1, subRegion2) => {
 export const useMobilityDataByCountryCode = (countryCode) => {
 
   const [mobilityData, setMobilityData] = useState(null);
+  console.log('fetching');
 
   useEffect(() => {    
     const mobilityDataTemp = {};
     fetchMobilityDataByCountryCode(countryCode)
       .then(res => {
-        console.log('res:', res);
         const sortedRes = res.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-        console.log('sortedRes:', sortedRes);
         mobilityDataTemp.date = sortedRes.map(item => item.date);
         mobilityDataTemp.countryCode = sortedRes[0].countryCode;
         mobilityDataTemp.countryName = sortedRes[0].countryName;

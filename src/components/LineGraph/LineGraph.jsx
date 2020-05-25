@@ -54,7 +54,7 @@ function LineGraph({ dataset, yAxisConstraints }) {
   
 
   useEffect(() => {
-    if(!dataset) {
+    if(!dataset || !dataset.date) {
       console.log('No data, exiting useEffect()');
       return;
     }
