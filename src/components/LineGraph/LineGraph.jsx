@@ -2,8 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './LineGraph.css';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse } from 'd3';
-// import { useCovidData } from '../../hooks/covidHooks';
-import { useMobilityDataByDate } from '../../hooks/mobilityHooks';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 
@@ -12,11 +10,6 @@ function LineGraph({ dataset, yAxisConstraints }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
-
-  const [property, setProperty] = useState('positive');
-  // const { dateData, positiveData, recoveredData, deathData } = useCovidData();
-  // const covidData = { date: dateData, positive: positiveData, recovered: recoveredData, death: deathData };
-  // const mobilityData = useMobilityDataByDate('2020-04-30T00:00:00.000+00:00');
   const [checkedOptions, setCheckedOptions] = useState([]);
 
   const handleCheckbox = ({ target }) => {
@@ -36,7 +29,7 @@ function LineGraph({ dataset, yAxisConstraints }) {
   };
   
   function formatDate(badDate) {
-    return badDate.toString().slice(5, 6) + '/' + badDate.toString().slice(6);
+    return badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
   }
   
   const selectOptions = (data) => {
@@ -70,7 +63,7 @@ function LineGraph({ dataset, yAxisConstraints }) {
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     const xScale = scaleLinear()
       .domain([0, dataset['date'].length - 1])
-      .range([width, 0]);
+      .range([0, width]);
     const yScale = scaleLinear()
       .domain([yAxisConstraints[0], yAxisConstraints[1]])
       .range([height, 0]);
