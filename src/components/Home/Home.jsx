@@ -15,13 +15,15 @@ const Home = () => {
   useEffect(() => {
     dispatch(setGlobalMobilityDataByDate(`2020-04-0${dateNum}T00:00:00.000+00:00`));
   }, [dateNum]);
-  const worldMobilityData = useSelector(getGlobalMapMobilityByDate);
-  
+  const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
+  const chartDataSet = useSelector(getChartDataSet);
+  const yAxisConstraints = [0, 1600000];
+
   return (
     <section className={style.Home}>
-      <Map mapData={worldMobilityData} />
+      <Map mapData={globalMapMobilityData} />
       <span>date: </span><input type="range" min="1" max="9" value={dateNum} onChange={({ target }) => setDateNum(target.value)}/>
-      <LineGraph />
+      <LineGraph dataSet={chartDataSet} yAxisConstraints={yAxisConstraints} />
     </section>
   );
 };
