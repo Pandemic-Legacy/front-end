@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './LineGraph.css';
-import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse, scaleOrdinal, schemeCategory10 } from 'd3';
+import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse, scaleOrdinal, schemeCategory10, min, max } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 
-function LineGraph({ dataSet, yAxisConstraints }) {
+function LineGraph({ dataSet }) {
   
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -64,11 +64,15 @@ function LineGraph({ dataSet, yAxisConstraints }) {
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     
     // Define scales
+    // make yAxisMin and yAxisMax take dynamic variables
+    const yAxisMin = min(dataSet.totalCases);
+    const yAxisMax = max(dataSet.totalCases);
+
     const xScale = scaleLinear()
       .domain([0, dataSet['date'].length - 1]) // range of data
       .range([0, width]); // range of pixels
     const yScale = scaleLinear()
-      .domain([yAxisConstraints[0], yAxisConstraints[1]])
+      .domain([yAxisMin, yAxisMax])
       .range([height, 0]);
     const colorScale = scaleOrdinal(schemeCategory10)
       .domain(filteredKeys(dataSet));
