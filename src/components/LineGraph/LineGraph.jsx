@@ -1,28 +1,28 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import styles from './LineGraph.css';
-// import JSONdata from '../../data/daily-test.json';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse } from 'd3';
-import { useCovidData } from '../../hooks/covidHooks';
+// import { useCovidData } from '../../hooks/covidHooks';
 import { useMobilityDataByDate } from '../../hooks/mobilityHooks';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 
-function LineGraph() {
+function LineGraph({ dataset }) {
   
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
 
   const [property, setProperty] = useState('positive');
-  const { dateData, positiveData, recoveredData, deathData } = useCovidData();
-  const covidData = { date: dateData, positive: positiveData, recovered: recoveredData, death: deathData };
+  // const { dateData, positiveData, recoveredData, deathData } = useCovidData();
+  // const covidData = { date: dateData, positive: positiveData, recovered: recoveredData, death: deathData };
   // const mobilityData = useMobilityDataByDate('2020-04-30T00:00:00.000+00:00');
-  const [checkedOptionsArray, setCheckedOptionsArray] = useState([]);
+  const [checkedOptions, setCheckedOptions] = useState([]);
 
   const handleCheckbox = ({ target }) => {
-    if(!checkedOptionsArray.includes(target.value)) 
-      setCheckedOptionsArray(prevState => [...prevState, target.value]);
-    else setCheckedOptionsArray(checkedOptionsArray.filter(item => (item !== target.value)));
+    if(!checkedOptions.includes(target.value)) 
+      setCheckedOptions(prevState => [...prevState, target.value]);
+    else setCheckedOptions(checkedOptions.filter(item => (item !== target.value)));
   };
   
   const checkboxOptions = (data) => {
@@ -61,23 +61,25 @@ function LineGraph() {
   
 
   useEffect(() => {
-    if(!dimensions) return;
-    if(!dateData || !positiveData || !recoveredData || !deathData) return;
+    if(!dataset) {
+      console.log('No data, exiting useEffect()');
+      return;
+    }
 
     const svg = select(svgRef.current);
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     const xScale = scaleLinear()
-      .domain([0, covidData[property].length - 1])
+      .domain([0, dataset[property].length - 1])
       .range([width, 0]);
     const yScale = scaleLinear()
-      .domain([0, Math.max(...covidData['positive'])])
+      .domain([0, Math.max(...dataset['positive'])])
       .range([height, 0]);
   
     const xAxis = axisBottom(xScale)
-      .ticks(covidData[property].length / 5)
-      .tickFormat(index => formatDate(dateData[index]));
+      .ticks(dataset['date'].length / 5)
+      .tickFormat(index => formatDate(dataset.date[index]));
     const yAxis = axisRight(yScale)
-      .ticks(covidData[property].length / 5);
+      .ticks(dataset[property].length / 5);
 
     svg
       .select('.x-axis')
@@ -97,7 +99,7 @@ function LineGraph() {
    
     svg
       .selectAll('.graphLine')
-      .data(filteredData(covidData, checkedOptionsArray))
+      .data(filteredData(dataset, checkedOptions))
       .join('path')
       .attr('class', 'graphLine')
       .attr('d', value => myLine(value))
@@ -176,7 +178,7 @@ function LineGraph() {
     //       });
     //   });
 
-  }, [covidData, checkedOptionsArray]);
+  }, [dataset, checkedOptions]);
 
   return (   
     <div className={styles.LineGraph}>
@@ -193,11 +195,16 @@ function LineGraph() {
         {/* </select> */}
       </div>
       <div className={styles.Controls}>
-        {checkboxOptions(covidData)}
+        {dataset && <>{checkboxOptions(dataset)}</> }
       </div>
 
     </div>
   );
 }
+
+LineGraph.propTypes = {
+  dataset: PropTypes.object.isRequired
+};
+
 
 export default LineGraph;
