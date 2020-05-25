@@ -1,8 +1,8 @@
 ### MobilityData
-  * 1: GET mobility data for all countries, all dates (excludes records that have a subregion): 
+  * 1: GET mobility data for all countries, all dates (excludes records that have a subregion):
     https://pandemic-legacy.herokuapp.com/api/v1/mobility
 
-  * 2: GET worldwide mobility data for all countries by date (excludes records that have a   subregion):
+  * 2: GET worldwide mobility data for all countries by date (excludes records that have a subregion):
     https://pandemic-legacy.herokuapp.com/api/v1/mobility/${date}
 
   * 3: GET documents by countryCode for all dates, excluding subregions:

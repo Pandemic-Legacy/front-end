@@ -19,11 +19,6 @@ export const useCovidData = () => {
         setDateData(formattedDate);
         setPositiveData(resultObj.map(item => { if(item.totalCases) return item.totalCases; else return 0; }));
         setRecoveredData(resultObj.map(item => { if(item.totalRecovered) return item.totalRecovered; else return 0; }));
-        // setRecoveredData(resultObj.map((item, index) => { 
-        //   if(item.recovered && positiveData[index]) 
-        //     return (positiveData[index] - item.recovered); 
-        //   else return 0; 
-        // }));
         setDeathData(resultObj.map(item => { if(item.totalDeaths) return item.totalDeaths; else return 0; }));
       });    
   }, []);
