@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Grid, Link } from '@material-ui/core';
 
@@ -27,8 +27,6 @@ export const Links = () => {
           {selectOptions()}
         </select>
         }
-
-        {/* </form>       */}
         <Link className={classes.link} href="/highscore">High Score</Link>
         <Link className={classes.link} href="/">Home</Link>
         <Link className={classes.link} href="/country">Individual Country</Link>
