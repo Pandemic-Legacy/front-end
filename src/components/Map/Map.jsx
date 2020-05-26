@@ -30,7 +30,6 @@ const Map = ({ mapData, countryCode = '' }) => {
   const [dateIndex, setDateIndex] = useState(0);
   const [selectedCountryName, setSelectedCountryName] = useState('test'); 
 
-
   const classes = useStyles();
 
   //PopOver
@@ -53,8 +52,6 @@ const Map = ({ mapData, countryCode = '' }) => {
   // const isMobile = useIsMobile();
   const dates = useSelector(getMobilityDates);
   const selectedCountryCode =  useSelector(getSelectedCountryCode);
-
-
 
   //this could be trimed down if we used redux for countryName
   useEffect(() => {
