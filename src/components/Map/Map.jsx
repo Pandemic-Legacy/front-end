@@ -27,7 +27,7 @@ const Map = ({ mapData, countryCode = '' }) => {
   // const isMobile = useIsMobile();
 
   useEffect(() => {
-    if(dates == []) return;
+    if(dates === []) return;
     else dispatch(setGlobalMobilityDataByDate(dates[dateIndex]));
   }, [dateIndex]);
   
@@ -161,7 +161,12 @@ const Map = ({ mapData, countryCode = '' }) => {
         <option value="transitChange">Transit</option>
         <option value="workplacesChange">Workplace</option>
       </select>
-      {dates && <Slider value={dateIndex} min={0} max={dates.length - 1} onChange={(event, newValue) => setDateIndex(newValue)} valueLabelDisplay="on" valueLabelFormat={(index) => dates[index]} />}
+      {dates.length && <Slider 
+        value={dateIndex} 
+        min={0} 
+        max={dates.length - 1} 
+        onChange={(event, newValue) => setDateIndex(newValue)} valueLabelDisplay="on" 
+        valueLabelFormat={(index) => dates[index].slice(5)} />}
     </div>
   );
 };
