@@ -1,0 +1,26 @@
+.MiniChart {
+
+  .container {
+    text-align: left;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    /* Sets container ratio to 2:1 to match SVG ratio defined in D3 */
+    padding-bottom: 50%; 
+    vertical-align: top;
+    overflow: visible;
+  }
+
+  svg {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: visible;
+  }
+
+  h4 {
+    margin-bottom: 0;
+  }
+
+}

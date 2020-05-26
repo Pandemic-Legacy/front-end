@@ -1,4 +1,4 @@
-import { fetchWorldMobilityData } from '../services/mobility';
+import { fetchWorldMobilityData, fetchMobilityDataByCountryCode } from '../services/mobility';
 import geoJson from '../data/World-map-lo-res.geo.json';
 import { fetchCountryCovidData } from '../services/covid';
 
@@ -28,24 +28,45 @@ export const setGlobalMobilityDataByDate = (date) => dispatch => {
     });
 };
 
+
+export const SET_MOBILITY_CHART_DATA = 'SET_MOBILITY_CHART_DATA';
+export const setMobilityChartDataByCountryCode = (countryCode) => dispatch => {
+  fetchMobilityDataByCountryCode(countryCode)
+    .then(res => res.slice().sort((a, b) => new Date(a.date) - new Date(b.date)))
+    .then(sortedRes => ({
+      date: sortedRes.map(item => item.date),
+      countryCode: sortedRes[0].countryCode,
+      countryName: sortedRes[0].countryName,
+      retailChange: sortedRes.map(item => item.retailChange ?? 0),
+      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
+      parksChange: sortedRes.map(item => item.parksChange ?? 0),
+      transitChange: sortedRes.map(item => item.transitChange ?? 0),
+      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
+      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+    }))
+    .then(formattedRes => {
+      dispatch({
+        type: SET_MOBILITY_CHART_DATA,
+        payload: formattedRes
+      });
+    });
+};
+
+
 export const SET_COVID_CHART_DATA = 'SET_COVID_CHART_DATA';
 export const setCovidChartData = (countryCode) => dispatch => {
   return fetchCountryCovidData(countryCode)
-    .then(res => 
-    {
-      console.log(res);
-      return ({
-        date: res.map(item => item.date),
-        countryCode: res[0].countryCode,
-        countryName: res[0].countryName,
-        totalCases: res.map(item => item.totalCases ?? 0),
-        newCases: res.map(item => item.newCases ?? 0),
-        totalRecovered: res.map(item => item.totalRecovered ?? 0),
-        newRecovered: res.map(item => item.newRecovered ?? 0),
-        totalDeaths: res.map(item => item.totalDeaths ?? 0),
-        newDeaths: res.map(item => item.newDeaths ?? 0)
-      });
-    })
+    .then(res => ({
+      date: res.map(item => item.date),
+      countryCode: res[0].countryCode,
+      countryName: res[0].countryName,
+      totalCases: res.map(item => item.totalCases ?? 0),
+      newCases: res.map(item => item.newCases ?? 0),
+      totalRecovered: res.map(item => item.totalRecovered ?? 0),
+      newRecovered: res.map(item => item.newRecovered ?? 0),
+      totalDeaths: res.map(item => item.totalDeaths ?? 0),
+      newDeaths: res.map(item => item.newDeaths ?? 0)
+    }))
     .then(covidData => {
       dispatch({
         type: SET_COVID_CHART_DATA,
@@ -53,11 +74,22 @@ export const setCovidChartData = (countryCode) => dispatch => {
       });
     });
 };
-
 export const SET_SELECTED_COUNTRY_CODE = 'SET_SELECTED_COUNTRY_CODE';
 export const setSelectedCountryCode = (countryCode) => dispatch => {
   dispatch({
     type: SET_SELECTED_COUNTRY_CODE,
-    payload: countryCode.toUppercase()
+    payload: countryCode.toUpperCase()
   });
+};
+
+export const SET_MOBILITY_DATES = 'SET_MOBILITY_DATES';
+export const setMobilityDates = () => dispatch => {
+  return fetchMobilityDataByCountryCode('US')
+    .then(res => res.map(item => item.date.slice(0, 10)))
+    .then(dates => {
+      dispatch({
+        type: SET_MOBILITY_DATES,
+        payload: dates.sort()
+      });
+    });
 };

@@ -10,6 +10,7 @@ function StackGraph({ dataSet }) {
   const dimensions = useResizeObserver(wrapperRef);
 
   useEffect(() => {
+<<<<<<< HEAD
     // if(!dataSet || !dataSet.date) {
     //   console.log('No data, exiting useEffect()');
     //   return;
@@ -19,6 +20,11 @@ function StackGraph({ dataSet }) {
     const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
     console.log(dataSet);
 
+=======
+    const svg = select(svgRef.current);
+    const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
+    
+>>>>>>> bb49b1aab5f74eccac3ed97db32d5e49a3a75526
     const data = [
       {
         countryCode: null,
@@ -75,7 +81,10 @@ function StackGraph({ dataSet }) {
         _id: '5ec57e71617e67711a139e4e'
       }
     ];
+<<<<<<< HEAD
     // const slicedDate = data.date.slice(0, 9);
+=======
+>>>>>>> bb49b1aab5f74eccac3ed97db32d5e49a3a75526
 
     const keys = [
       'newCases',
@@ -141,6 +150,10 @@ function StackGraph({ dataSet }) {
     svg
       .select('.x-axis')
       .attr('transform', `translate(0, ${height})`)
+<<<<<<< HEAD
+=======
+      .style('fill', 'black')
+>>>>>>> bb49b1aab5f74eccac3ed97db32d5e49a3a75526
       .call(xAxis);
 
     const yAxis = axisLeft(yScale);
