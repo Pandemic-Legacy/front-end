@@ -7,8 +7,10 @@ import { useResizeObserver } from '../../hooks/d3Hooks';
 function StackGraph({ data }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
+  const legendRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
   console.log(data);
+
   const dataStructure = data.date.reduce((acc, date, i) => {
     acc.push({ 
       countryCode: data.countryCode,
@@ -85,7 +87,6 @@ function StackGraph({ data }) {
     // create all layers of data, stack keys
     // data for rectangles is layer
 
-
     // axes
     const xAxis = axisBottom(xScale);
     svg
@@ -99,16 +100,31 @@ function StackGraph({ data }) {
       .select('.y-axis')
       .call(yAxis);
 
+    const legend = select(legendRef.current)
+      .attr('class', 'legendColor');
+
+    // const legendText = [-100, -75, -50, -25, 0, 25, 50, 75, 100];
+
+    // const legends = legend.selectAll('span')
+    //   .data([-100, -75, -50, -25, 0, 25, 50, 75, 100]);
+
+    // keys.join('span')
+    //   .attr('class', 'legendSpan')
+    //   .style('background', (d) => colorScale(d))
+    // // .text(legendText.forEach(number => number));
+    //   .text((d, i) => legendText[i]);
+      
   }), [data, dimensions];
 
   return (   
     <div className={styles.StackGraph}>
       <div ref={wrapperRef} className={styles.container}>
-        <svg ref={svgRef}>
+        <svg className="svg" ref={svgRef}>
           <g className='x-axis'/>
           <g className='y-axis'/>
         </svg>
       </div>
+      <div className="legend" ref={legendRef}>Bar Chart legend:</div>
     </div>
   );
 }

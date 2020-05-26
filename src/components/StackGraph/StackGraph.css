@@ -1,11 +1,13 @@
 svg {
   display: block;
-  width: 100%;
   overflow: visible;
+  width: 40rem;
   margin-bottom: 10rem;
   padding-bottom: 10rem;
 }
-
+.legend {
+  margin-top: 10rem;
+}
 svg rect.selection {
   stroke: none;
 }
@@ -13,6 +15,7 @@ svg rect.selection {
 .StackGraph {
   margin: 10 auto;
   display: flex;
+  flex-direction: column;
   align-items: stretch;
   justify-content: center;
   height: 50vh;

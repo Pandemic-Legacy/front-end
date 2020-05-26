@@ -27,10 +27,5 @@ export const useStyles = makeStyles((theme) => ({
   graph: {
     margin: '2rem'
   },
-  metrics: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '1rem'
-  }
+
 }));
