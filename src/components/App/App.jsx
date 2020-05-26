@@ -13,6 +13,7 @@ import { About } from '../About/About';
 import { useDispatch } from 'react-redux';
 import { setMobilityDates, setGlobalMobilityDataByDate, setCovidChartData } from '../../actions/actions';
 
+
 export default function App() {
   const styles = useStyles();
 
