@@ -70,7 +70,7 @@ function LineGraph({ dataset }) {
     // const { width } = dimensions || wrapperRef.current.getBoundingClientRect();
     // const height = width / 2;
     const width = 1000;
-    const height = 500;
+    const height = 333;
     // Refactor: Add additional margin style per intended display size of chart
     const margin = { top: 0, right: 100, bottom: 50, left: 10 };
 
@@ -232,7 +232,7 @@ function LineGraph({ dataset }) {
 
   return (   
     <div className={styles.Chart}>
-      <div ref={wrapperRef} className={styles.container}>
+      <div ref={wrapperRef} className={`${styles.container} ${styles.threeToOne}`}>
         <svg ref={svgRef}>
           <g className={styles.xAxis} />
           <g className={styles.yAxis} />
