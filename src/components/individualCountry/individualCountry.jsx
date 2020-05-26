@@ -2,14 +2,14 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useStyles } from './individualCountry.styles';
 import Map from '../Map/Map';
-import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregions } from '../../selectors/selectors';
+import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregions, getSelectedSubregion } from '../../selectors/selectors';
 import { useParams } from 'react-router-dom';
 import StackGraph from '../StackGraph/StackGraph';
 import { getCovidChartData } from '../../selectors/selectors';
 import { useSelector } from 'react-redux';
 
 import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
-import { setSelectedCountryCode } from '../../actions/actions';
+import { setSelectedCountryCode, setSelectedsubregion } from '../../actions/actions';
 import { dispatch } from 'd3';
 
 
@@ -19,6 +19,7 @@ export const individualCountry = () => {
   const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
   const { countryCode: countryCodeParam } = useParams();
   const countryCode = useSelector(getSelectedCountryCode);
+  const subregion = useSelector(getSelectedSubregion);
   const chartDataSet = useSelector(getCovidChartData);
   const subregions = useSelector(getMobilitySubregions);
 
@@ -35,7 +36,7 @@ export const individualCountry = () => {
 
         <Grid item xs={4}>
           { subregions &&
-          <select value={countryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
+          <select value={subregion} onChange={({ target }) => dispatch(setSelectedsubregion(target.value))}>
             <option>Choose a subregion</option>
             {selectOptions()}
           </select>}
