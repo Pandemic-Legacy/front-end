@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useStyles } from './individualCountry.styles';
 import Map from '../Map/Map';
-import { getGlobalMapMobilityByDate, getSelectedCountryCode } from '../../selectors/selectors';
+import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregions } from '../../selectors/selectors';
 import { useParams } from 'react-router-dom';
 import StackGraph from '../StackGraph/StackGraph';
 import { getCovidChartData } from '../../selectors/selectors';
@@ -20,30 +20,25 @@ export const individualCountry = () => {
   const { countryCode: countryCodeParam } = useParams();
   const countryCode = useSelector(getSelectedCountryCode);
   const chartDataSet = useSelector(getCovidChartData);
+  const subregions = useSelector(getMobilitySubregions);
 
-  // fetch covid data
-  // fetch mobility data
-  // update selectedCountryCode in redux
-  // pass 
-  const selectOptions = () => globalMapMobilityData.features
-  .filter(item => item.mobilityData.countryName != null)
-  .sort((a, b) => (a.mobilityData.countryName > b.mobilityData.countryName) ? 1 : -1)
-  .map((item, i) => <option key={i} value={item.mobilityData.countryCode}>{item.mobilityData.countryName}</option>);
+  const selectOptions = () => subregions
+    .filter(item => item.subRegion1 != null)
+    .sort((a, b) => (a.subRegion1 > b.subRegion1) ? 1 : -1)
+    .map((item, i) => <option key={i} value={item.subRegion1}>{item.subRegion1}</option>);
 
-        
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.header}>
         <Typography variant="h3" className={classes.title}>{countryCode}</Typography>
-        <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/>
+        {/* <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/> */}
 
         <Grid item xs={4}>
-          { globalMapMobilityData.features &&
-        <select value={countryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
-          <option>Choose a subregion</option>
-          {selectOptions()}
-        </select>
-          }
+          { subregions &&
+          <select value={countryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
+            <option>Choose a subregion</option>
+            {selectOptions()}
+          </select>}
         </Grid>
       
         <Grid item xs={12} className={classes.graph}>

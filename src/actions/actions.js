@@ -1,4 +1,4 @@
-import { fetchWorldCovidData, fetchMobilityDataByCountryCode } from '../services/mobility';
+import { fetchMobilityDataByCountryCode, fetchWorldMobilityData, fetchMobilitySubregions } from '../services/mobility';
 import geoJson from '../data/World-map-lo-res.geo.json';
 import { fetchCountryCovidData } from '../services/covid';
 
@@ -72,11 +72,20 @@ export const setCovidChartData = (countryCode) => dispatch => {
       });
     });
 };
+
 export const SET_SELECTED_COUNTRY_CODE = 'SET_SELECTED_COUNTRY_CODE';
 export const setSelectedCountryCode = (countryCode) => dispatch => {
   dispatch({
     type: SET_SELECTED_COUNTRY_CODE,
     payload: countryCode.toUpperCase()
+  });
+};
+
+export const SET_SELECTED_SUBREGION = 'SET_SELECTED_SUBREGION';
+export const setSelectedsubregion = (subregion) => dispatch => {
+  dispatch({
+    type: SET_SELECTED_SUBREGION,
+    payload: subregion
   });
 };
 
@@ -141,11 +150,3 @@ export const setCovidSubregions = (countryCode) => dispatch => {
       });
     });
 };
-export const SET_SELECTED_COUNTRY_CODE = 'SET_SELECTED_COUNTRY_CODE';
-export const setSelectedCountryCode = (countryCode) => dispatch => {
-  dispatch({
-    type: SET_SELECTED_COUNTRY_CODE,
-    payload: countryCode.toUpperCase()
-  });
-};
-

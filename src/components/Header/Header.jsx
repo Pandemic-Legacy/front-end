@@ -40,6 +40,7 @@ export const Header = () => {
           {selectOptions()}
         </select>}
       </Grid>
+      
     </Grid>
   );
 };
