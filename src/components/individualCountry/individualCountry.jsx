@@ -13,20 +13,17 @@ import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
 
 export const individualCountry = () => {
   const classes = useStyles();
-  const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
+  // const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
   const { countryCode: countryCodeParam } = useParams();
   const countryCode = useSelector(getSelectedCountryCode);
 
-  const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
-  const { countryCode: countryCodeParam } = useParams();
-  const countryCode = useSelector(getSelectedCountryCode);
   const chartDataSet = useSelector(getCovidChartData);
         
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.header}>
         <Typography variant="h3" className={classes.title}>{countryCode}</Typography>
-        <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/>
+        {/* <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/> */}
       
         <Grid item xs={12} className={classes.graph}>
           <StackGraph dataSet={chartDataSet} />
@@ -40,8 +37,8 @@ export const individualCountry = () => {
         {/* <Grid item xs={12} className={classes.metrics}>
           <Typography variant="h3" className={classes.title}>Metrics</Typography>
         </Grid> */}
+      </Grid>
     </Grid>
-  </Grid>
   );
 };
 
