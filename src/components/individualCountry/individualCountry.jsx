@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export const individualCountry = () => {
   const classes = useStyles();
   const chartDataSet = useSelector(getCovidChartData);
-
+  console.log(chartDataSet);
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.header}>
