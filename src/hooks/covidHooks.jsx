@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchCovidData, fetchGlobalCovidData } from '../services/covid';
+import { useDispatch } from 'react-redux';
+import { setSelectedCountryName } from '../actions/actions';
 
 export const useCovidData = () => {
 
@@ -35,3 +37,19 @@ export const useCovidData = () => {
 
   return { dateData, positiveData, recoveredData, deathData };
 };
+
+// export const handleSubmit = () => {
+//   const dispatch = useDispatch();
+//   const [searchedCountry, setSearchedCountry] = useState();
+//   useEffect(() => {
+//     const handleChange = ({ target }) => {
+//       setSearchedCountry(target.value);
+
+//       const searchHandler = () => {
+//         dispatch(setSelectedCountryName(searchedCountry));
+//       };
+//     };
+//   }, [searchedCountry]);
+
+//   return {  };
+// };
