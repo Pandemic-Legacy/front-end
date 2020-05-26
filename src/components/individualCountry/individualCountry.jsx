@@ -9,6 +9,8 @@ import { getCovidChartData } from '../../selectors/selectors';
 import { useSelector } from 'react-redux';
 
 import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
+import { setSelectedCountryCode } from '../../actions/actions';
+import { dispatch } from 'd3';
 
 
 export const individualCountry = () => {
@@ -18,6 +20,16 @@ export const individualCountry = () => {
   const { countryCode: countryCodeParam } = useParams();
   const countryCode = useSelector(getSelectedCountryCode);
   const chartDataSet = useSelector(getCovidChartData);
+
+  // fetch covid data
+  // fetch mobility data
+  // update selectedCountryCode in redux
+  // pass 
+  const selectOptions = () => globalMapMobilityData.features
+  .filter(item => item.mobilityData.countryName != null)
+  .sort((a, b) => (a.mobilityData.countryName > b.mobilityData.countryName) ? 1 : -1)
+  .map((item, i) => <option key={i} value={item.mobilityData.countryCode}>{item.mobilityData.countryName}</option>);
+
         
   return (
     <Grid container className={classes.root}>
@@ -25,14 +37,14 @@ export const individualCountry = () => {
         <Typography variant="h3" className={classes.title}>{countryCode}</Typography>
         <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/>
 
-        {/* <Grid item xs={4}>
+        <Grid item xs={4}>
           { globalMapMobilityData.features &&
-        <select value={selectedCountryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
+        <select value={countryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
           <option>Choose a subregion</option>
           {selectOptions()}
         </select>
           }
-        </Grid> */}
+        </Grid>
       
         <Grid item xs={12} className={classes.graph}>
           <StackGraph dataSet={chartDataSet} />

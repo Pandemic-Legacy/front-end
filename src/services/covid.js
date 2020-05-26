@@ -16,8 +16,20 @@ export const fetchCountryCovidData = (countryCode = '') => {
     .then(res => res.json());
 };
 
-// fetch country-level covid data by countryCode
+// fetch country-level covid data by countryName
 export const fetchCountryNameCovidData = (countryName = '') => {
   return fetch(`https://pandemic-legacy.herokuapp.com/api/v1/covid/${countryName}`)
+    .then(res => res.json());
+};
+
+// fetch country-level covid data by countryCode WITH subregions
+export const fetchCovidSubregionData = (countryCode = '') => {
+  return fetch(`https://pandemic-legacy.herokuapp.com/api/v1/covid/subRegion/${countryCode}`)
+    .then(res => res.json());
+};
+
+// fetch country-level mobility data by countryCode WITH subregions
+export const fetchMobilitySubregionData = (countryCode = '') => {
+  return fetch(`https://pandemic-legacy.herokuapp.com/api/v1/covid/countryByName/${countryCode}`)
     .then(res => res.json());
 };

@@ -1,4 +1,4 @@
-import { fetchWorldMobilityData, fetchMobilityDataByCountryCode } from '../services/mobility';
+import { fetchWorldCovidData, fetchMobilityDataByCountryCode } from '../services/mobility';
 import geoJson from '../data/World-map-lo-res.geo.json';
 import { fetchCountryCovidData } from '../services/covid';
 
@@ -93,3 +93,36 @@ export const setMobilityDates = () => dispatch => {
       });
     });
 };
+
+export const SET_COVID_SUBREGIONS = 'SET_COVID_SUBREGIONS';
+export const setCovidSubregions = (countryCode) => dispatch => {
+  // update once fetch is written
+  return fetchCountryCovidData(countryCode)
+    .then(res => ({
+      date: res.map(item => item.date),
+      countryCode: res[0].countryCode,
+      countryName: res[0].countryName,
+      subRegion1: res[0].subRegion1,
+      subRegion2: res[0].subRegion2,
+      totalCases: res.map(item => item.totalCases ?? 0),
+      newCases: res.map(item => item.newCases ?? 0),
+      totalRecovered: res.map(item => item.totalRecovered ?? 0),
+      newRecovered: res.map(item => item.newRecovered ?? 0),
+      totalDeaths: res.map(item => item.totalDeaths ?? 0),
+      newDeaths: res.map(item => item.newDeaths ?? 0)
+    }))
+    .then(covidSubregions => {
+      dispatch({
+        type: SET_COVID_SUBREGIONS,
+        payload: covidSubregions
+      });
+    });
+};
+export const SET_SELECTED_COUNTRY_CODE = 'SET_SELECTED_COUNTRY_CODE';
+export const setSelectedCountryCode = (countryCode) => dispatch => {
+  dispatch({
+    type: SET_SELECTED_COUNTRY_CODE,
+    payload: countryCode.toUpperCase()
+  });
+};
+
