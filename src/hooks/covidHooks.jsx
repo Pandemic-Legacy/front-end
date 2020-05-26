@@ -37,19 +37,3 @@ export const useCovidData = () => {
 
   return { dateData, positiveData, recoveredData, deathData };
 };
-
-// export const handleSubmit = () => {
-//   const dispatch = useDispatch();
-//   const [searchedCountry, setSearchedCountry] = useState();
-//   useEffect(() => {
-//     const handleChange = ({ target }) => {
-//       setSearchedCountry(target.value);
-
-//       const searchHandler = () => {
-//         dispatch(setSelectedCountryName(searchedCountry));
-//       };
-//     };
-//   }, [searchedCountry]);
-
-//   return {  };
-// };
