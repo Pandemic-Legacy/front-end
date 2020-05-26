@@ -1,7 +1,7 @@
-.MiniChart {
+.Chart {
 
   .container {
-    text-align: left;
+    text-align: center;
     display: inline-block;
     position: relative;
     width: 100%;
@@ -19,14 +19,12 @@
     overflow: hidden;
   
     .chartBackground {
-      fill: blue;
+      fill: #f6f6f6;
     }        
     
-    .xAxis {
-      color: red;
-      font-size: 3em;
+    .xAxis, .yAxis {
+      color: #666;
     }
-  
   }
 
   h4 {

@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <section className={style.Home}>
       <Map mapData={globalMapMobilityData} />
-      <LineGraph dataSet={chartDataSet} />
+      <LineGraph dataset={chartDataSet} />
     </section>
   );
 };

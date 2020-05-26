@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from './LineGraph.css';
+import styles from '../../styles/Chart.css';
+// import styles from '../MiniChart/MiniChart.styles';
 import { select, line, curveCardinal, axisBottom, axisRight, scaleLinear, mouse, scaleOrdinal, schemeCategory10, min, max } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
 
-function LineGraph({ dataSet }) {
+function LineGraph({ dataset }) {
   
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -28,10 +29,12 @@ function LineGraph({ dataSet }) {
     );
   };
   
-  function formatDate(badDate) {
-    return badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
-  }
-  
+  const formattedDate = (badDate) => 
+    badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
+
+  const formattedCountryName = (badName) => 
+    badName.replace(' ', '_').replace('\'', '');
+
   const selectOptions = (data) => {
     const myKeys = filteredKeys(data);
     return myKeys.map((myKey, i) => <option key={i} value={myKey}>{myKey}</option>);
@@ -55,43 +58,67 @@ function LineGraph({ dataSet }) {
   
 
   useEffect(() => {
-    if(!dataSet || !dataSet.date) {
+    if(!dataset || !dataset.date) {
       console.log('No data, exiting useEffect()');
       return;
     }
 
     const svg = select(svgRef.current);
-    const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
-    
+
+    // Setup variables and viewBox for responsive display
+    // const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
+    // const { width } = dimensions || wrapperRef.current.getBoundingClientRect();
+    // const height = width / 2;
+    const width = 1000;
+    const height = 500;
+    // Refactor: Add additional margin style per intended display size of chart
+    const margin = { top: 0, right: 100, bottom: 50, left: 10 };
+
+    svg
+      .attr('viewBox', `0, 0, ${width}, ${height}`)
+      .attr('preserveAspectRatio', 'xMinYMin meet');
+
     // Define scales
-    const yAxisMin = min(dataSet.totalCases ?? -100);
-    const yAxisMax = max(dataSet.totalCases ?? 100);
+    const yAxisMin = min(dataset.totalCases ?? -100);
+    const yAxisMax = max(dataset.totalCases ?? 100);
 
     const xScale = scaleLinear()
-      .domain([0, dataSet['date'].length - 1]) // range of data
-      .range([0, width]); // range of pixels
+      .domain([0, dataset['date'].length - 1]) // range of data
+      .range([margin.left, width - margin.right]); // range of pixels
     const yScale = scaleLinear()
       .domain([yAxisMin, yAxisMax])
-      .range([height, 0]);
+      .range([height - margin.bottom, margin.top]);
     const colorScale = scaleOrdinal(schemeCategory10)
-      .domain(filteredKeys(dataSet));
+      .domain(filteredKeys(dataset));
   
     // Define axis
-    const xAxis = axisBottom(xScale)
-      .ticks(dataSet['date'].length / 5)
-      .tickFormat(index => formatDate(dataSet.date[index]));
-    const yAxis = axisRight(yScale)
-      .ticks(height / 20);
+    const xAxis = axisBottom()
+      .scale(xScale)
+      .ticks(dataset['date'].length / 5)
+      .tickFormat(index => formattedDate(dataset.date[index]));
+    const yAxis = axisRight()
+      .scale(yScale)
+      .ticks(height / 40);
 
     // Draw axis on pre-existing elements
     svg
-      .select('.x-axis')
-      .style('transform', `translateY(${height}px)`)
+      .select(`.${styles.xAxis}`)
+      .style('transform', `translateY(${height - margin.bottom}px)`)
       .call(xAxis);
     svg
-      .select('.y-axis')
-      .style('transform', `translateX(${width}px)`)
+      .select(`.${styles.yAxis}`)
+      .style('transform', `translateX(${width - margin.right}px)`)
       .call(yAxis);
+
+    // Draw background
+    svg
+      .append('rect')
+      .attr('x', margin.left)
+      .attr('y', margin.top)
+      .attr('width', width - margin.left - margin.right)
+      .attr('height', height - margin.top - margin.bottom)
+      .attr('fill', 'none')
+      .attr('class', styles.chartBackground);
 
     // Define line
     const myLine = line()
@@ -101,15 +128,15 @@ function LineGraph({ dataSet }) {
 
     // Draw line
     svg
-      .selectAll(`.graphLine-${dataSet.countryName.replace(' ', '_').replace('\'', '')}`)
-      .data(filteredData(dataSet, checkedOptions))
+      .selectAll('.graphLine')
+      .data(filteredData(dataset, checkedOptions))
       .join('path')
-      .attr('class', `graphLine-${dataSet.countryName.replace(' ', '_').replace('\'', '')}`)
+      .attr('class', 'graphLine')
       .attr('d', value => myLine(value))
       .attr('fill', 'none')
       .attr('stroke', d => colorScale(d));
 
-
+    function justHereToFoldBadMouseoverCode() {
     // // Mouseover bubbles
     // const mouseG = svg.append('g')
     //   .attr('class', 'mouse-over-effects');
@@ -200,16 +227,15 @@ function LineGraph({ dataSet }) {
     //       return 'translate(' + x + ',' + pos.y + ')';
     //     });
     // });
-
-
-  }, [dataSet, checkedOptions]);
+    }
+  }, [dataset, checkedOptions]);
 
   return (   
-    <div className={styles.LineGraph}>
+    <div className={styles.Chart}>
       <div ref={wrapperRef} className={styles.container}>
         <svg ref={svgRef}>
-          <g className='x-axis' />
-          <g className='y-axis' />
+          <g className={styles.xAxis} />
+          <g className={styles.yAxis} />
         </svg>
         {/* <select value={property} onChange={({ target }) => setProperty(target.value)}>
           {selectOptions(covidData)} */}
@@ -219,7 +245,7 @@ function LineGraph({ dataSet }) {
         {/* </select> */}
       </div>
       <div className={styles.Controls}>
-        {dataSet && <>{checkboxOptions(dataSet)}</> }
+        {dataset && <>{checkboxOptions(dataset)}</> }
       </div>
 
     </div>
@@ -227,7 +253,7 @@ function LineGraph({ dataSet }) {
 }
 
 LineGraph.propTypes = {
-  dataSet: PropTypes.object.isRequired,
+  dataset: PropTypes.object.isRequired,
 };
 
 
