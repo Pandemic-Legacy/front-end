@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useStyles } from './individualCountry.styles';
-import Map from '../Map/Map';
+// import Map from '../Map/Map';
 import { getGlobalMapMobilityByDate, getSelectedCountryCode } from '../../selectors/selectors';
 import { useParams } from 'react-router-dom';
 import StackGraph from '../StackGraph/StackGraph';
