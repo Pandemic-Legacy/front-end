@@ -13,5 +13,8 @@ export const getSelectedCountryCode = state => state.reducer.selectedCountryCode
 // returns array of dates only
 export const getMobilityDates = state => state.reducer.mobilityDates;
 
-// returns covid data including subregions
+// returns mobility data for a single country including subregions
+export const getMobilitySubregions = state => state.reducer.mobilitySubregions;
+
+// returns covid data for a single country including subregions
 export const getCovidSubregions = state => state.reducer.covidSubregions;

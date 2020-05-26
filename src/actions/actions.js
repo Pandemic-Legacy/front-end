@@ -28,7 +28,6 @@ export const setGlobalMobilityDataByDate = (date) => dispatch => {
     });
 };
 
-
 export const SET_MOBILITY_CHART_DATA = 'SET_MOBILITY_CHART_DATA';
 export const setMobilityChartDataByCountryCode = (countryCode) => dispatch => {
   fetchMobilityDataByCountryCode(countryCode)
@@ -51,7 +50,6 @@ export const setMobilityChartDataByCountryCode = (countryCode) => dispatch => {
       });
     });
 };
-
 
 export const SET_COVID_CHART_DATA = 'SET_COVID_CHART_DATA';
 export const setCovidChartData = (countryCode) => dispatch => {
@@ -90,6 +88,31 @@ export const setMobilityDates = () => dispatch => {
       dispatch({
         type: SET_MOBILITY_DATES,
         payload: dates.sort()
+      });
+    });
+};
+
+export const SET_MOBILITY_SUBREGIONS = 'SET_MOBILITY_SUBREGIONS';
+export const setMobilitySubregions = (countryCode) => dispatch => {
+  fetchMobilitySubregions(countryCode)
+    .then(res => res.slice().sort((a, b) => new Date(a.date) - new Date(b.date)))
+    .then(sortedRes => ({
+      date: sortedRes.map(item => item.date),
+      countryCode: sortedRes[0].countryCode,
+      countryName: sortedRes[0].countryName,
+      subRegion1: res[0].subRegion1,
+      subRegion2: res[0].subRegion2,
+      retailChange: sortedRes.map(item => item.retailChange ?? 0),
+      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
+      parksChange: sortedRes.map(item => item.parksChange ?? 0),
+      transitChange: sortedRes.map(item => item.transitChange ?? 0),
+      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
+      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+    }))
+    .then(formattedRes => {
+      dispatch({
+        type: SET_MOBILITY_SUBREGIONS,
+        payload: formattedRes
       });
     });
 };
