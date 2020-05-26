@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setGlobalMobilityDataByDate, setSelectedCountryCode } from '../../actions/actions';
 import { getMobilityDates, getSelectedCountryCode } from '../../selectors/selectors';
 import { useHistory } from 'react-router-dom';
+
 // import { useIsMobile } from '../hooks/isMobile';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +31,6 @@ const Map = ({ mapData, countryCode = '' }) => {
   const [dateIndex, setDateIndex] = useState(0);
   const [selectedCountryName, setSelectedCountryName] = useState('test'); 
 
-
   const classes = useStyles();
 
   //PopOver
@@ -44,17 +44,17 @@ const Map = ({ mapData, countryCode = '' }) => {
   const open = Boolean(anchorEl);
   //PopOver
 
+
   const svgRef = useRef();
   const wrapperRef = useRef();
   const legendRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
   const dispatch = useDispatch();
+
   const history = useHistory();
   // const isMobile = useIsMobile();
   const dates = useSelector(getMobilityDates);
   const selectedCountryCode =  useSelector(getSelectedCountryCode);
-
-
 
   //this could be trimed down if we used redux for countryName
   useEffect(() => {
@@ -207,6 +207,7 @@ const Map = ({ mapData, countryCode = '' }) => {
             e.preventDefault();
             history.push(`/country/${selectedCountryCode}`);
           }}>Details</Button>
+
         {/* <Button variant="contained" color="secondary" onClick={handlePopoverClose}>X</Button> */}
       </Popover>
 
