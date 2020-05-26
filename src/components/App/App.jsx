@@ -10,6 +10,7 @@ import ComparePage from '../ComparePage/ComparePage';
 import { HighScore } from '../HighScore/HighScore';
 import { useDispatch } from 'react-redux';
 import { setMobilityDates, setGlobalMobilityDataByDate } from '../../actions/actions';
+import MiniCharts from '../MiniChart/MiniCharts';
 
 export default function App() {
   const styles = useStyles();
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/compare" component={ComparePage} />
           {/* <Route path="/search" component={search} /> */}
           <Route path="/highscore" component={HighScore} />
+          <Route path="/minicharts" component={MiniCharts} />
         </Switch>
         <Footer />
       </Container>
