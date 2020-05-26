@@ -1,9 +1,13 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useStyles } from './individualCountry.styles';
+import StackGraph from '../StackGraph/StackGraph';
+import { getCovidChartData } from '../../selectors/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const individualCountry = () => {
   const classes = useStyles();
+  const chartDataSet = useSelector(getCovidChartData);
 
   return (
     <Grid container className={classes.root}>
@@ -11,7 +15,7 @@ export const individualCountry = () => {
         <Typography variant="h3" className={classes.title}>Individual Country</Typography>
         
         <Grid item xs={12} lg={2} className={classes.graph}>
-          <Typography variant="h3" className={classes.title}>Graph</Typography>
+          <StackGraph dataSet={chartDataSet} />
         </Grid>
 
         <Grid item xs={12} lg={2} className={classes.metrics}>
