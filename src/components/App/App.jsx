@@ -11,7 +11,7 @@ import { HighScore } from '../HighScore/HighScore';
 import { About } from '../About/About';
 
 import { useDispatch } from 'react-redux';
-import { setMobilityDates, setGlobalMobilityDataByDate } from '../../actions/actions';
+import { setMobilityDates, setGlobalMobilityDataByDate, setCovidChartData } from '../../actions/actions';
 
 export default function App() {
   const styles = useStyles();
@@ -22,6 +22,7 @@ export default function App() {
   useEffect(() => {
     dispatch(setMobilityDates());
     dispatch(setGlobalMobilityDataByDate(defaultDate));
+    dispatch(setCovidChartData());
   }, []);
 
   return (
