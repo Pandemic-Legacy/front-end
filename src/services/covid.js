@@ -27,9 +27,3 @@ export const fetchCovidSubregionData = (countryCode = '') => {
   return fetch(`https://pandemic-legacy.herokuapp.com/api/v1/covid/subRegion/${countryCode}`)
     .then(res => res.json());
 };
-
-// fetch country-level mobility data by countryCode WITH subregions
-export const fetchMobilitySubregionData = (countryCode = '') => {
-  return fetch(`https://pandemic-legacy.herokuapp.com/api/v1/covid/countryByName/${countryCode}`)
-    .then(res => res.json());
-};
