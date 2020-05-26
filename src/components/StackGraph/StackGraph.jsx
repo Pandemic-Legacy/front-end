@@ -4,7 +4,6 @@ import styles from './StackGraph.css';
 import { select, max, scaleLinear, scaleBand, axisBottom, stackOrderAscending, stack, axisLeft } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
-
 function StackGraph({ dataSet }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -80,12 +79,12 @@ function StackGraph({ dataSet }) {
       'totalRecovered'];
 
     const colors = {
-      'newCases': 'green',
-      'newDeaths': 'blue',
-      'newRecovered': 'purple',
-      'totalCases': 'violet',
-      'totalDeaths': 'red',
-      'totalRecovered': 'orange'
+      'newCases': 'DarkSeaGreen',
+      'newDeaths': 'DeepSkyBlue',
+      'newRecovered': 'DarkViolet',
+      'totalCases': 'DarkSlateBlue',
+      'totalDeaths': 'Aquamarine',
+      'totalRecovered': 'DarkCyan'
     };
     // stacks / layers
     const stackGenerator = stack()
@@ -135,6 +134,7 @@ function StackGraph({ dataSet }) {
     svg
       .select('.x-axis')
       .attr('transform', `translate(0, ${height})`)
+      .style('fill', 'black')
       .call(xAxis);
 
     const yAxis = axisLeft(yScale);
@@ -148,7 +148,7 @@ function StackGraph({ dataSet }) {
     <div className={styles.LineGraph}>
       <div ref={wrapperRef} className={styles.container}>
         <svg ref={svgRef}>
-          <g className='x-axis'/>
+          <g className='x-axis' style={{ color: 'black' }}/>
           <g className='y-axis'/>
         </svg>
       </div>

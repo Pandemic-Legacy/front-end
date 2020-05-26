@@ -1,18 +1,21 @@
 svg {
-  font: 10px sans-serif;
-  shape-rendering: crispEdges;
+  display: block;
+  width: 100%;
+  height: 300px;
+  background: #f7f7f7;
+  overflow: visible;
 }
 
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-}
-
-path.domain {
+svg rect.selection {
   stroke: none;
 }
 
-.y .tick line {
-  stroke: #ddd;
+.LineGraph {
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  box-sizing: border-box;
 }
