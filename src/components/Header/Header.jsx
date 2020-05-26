@@ -38,11 +38,8 @@ export const Header = () => {
         <select value={selectedCountryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
           <option>Choose a country</option>
           {selectOptions()}
-        </select>
-        }
-
+        </select>}
       </Grid>
-
     </Grid>
   );
 };

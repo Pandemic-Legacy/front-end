@@ -24,6 +24,15 @@ export const individualCountry = () => {
       <Grid item xs={12} className={classes.header}>
         <Typography variant="h3" className={classes.title}>{countryCode}</Typography>
         <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/>
+
+        {/* <Grid item xs={4}>
+          { globalMapMobilityData.features &&
+        <select value={selectedCountryCode} onChange={({ target }) => dispatch(setSelectedCountryCode(target.value))}>
+          <option>Choose a subregion</option>
+          {selectOptions()}
+        </select>
+          }
+        </Grid> */}
       
         <Grid item xs={12} className={classes.graph}>
           <StackGraph dataSet={chartDataSet} />
@@ -37,8 +46,8 @@ export const individualCountry = () => {
         {/* <Grid item xs={12} className={classes.metrics}>
           <Typography variant="h3" className={classes.title}>Metrics</Typography>
         </Grid> */}
+      </Grid>
     </Grid>
-  </Grid>
   );
 };
 
