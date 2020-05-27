@@ -4,6 +4,10 @@ import styles from './StackGraph.css';
 import { select, max, scaleLinear, scaleBand, axisBottom, stackOrderAscending, stack, axisLeft } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
+function formatDate(badDate) {
+  return badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
+}
+
 function StackGraph({ data }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -78,6 +82,7 @@ function StackGraph({ data }) {
     // rendering
     svg
       .selectAll('.layer')
+      // .data(filteredData(data, checkedOptions))
       .data(layers)
       .join('g')
       .attr('class', 'layer')
@@ -95,6 +100,7 @@ function StackGraph({ data }) {
     // axes
     const xAxis = axisBottom(xScale)
       .tickValues(xScale.domain().filter((_, i) => i % 8 === 0));
+
   
     svg
       .select(`.${styles.xAxis}`)
@@ -136,9 +142,9 @@ function StackGraph({ data }) {
         </svg>
       </div>
       <div className={styles.legendBox} ref={legendRef}>
-        <span></span>
-        <span></span>
+      
       </div>
+
       <div className={styles.select}>
         <select onChange={({ target }) => setSelectedDropDownKey(target.value)}>
           <option value="">Compare Covid cases</option>
