@@ -12,7 +12,7 @@ import { setGlobalMobilityDataByDate, setSelectedCountryCode, setSelectedCountry
 import { getMobilityDates, getSelectedCountryCode, getSelectedCountryName } from '../../selectors/selectors';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './Map.styles';
-// import { useIsMobile } from '../hooks/isMobile';
+import { useIsMobile } from '../../hooks/isMobile';
 
 const SliderStyled = withStyles({
   root: {
@@ -89,7 +89,7 @@ const Map = ({ mapData, countryCode = '' }) => {
   const wrapperHeight = dimensions?.height;
   const dispatch = useDispatch();
   const history = useHistory();
-  // const isMobile = useIsMobile();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     if(!selectedCountryCode) return setAnchorEl(null);
@@ -290,7 +290,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         <Paper elivation={2} className={classes.legendPaper}>
           <FormControl component="fieldset">
             <FormLabel component="legend">Choose a Metric</FormLabel>
-            <RadioGroup row aria-label="position" name="metric" defaultValue="retailChange" onChange={({ target }) => setProperty(target.value)}>
+            <RadioGroup row={isMobile} aria-label="position" name="metric" defaultValue="retailChange" onChange={({ target }) => setProperty(target.value)}>
               <FormControlLabel
                 value="groceryChange"
                 control={<Radio color="primary"/>}
