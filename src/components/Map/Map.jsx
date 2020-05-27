@@ -305,6 +305,7 @@ const Map = ({ mapData, countryCode = '' }) => {
               />
               <FormControlLabel
                 value="transitChange"
+
                 control={<Radio color="primary"/>}
                 label="Transit"
               />
