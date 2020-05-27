@@ -50,7 +50,7 @@ const Map = ({ mapData, countryCode = '' }) => {
   const dates = useSelector(getMobilityDates);
   const selectedCountryCode =  useSelector(getSelectedCountryCode);
 
-  const [property, setProperty] = useState('residentialChange');
+  const [property, setProperty] = useState('retailChange');
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [rotating, setRotating] = useState(false);
@@ -303,7 +303,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         <Paper elivation={2} className={classes.legendPaper}>
           <FormControl component="fieldset">
             <FormLabel component="legend">Choose a Metric</FormLabel>
-            <RadioGroup row aria-label="position" name="metric" defaultValue="retailChange">
+            <RadioGroup row aria-label="position" name="metric" defaultValue="retailChange" onChange={({ target }) => setProperty(target.value)}>
               <FormControlLabel
                 value="groceryChange"
                 control={<Radio color="secondary"/>}
