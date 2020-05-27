@@ -20,7 +20,7 @@ function StackGraph({ data }) {
     acc.push({ 
       countryCode: data.countryCode,
       countryName: data.countryName,
-      date: date,
+      date: date.slice(5, 10),
       newCases: data.newCases[i],
       newDeaths: data.newDeaths[i],
       newRecovered: data.newRecovered[i],
@@ -98,9 +98,10 @@ function StackGraph({ data }) {
     // data for rectangles is layer
 
     // axes
-    const xAxis = axisBottom(xScale);
-    // .ticks(dataStructure['date'].length / 5)
-    // .tickFormat(index => formatDate(dataStructure.date[index]));
+    console.log(dataStructure['date']);
+    const xAxis = axisBottom(xScale)
+      .tickValues(xScale.domain().filter((_, i) => i % 8 === 0));
+    // .ticks(data.date.every(5));
   
     svg
       .select(`.${styles.xAxis}`)
