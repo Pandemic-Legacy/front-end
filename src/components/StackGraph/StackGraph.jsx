@@ -57,12 +57,12 @@ function StackGraph({ data }) {
     ];
 
     const colors = {
-      'newCases': 'Indigo',
-      'totalCases': 'LightSeaGreen',
-      'newDeaths': 'Indigo',
-      'totalDeaths': 'LightSeaGreen',
-      'newRecovered': 'Indigo',
-      'totalRecovered': 'LightSeaGreen'
+      'newCases': '#2b499d',
+      'totalCases': '#229c9a',
+      'newDeaths': '#2b499d',
+      'totalDeaths': '#229c9a',
+      'newRecovered': '#2b499d',
+      'totalRecovered': '#229c9a'
     };
     // stacks / layers
     const stackGenerator = stack()
@@ -110,7 +110,6 @@ function StackGraph({ data }) {
     // axes
     const xAxis = axisBottom(xScale)
       .tickValues(xScale.domain().filter((_, i) => i % 14 === 0));
-
   
     svg
       .select(`.${styles.xAxis}`)
@@ -126,24 +125,6 @@ function StackGraph({ data }) {
       // .style('text-anchor', 'start')
       .call(yAxis);
 
-    // const legend = select(legendRef.current)
-    //   .attr('class', `${styles.legendBox}`);
-
-    // // const legendText = [`Total ${selectedDropDownKey}`, `New ${selectedDropDownKey}`];
-    // const legendText = ['Total Cases', 'New Cases'];
-    // const colorScale = scaleLinear()
-    //   .domain([-100, 100])
-    //   .range(['LightSeaGreen', 'Indigo']);
-
-    // const legends = legend.selectAll('span')
-    //   .data([-100, 100]);
-
-    // legends.join('span')
-    //   .attr('class', `${styles.legendSpan}`)
-    //   .style('background', (d) => colorScale(d))
-    //   .text(legendText.forEach(number => number))
-    //   .text((d, i) => legendText[i]);
-
   }), [data, selectedDropDownKey];
 
   return (   
@@ -156,7 +137,7 @@ function StackGraph({ data }) {
       </div>
       <div className={classes.infoBox}>
         <div className={classes.legend}> 
-          <Chip variant="outlined" style={{ color:'teal', border: '1px solid teal' }} avatar={<Avatar style={{ backgroundColor:'teal' }}> </Avatar>} label={`Total ${selectedDropDownKey}`} />
+          <Chip variant="outlined" style={{ color:'#229c9a', fontWeight: '500', border: '1px solid #229c9a' }} avatar={<Avatar style={{ backgroundColor:'#229c9a' }}> </Avatar>} label={`Total ${selectedDropDownKey}`} />
           <br />
           <Chip variant="outlined" color="primary" avatar={<Avatar> </Avatar>} label={`Daily ${selectedDropDownKey}`} />
         </div>
