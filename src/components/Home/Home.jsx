@@ -11,7 +11,7 @@ import { Grid } from '@material-ui/core';
 
 
 
-const Home = () => {
+export const Home = () => {
   
   const dispatch = useDispatch();
   const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
