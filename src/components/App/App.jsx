@@ -11,7 +11,9 @@ import { HighScore } from '../HighScore/HighScore';
 import { About } from '../About/About';
 
 import { useDispatch } from 'react-redux';
-import { setMobilityDates, setGlobalMobilityDataByDate } from '../../actions/actions';
+import { setMobilityDates, setGlobalMobilityDataByDate, setCovidChartData } from '../../actions/actions';
+import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
+
 
 export default function App() {
   const styles = useStyles();
@@ -22,6 +24,7 @@ export default function App() {
   useEffect(() => {
     dispatch(setMobilityDates());
     dispatch(setGlobalMobilityDataByDate(defaultDate));
+    dispatch(setCovidChartData());
   }, []);
 
   return (
@@ -35,6 +38,8 @@ export default function App() {
           <Route path="/compare" component={ComparePage} />
           <Route path="/highscore" component={HighScore} />
           <Route path="/about" component={About} />
+          {/* MiniCharts route is just for testing! */}
+          <Route path="/minicharts" component={MiniChartsContainer} />
         </Switch>
         <Footer />
       </Container>

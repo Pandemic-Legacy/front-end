@@ -14,8 +14,7 @@ import { setSelectedSubregion, setMobilitySubregionNames } from '../../actions/a
 
 export const individualCountry = () => {
   const classes = useStyles();
-
-  const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
+  // const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
   const { countryCode: countryCodeParam } = useParams();
   const countryCode = useSelector(getSelectedCountryCode) || countryCodeParam;
   const subregion = useSelector(getSelectedSubregion);
@@ -41,6 +40,7 @@ export const individualCountry = () => {
         <Typography variant="h3" className={classes.title}>{countryCode}</Typography>
         {/* <Map mapData={globalMapMobilityData} countryCode={countryCodeParam || countryCode}/> */}
       </Grid>
+
       <Grid item xs={12}>
         { subRegionNames &&
           <select value={subregion} onChange={({ target }) => dispatch(setSelectedSubregion(target.value))}>
@@ -53,6 +53,9 @@ export const individualCountry = () => {
         <StackGraph dataSet={chartDataSet} />
       </Grid>
 
+      <Grid item xs={12} className={classes.graph}>
+        { chartDataSet.date && <StackGraph data={chartDataSet} /> }
+      </Grid>
 
       <Grid item xs={12} lg={6} className={classes.graph}>
         <MiniChartsContainer />
@@ -61,6 +64,7 @@ export const individualCountry = () => {
       {/* <Grid item xs={12} className={classes.metrics}>
           <Typography variant="h3" className={classes.title}>Metrics</Typography>
         </Grid> */}
+
     </Grid>
   );
 };
