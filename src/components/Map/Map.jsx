@@ -248,7 +248,11 @@ const Map = ({ mapData, countryCode = '' }) => {
     <Grid container className={classes.mapContainer} alignItems="center" justify="center" spacing="2">
       <Grid item xs={12} sm={2} >
         <Paper elevation={2} className={classes.legendPaper}>
-          <div ref={legendRef} className={style.mapLegendContainer}>Change in {property.replace('Change', '')} Mobility </div>
+          <div ref={legendRef} 
+            className={style.mapLegendContainer}
+          >Change in {property.replace('Change', '')} Mobility 
+          </div>
+          <p className={style.legendNoData}>No Data Available</p>
         </Paper>
       </Grid>
     
