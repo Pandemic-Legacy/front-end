@@ -263,10 +263,10 @@ const Map = ({ mapData, countryCode = '' }) => {
       <div ref={legendRef}>Map legend:</div>
 
       <FormControl variant="filled" className={classes.formControl}>
-        <InputLabel id="propery-select-label">Change In</InputLabel>
+        <InputLabel id="property-select-label">Change In</InputLabel>
         <Select
-          labelId="propery-select-label"
-          id="propert-select"
+          labelId="property-select-label"
+          id="property-select"
           value={property}
           onChange={({ target }) => setProperty(target.value)}
         >
