@@ -15,10 +15,10 @@ import { setMobilityDates, setGlobalMobilityDataByDate, setCovidChartData } from
 import { theme } from './theme';
 
 export default function App() {
-
   const dispatch = useDispatch();
   const styles = useStyles();
-  const defaultDate = '2020-02-15';
+
+  const defaultDate = '2020-05-09';
 
   useEffect(() => {
     dispatch(setMobilityDates());
