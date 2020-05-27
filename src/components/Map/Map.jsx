@@ -311,7 +311,7 @@ const Map = ({ mapData, countryCode = '' }) => {
           marks={marks} />}
       </Grid>
     </Grid>
-  </>
+  </>  
   );
 };
 
