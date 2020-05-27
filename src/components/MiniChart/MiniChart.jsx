@@ -62,9 +62,9 @@ export function MiniChart({ dataset, property }) {
       .style('transform', `translateX(${width - margin.right}px)`)
       .call(yAxis);
 
-    // Draw background
+    // Draw background on pre-existing element
     svg
-      .append('rect')
+      .select(`.${styles.chartBackground}`)  
       .attr('x', margin.left)
       .attr('y', margin.top)
       .attr('width', width - margin.left - margin.right)
@@ -97,6 +97,7 @@ export function MiniChart({ dataset, property }) {
         <svg ref={svgRef}>
           <g className={styles.xAxis} />
           <g className={styles.yAxis} />
+          <rect className={styles.chartBackground} />
         </svg>
       </div>
     </div>
