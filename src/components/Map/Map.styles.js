@@ -7,6 +7,7 @@ export const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(3),
     textAlign: 'center',
+    background: 'rgba(255, 255, 255, 0.7)'
   },
   legendPaper: {
     padding: theme.spacing(1),
