@@ -246,7 +246,7 @@ const Map = ({ mapData, countryCode = '' }) => {
 
   return (<>
     <Grid container className={classes.mapContainer} alignItems="center" justify="center" spacing="2">
-      <Grid item xs={12} sm={2} >
+      <Grid item xs={3} sm={2} >
         <Paper elevation={2} className={classes.legendPaper}>
           <div ref={legendRef} 
             className={style.mapLegendContainer}
@@ -256,7 +256,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         </Paper>
       </Grid>
     
-      <Grid item xs={12} sm={8}ref={wrapperRef} className={style.Map} >
+      <Grid item xs={9} sm={8}ref={wrapperRef} className={style.Map} >
         <svg ref={svgRef} className={style.svgStyle}></svg>
         <Popover id={style.countryPopover} 
           className={classes.popover} 
