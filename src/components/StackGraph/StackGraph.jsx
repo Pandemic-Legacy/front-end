@@ -4,10 +4,6 @@ import styles from './StackGraph.css';
 import { select, max, scaleLinear, scaleBand, axisBottom, stackOrderAscending, stack, axisLeft } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 
-function formatDate(badDate) {
-  return badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
-}
-
 function StackGraph({ data }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -82,7 +78,6 @@ function StackGraph({ data }) {
     // rendering
     svg
       .selectAll('.layer')
-      // .data(filteredData(data, checkedOptions))
       .data(layers)
       .join('g')
       .attr('class', 'layer')
@@ -98,10 +93,8 @@ function StackGraph({ data }) {
     // data for rectangles is layer
 
     // axes
-    console.log(dataStructure['date']);
     const xAxis = axisBottom(xScale)
       .tickValues(xScale.domain().filter((_, i) => i % 8 === 0));
-    // .ticks(data.date.every(5));
   
     svg
       .select(`.${styles.xAxis}`)
@@ -118,7 +111,7 @@ function StackGraph({ data }) {
       .attr('class', `${styles.legendBox}`);
 
     const legendText = [`Total ${selectedDropDownKey}`, `New ${selectedDropDownKey}`];
-
+    console.log(selectedDropDownKey, 'key');
     const colorScale = scaleLinear()
       .domain([-100, 100])
       .range(['LightSeaGreen', 'Indigo']);
@@ -142,7 +135,10 @@ function StackGraph({ data }) {
           <g className={styles.yAxis} />
         </svg>
       </div>
-      <div className={styles.legendBox} ref={legendRef}></div>
+      <div className={styles.legendBox} ref={legendRef}>
+        <span></span>
+        <span></span>
+      </div>
       <div className={styles.select}>
         <select onChange={({ target }) => setSelectedDropDownKey(target.value)}>
           <option value="">Compare Covid cases</option>
