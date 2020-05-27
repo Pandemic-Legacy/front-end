@@ -116,6 +116,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .domain([-100, 0, 100])
       .range(['blue', 'rgb(243, 240, 225)', 'green']);
 
+
     const globePosition = [width / 2, height / 2];
     const globeScale = 1;
     //globe Projection
@@ -244,6 +245,7 @@ const Map = ({ mapData, countryCode = '' }) => {
   }, [mapData, dimensions, property]);
 
 
+
   return (<>
     <Grid container className={classes.mapContainer} alignItems="center" justify="center" spacing="2">
       <Grid item xs={3} sm={2} >
@@ -311,7 +313,7 @@ const Map = ({ mapData, countryCode = '' }) => {
           marks={marks} />}
       </Grid>
     </Grid>
-  </>
+  </>  
   );
 };
 
