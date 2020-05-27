@@ -1,13 +1,10 @@
 import React from 'react';
-
-import { Grid, Typography } from '@material-ui/core';
-
-import { useStyles } from './Header.styles';
-// import logo from '';
-import { Links } from '../Links/Links';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedCountryCode, getGlobalMapMobilityByDate } from '../../selectors/selectors';
 import { setSelectedCountryCode } from '../../actions/actions';
+import { Grid, Typography } from '@material-ui/core';
+import { useStyles } from './Header.styles';
+import { Links } from '../Links/Links';
 
 export const Header = () => {
   const classes = useStyles();
