@@ -1,18 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from './StackGraph.css';
+import styles from '../../styles/Chart.css';
 import { select, max, scaleLinear, scaleBand, axisBottom, stackOrderAscending, stack, axisLeft } from 'd3';
-import { useResizeObserver } from '../../hooks/d3Hooks';
+// import { useResizeObserver } from '../../hooks/d3Hooks';
 
-function formatDate(badDate) {
-  return badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
-}
 
 function StackGraph({ data }) {
   const svgRef = useRef();
   const wrapperRef = useRef();
   const legendRef = useRef();
-  const dimensions = useResizeObserver(wrapperRef);
+  // const dimensions = useResizeObserver(wrapperRef);
 
   const [selectedDropDownKey, setSelectedDropDownKey] = useState('cases');
 
@@ -20,7 +17,7 @@ function StackGraph({ data }) {
     acc.push({ 
       countryCode: data.countryCode,
       countryName: data.countryName,
-      date: date.slice(5, 10),
+      date: date.slice(6, 10),
       newCases: data.newCases[i],
       newDeaths: data.newDeaths[i],
       newRecovered: data.newRecovered[i],
@@ -34,8 +31,16 @@ function StackGraph({ data }) {
   useEffect(() => {
     
     const svg = select(svgRef.current);
-    const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
-    
+    // const { width, height } = dimensions || wrapperRef.current.getBoundingClientRect();
+    const width = 1000;
+    const height = 500;
+    const margin = { top: 0, right: 0, bottom: 10, left: 10 };
+
+
+    svg
+      .attr('viewBox', `0, 0, ${width}, ${height}`)
+      .attr('preserveAspectRatio', 'xMinYMin meet');
+
     const keys = [
       'newCases',
       'totalCases',
@@ -69,20 +74,21 @@ function StackGraph({ data }) {
     // scales
     const xScale = scaleBand()
       .domain(dataStructure.map(d => d.date))
-      .range([0, width])
+      .range([margin.left, width - margin.right]) // 0, 10 range of pixels       .range([0, width])
+
       .padding(0.25);
       //scale band given explicit years
     
     const yScale = scaleLinear()
       .domain(extent)
-      .range([height, 0]);
-      //origin of svg at top is 0
-      // scale linear continuous range of values
+      .range([height - margin.bottom, margin.top]); // 10, 0
+      //origin of svg at top is 0       .range([height, 0]);
+
+    // scale linear continuous range of values
 
     // rendering
     svg
       .selectAll('.layer')
-      // .data(filteredData(data, checkedOptions))
       .data(layers)
       .join('g')
       .attr('class', 'layer')
@@ -99,18 +105,19 @@ function StackGraph({ data }) {
 
     // axes
     const xAxis = axisBottom(xScale)
-      .tickValues(xScale.domain().filter((_, i) => i % 8 === 0));
+      .tickValues(xScale.domain().filter((_, i) => i % 14 === 0));
 
   
     svg
       .select(`.${styles.xAxis}`)
-      .attr('transform', `translate(0, ${height})`)
-      .style('fill', 'black')
+      .style('transform', `translateY(${height - margin.bottom}px)`)
+      // .style('fill', 'black')
       .call(xAxis);
 
     const yAxis = axisLeft(yScale);
     svg
       .select(`.${styles.yAxis}`)
+      // .style('transform', `translateX(${width - margin.right}px)`)
       .call(yAxis);
 
     const legend = select(legendRef.current)
@@ -118,8 +125,7 @@ function StackGraph({ data }) {
 
     // const legendText = [`Total ${selectedDropDownKey}`, `New ${selectedDropDownKey}`];
     const legendText = ['Total Cases', 'New Cases'];
-    
-    console.log(selectedDropDownKey, 'key');
+
     const colorScale = scaleLinear()
       .domain([-100, 100])
       .range(['LightSeaGreen', 'Indigo']);
@@ -133,10 +139,10 @@ function StackGraph({ data }) {
       .text(legendText.forEach(number => number))
       .text((d, i) => legendText[i]);
 
-  }), [data, dimensions, selectedDropDownKey];
+  }), [data, selectedDropDownKey];
 
   return (   
-    <div className={styles.StackGraph}>
+    <div className={styles.Chart}>
       <div ref={wrapperRef} className={styles.container}>
         <svg className="svg" ref={svgRef}>
           <g className={styles.xAxis} />
@@ -144,9 +150,7 @@ function StackGraph({ data }) {
         </svg>
       </div>
       <div className={styles.legendBox} ref={legendRef}>
-      
       </div>
-
       <div className={styles.select}>
         <select onChange={({ target }) => setSelectedDropDownKey(target.value)}>
           <option value="">Compare Covid cases</option>
