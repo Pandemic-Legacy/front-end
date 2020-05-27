@@ -33,8 +33,9 @@ function LineGraph({ dataset }) {
   const classes = useStyles();
   const [switchedToTotal, setSwitchedToTotal] = useState(true);
   const [switchedToLog, setSwitchedToLog] = useState(false);
-
+  
   const countryName = useSelector(getSelectedCountryName);
+
 
   const handleCheckbox = ({ target }) => {
     if(!checkedOptions.includes(target.value)) 

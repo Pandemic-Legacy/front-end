@@ -244,9 +244,9 @@ const Map = ({ mapData, countryCode = '' }) => {
       
   }, [mapData, dimensions, property]);
 
-
   return (<>
     <Grid container className={classes.mapContainer} alignItems="center" justify="center" spacing={2}>
+
       <Grid item xs={3} sm={2} >
         <Paper elevation={2} className={classes.legendPaper}>
           <div ref={legendRef} 
