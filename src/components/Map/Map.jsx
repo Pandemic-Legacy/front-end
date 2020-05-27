@@ -271,7 +271,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         >
           <Typography variant="h4">{selectedCountryName}</Typography>
           <Typography>
-            {property.replace('Change', '')}: {selectedCountryData[property] || 'N/A'}
+            Travel to <b>{property.replace('Change', '')} locations</b> on this date was {selectedCountryData[property] || 'N/A'}% compared to a normal day.
           </Typography>
           <Button variant="contained" 
             color="primary" 
