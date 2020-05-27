@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { useStyles } from './individualCountry.styles';
 // import Map from '../Map/Map';
 import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidSubData, getMobilitySubData } from '../../selectors/selectors';
@@ -38,9 +38,8 @@ export const individualCountry = () => {
   }, [subregion]);
 
   const selectOptions = subRegionNames
-    ?.filter(item => item != null)
-    .sort((a, b) => (a > b) ? 1 : -1)
-    .map((item, i) => <option key={i} value={item}>{item}</option>);
+    ?.sort()
+    .map((item) => (<MenuItem  key={item} value={item}>{item}</MenuItem>));
 
   return (
     <Grid container className={classes.root}>
@@ -53,11 +52,19 @@ export const individualCountry = () => {
       </Grid>
 
       <Grid item xs={12}>
-        { subRegionNames &&
-          <select value={subregion} onChange={({ target }) => dispatch(setSelectedSubregion(target.value))}>
-            <option>Choose a subregion</option>
-            {selectOptions}
-          </select>}
+        { selectOptions.length &&
+      <FormControl variant="filled" className={classes.formControl}>
+        <InputLabel id="subregion-select-label">Subregion</InputLabel>
+        <Select
+          labelId="subregion-select-label"
+          id="subregion-select"
+          value={subregion}
+          nChange={({ target }) => dispatch(setSelectedSubregion(target.value))}
+        >
+          <MenuItem value="">Choose a Subregion</MenuItem>
+          {selectOptions}
+        </Select>
+      </FormControl>}
       </Grid>
       
       <Grid item xs={12} lg={10} className={classes.graph}>
