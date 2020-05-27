@@ -22,8 +22,6 @@ export const individualCountry = () => {
   const chartDataSet = useSelector(getCovidChartData);
   const dispatch = useDispatch();
 
-  console.log(subRegionNames);
-
   useEffect(() => {
     if(countryCode === '') return;
     dispatch(setMobilitySubregionNames(countryCode));
