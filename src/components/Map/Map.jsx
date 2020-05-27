@@ -211,10 +211,14 @@ const Map = ({ mapData, countryCode = '' }) => {
       .join('path')
       .on('click', (country) => {
         const { countryCode, countryName } = country.mobilityData;
+        if(!countryCode || !countryName) return;
         dispatch(setSelectedCountry({ countryCode, countryName }));
         setSelectedCountryData(country.mobilityData);
       })
-      .attr('class', 'country');
+      .attr('class', 'country')
+      .classed(style.noData, function(d) {
+        return !d.mobilityData[property];
+      });
     
     if(rotating) {
       map
