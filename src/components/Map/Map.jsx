@@ -3,7 +3,7 @@ import { select, geoPath, geoOrthographic, scaleLinear, event, drag, geoMercator
 import { useResizeObserver } from '../../hooks/d3Hooks';
 import PropTypes from 'prop-types';
 
-import { Slider, Popover, Typography, Button, withStyles, FormControl, InputLabel, Select, MenuItem, Paper, Grid, FormLabel, RadioGroup, FormControlLabel, Radio } from '@material-ui/core'; 
+import { Slider, Popover, Typography, Button, withStyles, FormControl, InputLabel, Select, MenuItem, Paper, Grid, FormLabel, RadioGroup, FormControlLabel, Radio, CircularProgress } from '@material-ui/core'; 
 
 import style from './Map.css';
 
@@ -91,8 +91,6 @@ const Map = ({ mapData, countryCode = '' }) => {
   const history = useHistory();
   // const isMobile = useIsMobile();
   
-
-  //this could be trimed down if we used redux for countryName
   useEffect(() => {
     if(!selectedCountryCode) return setAnchorEl(null);
     setAnchorEl(wrapperRef.current);
@@ -260,7 +258,10 @@ const Map = ({ mapData, countryCode = '' }) => {
       </Grid>
     
       <Grid item xs={9} sm={8}ref={wrapperRef} className={style.Map} >
-        <svg ref={svgRef} className={style.svgStyle}></svg>
+        { !mapData.features 
+          ? <CircularProgress /> 
+          : <svg ref={svgRef} className={style.svgStyle}></svg>
+        }
         <Popover id={style.countryPopover} 
           className={classes.popover} 
           classes={{ paper: classes.paper }} 
