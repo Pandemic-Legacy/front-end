@@ -124,7 +124,6 @@ export const setMobilitySubregionNames = (countryCode) => dispatch => {
 
 export const SET_COVID_SUBREGIONS = 'SET_COVID_SUBREGIONS';
 export const setCovidSubregions = (countryCode) => dispatch => {
-  // update once fetch is written
   return fetchCountryCovidData(countryCode)
     .then(res => ({
       date: res.map(item => item.date),
@@ -143,6 +142,28 @@ export const setCovidSubregions = (countryCode) => dispatch => {
       dispatch({
         type: SET_COVID_SUBREGIONS,
         payload: covidSubregions
+      });
+    });
+};
+export const SET_COVID_SUB_DATA = 'SET_COVID_SUB_DATA';
+export const setCovidSubData = (countryCode, subRegion1) => dispatch => {
+  return fetchCovidSubData(countryCode, subRegion1)
+    .then(res => ({
+      date: res.map(item => item.date),
+      countryCode: res[0].countryCode,
+      countryName: res[0].countryName,
+      subRegion1: res.map(item => item.subRegion1 ?? 0),
+      totalCases: res.map(item => item.totalCases ?? 0),
+      newCases: res.map(item => item.newCases ?? 0),
+      totalRecovered: res.map(item => item.totalRecovered ?? 0),
+      newRecovered: res.map(item => item.newRecovered ?? 0),
+      totalDeaths: res.map(item => item.totalDeaths ?? 0),
+      newDeaths: res.map(item => item.newDeaths ?? 0)
+    }))
+    .then(covidSubData => {
+      dispatch({
+        type: SET_COVID_SUB_DATA,
+        payload: covidSubData
       });
     });
 };
