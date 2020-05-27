@@ -26,6 +26,9 @@ export const useStyles = makeStyles((theme) => ({
     textShadow: '1px 1px 2px #87a3d0',
     fontSize: '2.4rem',
     fontWeight: '550',
+  },
+  formControl: {
+    display: 'flex'
   }
 }));
 
