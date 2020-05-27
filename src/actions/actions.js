@@ -82,7 +82,7 @@ export const setSelectedCountryCode = (countryCode) => dispatch => {
 };
 
 export const SET_SELECTED_SUBREGION = 'SET_SELECTED_SUBREGION';
-export const setSelectedsubregion = (subregion) => dispatch => {
+export const setSelectedSubregion = (subregion) => dispatch => {
   dispatch({
     type: SET_SELECTED_SUBREGION,
     payload: subregion
@@ -91,7 +91,7 @@ export const setSelectedsubregion = (subregion) => dispatch => {
 
 export const SET_MOBILITY_DATES = 'SET_MOBILITY_DATES';
 export const setMobilityDates = () => dispatch => {
-  return fetchMobilityDataByCountryCode('US')
+  return fetchMobilityDataByCountryCode('')
     .then(res => res.map(item => item.date.slice(0, 10)))
     .then(dates => {
       dispatch({
@@ -101,27 +101,22 @@ export const setMobilityDates = () => dispatch => {
     });
 };
 
-export const SET_MOBILITY_SUBREGIONS = 'SET_MOBILITY_SUBREGIONS';
-export const setMobilitySubregions = (countryCode) => dispatch => {
+export const SET_MOBILITY_SUBREGION_NAMES = 'SET_MOBILITY_SUBREGION_NAMES';
+export const setMobilitySubregionNames = (countryCode) => dispatch => {
   fetchMobilitySubregions(countryCode)
-    .then(res => res.slice().sort((a, b) => new Date(a.date) - new Date(b.date)))
-    .then(sortedRes => ({
-      date: sortedRes.map(item => item.date),
-      countryCode: sortedRes[0].countryCode,
-      countryName: sortedRes[0].countryName,
-      subRegion1: res[0].subRegion1,
-      subRegion2: res[0].subRegion2,
-      retailChange: sortedRes.map(item => item.retailChange ?? 0),
-      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
-      parksChange: sortedRes.map(item => item.parksChange ?? 0),
-      transitChange: sortedRes.map(item => item.transitChange ?? 0),
-      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
-      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
-    }))
-    .then(formattedRes => {
+    .then(res => {  
+      return res.reduce((acc, curr) => {
+        if(curr.subRegion1 === null) return acc;
+        if(acc?.includes(curr.subRegion1)) return acc;
+        acc.push(curr.subRegion1);
+        return acc;
+      }, []);
+    })
+    .then(subRegion1Names => {
+      console.log(subRegion1Names);
       dispatch({
-        type: SET_MOBILITY_SUBREGIONS,
-        payload: formattedRes
+        type: SET_MOBILITY_SUBREGION_NAMES,
+        payload: subRegion1Names
       });
     });
 };

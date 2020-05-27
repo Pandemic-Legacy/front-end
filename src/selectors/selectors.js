@@ -17,7 +17,7 @@ export const getSelectedSubregion = state => state.reducer.selectedSubregion;
 export const getMobilityDates = state => state.reducer.mobilityDates;
 
 // returns mobility data for a single country including subregions
-export const getMobilitySubregions = state => state.reducer.mobilitySubregions;
+export const getMobilitySubregionNames = state => state.reducer.mobilitySubregionNames;
 
 // returns covid data for a single country including subregions
 export const getCovidSubregions = state => state.reducer.covidSubregions;
