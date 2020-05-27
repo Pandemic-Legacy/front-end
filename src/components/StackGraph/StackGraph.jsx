@@ -20,6 +20,7 @@ function StackGraph({ data }) {
     acc.push({ 
       countryCode: data.countryCode,
       countryName: data.countryName,
+      subRegion1: data.subRegion1,
       date: date.slice(5, 10),
       newCases: data.newCases[i],
       newDeaths: data.newDeaths[i],
@@ -30,7 +31,7 @@ function StackGraph({ data }) {
     });
     return acc;
   }, []);
-  console.log(dataStructure);
+  console.log('dataStructure', dataStructure);
   useEffect(() => {
     
     const svg = select(svgRef.current);

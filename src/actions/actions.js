@@ -114,7 +114,6 @@ export const setMobilitySubregionNames = (countryCode) => dispatch => {
       }, []);
     })
     .then(subRegion1Names => {
-      console.log(subRegion1Names);
       dispatch({
         type: SET_MOBILITY_SUBREGION_NAMES,
         payload: subRegion1Names

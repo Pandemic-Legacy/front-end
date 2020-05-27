@@ -2,32 +2,38 @@ import React, { useEffect } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useStyles } from './individualCountry.styles';
 // import Map from '../Map/Map';
-import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion } from '../../selectors/selectors';
+import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidSubData, getMobilitySubData } from '../../selectors/selectors';
 import { useParams } from 'react-router-dom';
 import StackGraph from '../StackGraph/StackGraph';
 import { getCovidChartData } from '../../selectors/selectors';
 import { useSelector, useDispatch } from 'react-redux';
 
 import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
-import { setSelectedSubregion, setMobilitySubregionNames } from '../../actions/actions';
+import { setSelectedSubregion, setMobilitySubregionNames, setCovidSubData, setMobilitySubData } from '../../actions/actions';
 
 
 export const individualCountry = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   // const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
   const { countryCode: countryCodeParam } = useParams();
   const countryCode = useSelector(getSelectedCountryCode) || countryCodeParam;
   const subregion = useSelector(getSelectedSubregion);
   const subRegionNames = useSelector(getMobilitySubregionNames);
   const chartDataSet = useSelector(getCovidChartData);
-  const dispatch = useDispatch();
-
-  console.log(subRegionNames);
+  const stackGraphSubData = useSelector(getCovidSubData);
+  const miniChartSubData = useSelector(getMobilitySubData);
 
   useEffect(() => {
     if(countryCode === '') return;
     dispatch(setMobilitySubregionNames(countryCode));
   }, [countryCode]);
+
+  useEffect(() => {
+    if(subregion === '') return;
+    dispatch(setCovidSubData(countryCode, subregion));
+    dispatch(setMobilitySubData(countryCode, subregion));
+  }, [subregion]);
 
   const selectOptions = subRegionNames
     ?.filter(item => item != null)
@@ -49,9 +55,12 @@ export const individualCountry = () => {
           </select>}
       </Grid>
       
-
       <Grid item xs={12} lg={10} className={classes.graph}>
-        { chartDataSet.date && <StackGraph data={chartDataSet} /> }
+        { subregion 
+          ? <StackGraph data={stackGraphSubData} />
+          : <StackGraph data={chartDataSet} />
+        }
+        {/* { chartDataSet.date && <StackGraph data={chartDataSet} /> } */}
       </Grid>
 
       <Grid item xs={12} lg={6} className={classes.graph}>
@@ -61,4 +70,3 @@ export const individualCountry = () => {
     </Grid>
   );
 };
-
