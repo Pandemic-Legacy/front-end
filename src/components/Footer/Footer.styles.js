@@ -9,6 +9,10 @@ export const useStyles = makeStyles((theme) => ({
     // width: '100%',
     left: 0,
     right: 0,
+    backgroundColor: theme.palette.common.lightBlue.main,
+    margin: '0 -24px',
+    padding: '2rem',
+    width: 'calc(100% + 48px) !important',
   },
   container: {
     display: 'flex',

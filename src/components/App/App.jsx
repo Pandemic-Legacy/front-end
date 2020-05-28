@@ -9,16 +9,18 @@ import { individualCountry } from '../individualCountry/individualCountry';
 import { ComparePage } from '../ComparePage/ComparePage';
 import { HighScore } from '../HighScore/HighScore';
 import { About } from '../About/About';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMobilityDates, setGlobalMobilityDataByDate, setCovidChartData } from '../../actions/actions';
 import { theme } from './theme';
 import { useStyles } from './App.styles';
+import { getSelectedCountryCode } from '../../selectors/selectors';
 
 export default function App() {
   const dispatch = useDispatch();
   const styles = useStyles();
 
   const defaultDate = '2020-05-09';
+  const countryCode = useSelector(getSelectedCountryCode);
 
   useEffect(() => {
     dispatch(setMobilityDates());
@@ -27,6 +29,12 @@ export default function App() {
   }, []);
 
   // style={{ background: 'linear-gradient(180deg, rgba(43,73,157,0.15) 0%, rgba(255,255,255,1) 300px)' }}
+  useEffect(() => {
+    if(!countryCode) return;
+    dispatch(setCovidChartData(countryCode));
+  }, [countryCode]);
+
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
