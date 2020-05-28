@@ -6,7 +6,7 @@ import { Typography, makeStyles } from '@material-ui/core';
 import styles from '../../styles/Chart.css';
 
 
-export function MiniChart({ dataset, property }) {
+export function MiniChart({ dataset, compareDataset, property }) {
   
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -112,7 +112,20 @@ export function MiniChart({ dataset, property }) {
       .attr('fill', 'none')
       .attr('stroke', d => colorScale(d));
 
-  }, [dataset]);
+    // Draw compare line if there's data
+    console.log({ compareDataset });
+    if(compareDataset[property.key]) {
+      svg
+        .selectAll(`.${styles.graphLineCompare}`)
+        .data([compareDataset[property.key]])
+        .join('path')
+        .attr('class', `${styles.graphLineCompare}`)
+        .attr('d', value => myLine(value))
+        .attr('fill', 'none')
+        .attr('stroke', d => colorScale(d));
+    }
+
+  }, [dataset, compareDataset]);
 
   return (   
     <div className={styles.Chart}>
@@ -132,6 +145,7 @@ export function MiniChart({ dataset, property }) {
 
 MiniChart.propTypes = {
   dataset: PropTypes.object.isRequired,
+  compareDataset: PropTypes.object.isRequired,
   property: PropTypes.object.isRequired
 };
 
