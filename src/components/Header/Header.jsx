@@ -5,7 +5,7 @@ import { setSelectedCountryCode, setSelectedCountryName, setSelectedCountry, set
 import { Grid, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 // import { useStyles } from './Header.styles';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   fullWidth: {
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 export const Header = () => {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const selectedCountryCode = useSelector(getSelectedCountryCode);
   const selectedCountryName = useSelector(getSelectedCountryName);
@@ -62,9 +63,10 @@ export const Header = () => {
         <Typography variant="h3" align="center" className={classes.h3Subtitle}>Mobility in Times of Quarantine</Typography>
       </Grid>
       <Grid item xs={12} sm={3}>
-        { globalMapMobilityData.features &&
+        { globalMapMobilityData.features && (location.pathname !== '/about') &&
         <FormControl variant="outlined" size="small" fullWidth className={classes.formControl}>
           {/* <InputLabel id="country-select-label">Choose a Country</InputLabel> */}
+          
           <Select
             labelId="country-select-label"
             id="country-select"
@@ -80,7 +82,7 @@ export const Header = () => {
               };
               dispatch(setSelectedCountry(toDispatch));
               dispatch(setSelectedSubregion(''));
-              history.replace(`/country/${countryCode}`);
+              if(location.pathname !== '/')history.replace(`/country/${countryCode}`);
             }}
           >
             <MenuItem value={JSON.stringify({
