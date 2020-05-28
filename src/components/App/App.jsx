@@ -27,6 +27,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if(!countryCode) return;
     dispatch(setCovidChartData(countryCode));
   }, [countryCode]);
 

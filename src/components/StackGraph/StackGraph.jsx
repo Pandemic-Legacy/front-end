@@ -21,8 +21,7 @@ function StackGraph({ data }) {
   const selectedCountryCode = useSelector(getSelectedCountryCode);
   const selectedSubregion = useSelector(getSelectedSubregion);
 
-  const dataStructure = data.date.reduce((acc, date, i) => {
-    console.log(data.date);
+  const dataStructure = data?.date.reduce((acc, date, i) => {
     acc.push({ 
       countryCode: data.countryCode,
       countryName: data.countryName,
