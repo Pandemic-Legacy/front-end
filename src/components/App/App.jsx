@@ -45,7 +45,7 @@ export default function App() {
             <Route path="/country/:countryCode" component={individualCountry} />
             <Route path="/about" component={About} />
             {/* Stretch routes! */}
-            <Route path="/compare" component={ComparePage} />
+            <Route path="/compare/:countryCode" component={ComparePage} />
             <Route path="/highscore" component={HighScore} />
             {/* MiniCharts route is just for testing! */}
             <Route path="/minicharts" component={MiniChartsContainer} />

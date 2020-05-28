@@ -7,11 +7,8 @@ export const SET_GLOBAL_MAP_MOBILITY_BY_DATE = 'SET_GLOBAL_MAP_MOBILITY_BY_DATE'
 export const setGlobalMobilityDataByDate = (date) => dispatch => {
   return fetchWorldMobilityData(date)
     .then(mobilityData => {
-      
       return geoJson.features.map(mapCountry => {
-
         const matchedMobilityData = mobilityData.find(dataCountry =>  dataCountry.countryCode === mapCountry.properties.iso_a2);
-
         return {
           ...mapCountry,
           mobilityData: matchedMobilityData || {}
@@ -52,6 +49,29 @@ export const setMobilityChartDataByCountryCode = (countryCode) => dispatch => {
     });
 };
 
+export const SET_MOBILITY_COMPARE_CHART_DATA = 'SET_MOBILITY_COMPARE_CHART_DATA';
+export const setMobilityCompareChartDataByCountryCode = (countryCode) => dispatch => {
+  fetchMobilityDataByCountryCode(countryCode)
+    .then(res => res.slice().sort((a, b) => new Date(a.date) - new Date(b.date)))
+    .then(sortedRes => ({
+      date: sortedRes.map(item => item.date),
+      countryCode: sortedRes[0].countryCode,
+      countryName: sortedRes[0].countryName,
+      retailChange: sortedRes.map(item => item.retailChange ?? 0),
+      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
+      parksChange: sortedRes.map(item => item.parksChange ?? 0),
+      transitChange: sortedRes.map(item => item.transitChange ?? 0),
+      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
+      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+    }))
+    .then(formattedRes => {
+      dispatch({
+        type: SET_MOBILITY_COMPARE_CHART_DATA,
+        payload: formattedRes
+      });
+    });
+};
+
 export const SET_COVID_CHART_DATA = 'SET_COVID_CHART_DATA';
 export const setCovidChartData = (countryCode) => dispatch => {
   return fetchCountryCovidData(countryCode)
@@ -75,6 +95,35 @@ export const setCovidChartData = (countryCode) => dispatch => {
     });
 };
 
+export const SET_MOBILITY_COMPARE_COUNTRY = 'SET_MOBILITY_COMPARE_COUNTRY';
+export const setMobilityCompareCountry = ({ countryName, countryCode }) => dispatch => {
+  dispatch({
+    type: SET_MOBILITY_COMPARE_COUNTRY,
+    payload: { countryName, countryCode }
+  });
+};
+export const SET_MOBILITY_COMPARE_COUNTRY_CODE = 'SET_MOBILITY_COMPARE_COUNTRY_CODE';
+export const setMobilityCompareCountryCode = (countryCode) => dispatch => {
+  dispatch({
+    type: SET_MOBILITY_COMPARE_COUNTRY_CODE,
+    payload: countryCode.toUpperCase()
+  });
+};
+export const SET_MOBILITY_COMPARE_COUNTRY_NAME = 'SET_MOBILITY_COMPARE_COUNTRY_NAME';
+export const setMobilityCompareCountryName = (countryName) => dispatch => {
+  dispatch({
+    type: SET_MOBILITY_COMPARE_COUNTRY_NAME,
+    payload: countryName
+  });
+};
+
+export const SET_SELECTED_COUNTRY = 'SET_SELECTED_COUNTRY';
+export const setSelectedCountry = ({ countryName, countryCode }) => dispatch => {
+  dispatch({
+    type: SET_SELECTED_COUNTRY,
+    payload: { countryName, countryCode }
+  });
+};
 export const SET_SELECTED_COUNTRY_CODE = 'SET_SELECTED_COUNTRY_CODE';
 export const setSelectedCountryCode = (countryCode) => dispatch => {
   dispatch({
@@ -87,13 +136,6 @@ export const setSelectedCountryName = (countryName) => dispatch => {
   dispatch({
     type: SET_SELECTED_COUNTRY_NAME,
     payload: countryName
-  });
-};
-export const SET_SELECTED_COUNTRY = 'SET_SELECTED_COUNTRY';
-export const setSelectedCountry = ({ countryName, countryCode }) => dispatch => {
-  dispatch({
-    type: SET_SELECTED_COUNTRY,
-    payload: { countryName, countryCode }
   });
 };
 
