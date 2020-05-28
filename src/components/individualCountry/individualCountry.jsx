@@ -10,7 +10,7 @@ import { getCovidChartData } from '../../selectors/selectors';
 import { useSelector, useDispatch } from 'react-redux';
 
 import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
-import { setSelectedSubregion, setMobilitySubregionNames, setCovidSubData, setMobilitySubData } from '../../actions/actions';
+import { setSelectedSubregion, setMobilitySubregionNames, setCovidSubData, setMobilitySubData, resetCovidSubData } from '../../actions/actions';
 import { stack } from 'd3';
 
 
@@ -33,7 +33,7 @@ export const individualCountry = () => {
   }, [countryCode]);
 
   useEffect(() => {
-    if(subregion === '') return;
+    if(subregion === '') return dispatch(resetCovidSubData());
     dispatch(setCovidSubData(countryCode, subregion));
     dispatch(setMobilitySubData(countryCode, subregion));
   }, [subregion]);
@@ -41,6 +41,8 @@ export const individualCountry = () => {
   const selectOptions = subRegionNames
     ?.sort()
     .map((item) => (<MenuItem  key={item} value={item}>{item}</MenuItem>));
+
+  const stackGraphDataSet = stackGraphSubData.date ? stackGraphSubData : chartDataSet;
 
   return (
     <Grid container className={classes.root}>
@@ -69,11 +71,13 @@ export const individualCountry = () => {
       </Grid>
       
       <Grid item xs={12} lg={10} className={classes.graph}>
-        { stackGraphSubData.date 
+        {/* { stackGraphSubData.date 
           ? stackGraphSubData.date ? <StackGraph data={stackGraphSubData}/> : null
           : chartDataSet.date ? <StackGraph data={chartDataSet} /> : null
-        }
-        {/* { chartDataSet.date && <StackGraph data={chartDataSet} /> } */}
+        } */}
+
+        <StackGraph data={stackGraphDataSet} />
+
       </Grid>
 
       <Grid item xs={12} lg={6} className={classes.graph}>
