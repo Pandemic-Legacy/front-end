@@ -35,19 +35,19 @@ export const About = () => {
       <Grid item xs={12} className={classes.container} >
 
         <Grid item xs={12} className={classes.google} >
-          <Typography variant="body1" className={classes.h4}>Chelsea Spangler: <a href="https://github.com/cnspangler" target="_blank">GitHub</a> / <a href="https://www.linkedin.com/in/chelseanspangler/">LinkedIn</a> / <a href="https://twitter.com/CN_Spangler">Twitter</a></Typography>
+          <Typography variant="body1" className={classes.h4}>Chelsea Spangler: <Link target="_blank" href="https://github.com/cnspangler" >GitHub</Link> / <Link target="_blank" href="https://www.linkedin.com/in/chelseanspangler/">LinkedIn</Link> / <Link target="_blank" href="https://twitter.com/CN_Spangler">Twitter</Link></Typography>
         </Grid>
 
         <Grid item xs={12} className={classes.google} >
-          <Typography variant="body1" className={classes.h4}>Fiona Ochs: <a href="https://github.com/fionaochs">GitHub</a> / <a href="https://www.linkedin.com/in/fionaochs/">LinkedIn</a> / <a href="https://fionaochs.dev/">Portfolio</a></Typography>
+          <Typography variant="body1" className={classes.h4}>Fiona Ochs: <Link target="_blank" href="https://github.com/fionaochs">GitHub</Link> / <Link target="_blank" href="https://www.linkedin.com/in/fionaochs/">LinkedIn</Link> / <Link target="_blank" href="https://fionaochs.dev/">Portfolio</Link></Typography>
         </Grid>
 
         <Grid item xs={12} className={classes.google} >
-          <Typography variant="body1" className={classes.h4}>Nathan Martel: <a href="https://github.com/nathanmartel">GitHub</a> / <a href="https://www.linkedin.com/in/nathanmartel">LinkedIn</a></Typography>
+          <Typography variant="body1" className={classes.h4}>Nathan Martel: <Link target="_blank" href="https://github.com/nathanmartel">GitHub</Link> / <Link target="_blank" href="https://www.linkedin.com/in/nathanmartel">LinkedIn</Link></Typography>
         </Grid>
 
         <Grid item xs={12} className={classes.google} >
-          <Typography variant="body1" className={classes.h4}>Scott Harlan: <a href="https://github.com/seharlan">GitHub</a> / <a href="https://www.linkedin.com/in/scottharlan-pnw">LinkedIn</a> / <a href="https://scottharlan.dev/">Portfolio</a></Typography>
+          <Typography variant="body1" className={classes.h4}>Scott Harlan: <Link target="_blank" href="https://github.com/seharlan">GitHub</Link> / <Link target="_blank" href="https://www.linkedin.com/in/scottharlan-pnw">LinkedIn</Link> / <Link target="_blank" href="https://scottharlan.dev/">Portfolio</Link></Typography>
         </Grid>
 
       </Grid>
