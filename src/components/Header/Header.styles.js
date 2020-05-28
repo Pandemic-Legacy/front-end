@@ -27,6 +27,9 @@ export const useStyles = makeStyles((theme) => ({
     fontSize: '2.4rem',
     fontWeight: '550',
   },
+  subtitle: {
+    color: theme.palette.common.teal.main,
+  },
   formControl: {
     // display: 'flex'
   }

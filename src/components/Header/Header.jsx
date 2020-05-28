@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 -24px',
     padding: '18px 24px',
   },
-  h1Title: {
+  title: {
     color: theme.palette.common.charcoal.main,
     fontWeight: 'bold',
   },
@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     textDecoration: 'none',
   },
-  h3Subtitle: {
-    color: theme.palette.common.charcoal.main, 
+  subtitle: {
+    color: theme.palette.common.teal.main,
   },
   formControl: {
     backgroundColor: 'white',
@@ -58,8 +58,8 @@ export const Header = () => {
 
       <Grid item sm={3} />
       <Grid item xs={12} sm={6} className={classes.fullWidthWhite}>
-        <Typography variant="h1" align="center" className={classes.h1Title}><Link to='/' className={classes.h1TitleLink}>Going Viral</Link></Typography>
-        <Typography variant="h3" align="center" className={classes.h3Subtitle}>Mobility in Times of Quarantine</Typography>
+        <Typography variant="h1" align="center" className={classes.title}><Link to='/' className={classes.h1TitleLink}>Going Viral</Link></Typography>
+        <Typography variant="h3" align="center" className={classes.subtitle}>Mobility in Times of Quarantine</Typography>
       </Grid>
       <Grid item xs={12} sm={3}>
         { globalMapMobilityData.features &&
