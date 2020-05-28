@@ -51,7 +51,7 @@ export const individualCountry = () => {
   const stackGraphDataSet = stackGraphSubData.date ? stackGraphSubData : chartDataSet;
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container justify="center" className={classes.root}>
       <Grid item xs={12}>
         <Typography variant="h3" className={classes.title}>{countryName}</Typography>
         {subregion && <Typography variant="h4" className={classes.title}>{subregion}</Typography>}
@@ -82,7 +82,7 @@ export const individualCountry = () => {
 
       </Grid>
 
-      <Grid item xs={12} lg={6} className={classes.graph}>
+      <Grid item xs={12} lg={10} className={classes.graph}>
         <MiniChartsContainer />
       </Grid>
 
