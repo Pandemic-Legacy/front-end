@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',  
-    marginTop: '3rem',
+    // marginTop: '2rem',
     marginBottom: '3rem',
   },
   titleContainer: {
@@ -46,6 +46,17 @@ export const useStyles = makeStyles((theme) => ({
   },
   bing: {
     marginTop: '3rem'
-  }
+  },
+  imageContainer: {
+    // display: 'flex',
+    // flexDirection: 'row',
+    // marginBottom: '2.5rem',
+  },
+  image: {
+    // maxWidth: '100%',
+    width: '13rem',
+    height: '13rem',
+    // marginTop: '-2rem',
+  },
 }
 ));

@@ -12,9 +12,11 @@ import { About } from '../About/About';
 import { useDispatch } from 'react-redux';
 import { setMobilityDates, setGlobalMobilityDataByDate, setCovidChartData } from '../../actions/actions';
 import { theme } from './theme';
+import { useStyles } from './App.styles';
 
 export default function App() {
   const dispatch = useDispatch();
+  const styles = useStyles();
 
   const defaultDate = '2020-05-09';
 
@@ -24,11 +26,12 @@ export default function App() {
     dispatch(setCovidChartData());
   }, []);
 
+  // style={{ background: 'linear-gradient(180deg, rgba(43,73,157,0.15) 0%, rgba(255,255,255,1) 300px)' }}
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Container maxWidth="xl" style={{ background: 'linear-gradient(180deg, rgba(43,73,157,0.15) 0%, rgba(255,255,255,1) 300px)' }}>
+        <Container maxWidth="xl" className={styles.root} style={{ background: 'linear-gradient(rgba(44, 94, 236, 0.3) 0%, rgb(255, 255, 255) 300px)' }}>
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />

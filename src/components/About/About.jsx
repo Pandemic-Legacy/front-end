@@ -1,12 +1,15 @@
 import React from 'react';
 import { useStyles } from './About.styles';
 import { Grid, Typography, Link } from '@material-ui/core';
+import logo from '../assets/logo.png';
 
 export const About = () => {
   const classes = useStyles();
 
   return (
     <Grid container className={classes.root}>
+      <img alt="logo" src={logo} className={classes.image}/>
+
       <Grid item xs={12} className={classes.titleContainer} >
         <Typography variant="h1" className={classes.title}>Data sourced for this project provided by</Typography>
       </Grid>
