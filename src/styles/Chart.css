@@ -46,6 +46,7 @@
 
     .graphLine {
       stroke-width: 1.5;
+      transition: 0.5s;
     }
 
     .graphLineCompare {

@@ -93,7 +93,7 @@ export const Compare = () => {
               };
               dispatch(setSelectedCountry(toDispatch));
               // dispatch(setSelectedCompareSubregion(''));
-              if(location.pathname !== '/') history.replace(`/compare/${countryCode}`);
+              // if(location.pathname !== '/') history.replace(`/compare/${countryCode}`);
             }}
           >
             <MenuItem value={JSON.stringify({
