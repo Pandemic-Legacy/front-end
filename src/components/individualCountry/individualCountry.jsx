@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem, CircularProgress } from '@material-ui/core';
-import { useStyles } from './individualCountry.styles';
+import { useStyles } from './IndividualCountry.styles';
 // import Map from '../Map/Map';
 import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidSubData, getMobilitySubData, getSelectedCountryName, getUSMobilityMap } from '../../selectors/selectors';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import StackGraph from '../StackGraph/StackGraph';
 import { getCovidChartData } from '../../selectors/selectors';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ import { setSelectedSubregion, setMobilitySubregionNames, setCovidSubData, setMo
 import { set } from 'd3';
 import USMap from '../Map/USMap';
 
-export const individualCountry = () => {
+export const IndividualCountry = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { countryCode: countryCodeParam } = useParams();
@@ -99,10 +99,12 @@ export const individualCountry = () => {
         </Grid>
       }
       <Grid item xs={12} className={`${classes.graph} ${classes.backdrop}`}>
-        
+        <Link to={`/compare/${countryCode}`}><Typography variant="p" color="secondary" align="right" style={{ marginTop: '.5rem', display: 'inline-block', float: 'right' }}>Compare to another country</Typography></Link>
         <MiniChartsContainer />
       </Grid>
 
     </Grid>
   );
 };
+
+export default IndividualCountry;

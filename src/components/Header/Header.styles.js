@@ -47,6 +47,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     backgroundColor: 'white',
+    borderRadius: '4px',
   },
   logo: {
     width: '3rem', 
