@@ -7,29 +7,6 @@ import { Grid, Typography, FormControl, InputLabel, Select, MenuItem } from '@ma
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useStyles } from './Header.styles';
 
-// const useStyles = makeStyles((theme) => ({
-//   fullWidth: {
-//     backgroundColor: 'none', 
-//     width: 'calc(100% + 48px)',
-//     margin: '0 -24px',
-//     padding: '18px 24px',
-//   },
-//   title: {
-//     color: theme.palette.common.teal.main,
-//     fontWeight: 'bold',
-//   },
-//   h1TitleLink: {
-//     color: theme.palette.primary.main,
-//     fontWeight: 'bold',
-//     textDecoration: 'none',
-//   },
-//   subtitle: {
-//     color: theme.palette.common.teal.main,
-//   },
-//   formControl: {
-//     backgroundColor: 'white',
-//   }
-// }));
 
 export const Header = () => {
   const classes = useStyles();
@@ -79,7 +56,7 @@ export const Header = () => {
               };
               dispatch(setSelectedCountry(toDispatch));
               dispatch(setSelectedSubregion(''));
-              if(location.pathname !== '/')history.replace(`/country/${countryCode}`);
+              if(location.pathname !== '/') history.replace(`/country/${countryCode}`);
             }}
           >
             { (location.pathname === '/') &&

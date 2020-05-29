@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem, CircularProgress } from '@material-ui/core';
+import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem, CircularProgress, Chip, Avatar } from '@material-ui/core';
 import { useStyles } from './ComparePage.styles';
 // import Map from '../Map/Map';
 import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidSubData, getMobilitySubData, getSelectedCountryName, getMobilityCompareCountryCode, getMobilityCompareCountryName } from '../../selectors/selectors';
@@ -27,7 +27,7 @@ export const ComparePage = () => {
   const compareCountryCode = useSelector(getMobilityCompareCountryCode);
   const compareCountryName = useSelector(getMobilityCompareCountryName);
   const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
-  
+  const myColorScale = ['#2b499d', '#229C9A', '#46a1fe'];
 
 
   // Gets param (if there isn't already a selected country)
@@ -78,14 +78,50 @@ export const ComparePage = () => {
 
   return (
     <Grid container justify="center" className={classes.root}>
+      <Grid item xs={12}>
+        <Typography variant="h3" align="center" className={classes.pageHeader}>Mobility Comparison</Typography>
+      </Grid>
+
+      {/* Selected country select field */}
+      <Grid item xs={12} sm={3}>
+        <FormControl variant="outlined" size="small" fullWidth className={classes.formControl}>
+          <InputLabel id="country-select-label">Choose a Country</InputLabel>
+          <Select
+            labelId="compare-select1-label"
+            label="compare-select1-label"
+            id="compare-select1"
+            value={JSON.stringify({
+              countryCode: selectedCountryCode,
+              countryName: selectedCountryName
+            })}
+            onChange={({ target }) => {
+              const { countryCode, countryName } = JSON.parse(target.value);
+              const toDispatch = {
+                countryCode,
+                countryName
+              };
+              dispatch(setSelectedCountry(toDispatch));
+              // dispatch(setSelectedCompareSubregion(''));
+              // if(location.pathname !== '/')history.replace(`/compare/${countryCode}`);
+            }}
+          >
+            <MenuItem value={JSON.stringify({
+              countryCode: '',
+              countryName: 'Worldwide'
+            })}>Choose a Country</MenuItem>
+            {selectOptions}          
+          </Select>
+        </FormControl>      
+      </Grid>
 
       {/* Compare country select field */}
       <Grid item xs={12} sm={3}>
         <FormControl variant="outlined" size="small" fullWidth className={classes.formControl}>
-          {/* <InputLabel id="country-select-label">Choose a Country</InputLabel> */}
+          <InputLabel id="country-select-label">Choose a Country</InputLabel>
           <Select
-            labelId="compare-select-label"
-            id="compare-select"
+            labelId="compare-select2-label"
+            label="compare-select2-label"
+            id="compare-select2"
             value={JSON.stringify({
               countryCode: compareCountryCode,
               countryName: compareCountryName
@@ -133,14 +169,24 @@ export const ComparePage = () => {
           </FormControl>}
       </Grid> */}
       
-      <Grid item xs={12} md={10}>
+      {/* <Grid item xs={12} md={10}>
         <Typography variant="h3" color="primary" className={classes.title}>{countryName}</Typography>
+      </Grid> */}
+
+      <Grid item xs={12} md={10} align="center" className={classes.legendTop}>
+        {selectedCountryName && <Chip variant="outlined" className={classes.chipMarginTop} style={{ color: `${myColorScale[0]}`, border: `1px solid ${myColorScale[0]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[0]}` }}> </Avatar>} label={selectedCountryName} /> }
+        {compareCountryName && <Chip variant="outlined" className={classes.chipMarginTop} style={{ color: `${myColorScale[1]}`, border: `1px solid ${myColorScale[1]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[1]}` }}> </Avatar>} label={compareCountryName} /> }
       </Grid>
 
       <Grid item xs={12} md={10} className={classes.graph}>
         <MiniChartsContainer />
       </Grid>
 
+      <Grid item xs={12} md={10} align="center" className={classes.legendBottom}>
+        {selectedCountryName && <Chip variant="outlined" className={classes.chipMarginBottom} style={{ color: `${myColorScale[0]}`, border: `1px solid ${myColorScale[0]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[0]}` }}> </Avatar>} label={selectedCountryName} /> }
+        {compareCountryName && <Chip variant="outlined" className={classes.chipMarginBottom} style={{ color: `${myColorScale[1]}`, border: `1px solid ${myColorScale[1]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[1]}` }}> </Avatar>} label={compareCountryName} /> }
+      </Grid>
+      
     </Grid>
   );
 };
