@@ -56,7 +56,7 @@ export const Header = () => {
               };
               dispatch(setSelectedCountry(toDispatch));
               dispatch(setSelectedSubregion(''));
-              if(location.pathname !== '/') history.replace(`/country/${countryCode}`);
+              if(location.pathname.includes('/country')) history.replace(`/country/${countryCode}`);
             }}
           >
             { (location.pathname === '/') &&

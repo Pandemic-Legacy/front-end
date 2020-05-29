@@ -6,7 +6,7 @@ const initialState = {
   mobilityDates: [],
   mobilityChartData: {},
   mobilityCompareCountryCode: '',
-  mobilityCompareCountryName: '',
+  mobilityCompareCountryName: 'Worldwide',
   mobilityCompareChartData: {},
   mobilitySubregionNames: [],
   covidSubData: {},

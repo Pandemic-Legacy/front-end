@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem, CircularProgress, Chip, Avatar } from '@material-ui/core';
 import { useStyles } from './ComparePage.styles';
 // import Map from '../Map/Map';
-import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidSubData, getMobilitySubData, getSelectedCountryName, getMobilityCompareCountryCode, getMobilityCompareCountryName } from '../../selectors/selectors';
+import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidChartData, getCovidSubData, getMobilitySubData, getSelectedCountryName, getMobilityCompareCountryCode, getMobilityCompareCountryName } from '../../selectors/selectors';
 import { useParams } from 'react-router-dom';
 // import { getCovidChartData } from '../../selectors/selectors';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,24 +16,31 @@ export const ComparePage = () => {
   // const [selectedCompareCountryCode, setSelectedCompareCountryCode] = useState('');
   // const [mobilityCompareData, setMobilityCompareData] = useState({});
   const { countryCode: countryCodeParam } = useParams();
-  const countryCode = useSelector(getSelectedCountryCode);
-  const countryName = useSelector(getSelectedCountryName);
   const subregion = useSelector(getSelectedSubregion);
   const subRegionNames = useSelector(getMobilitySubregionNames);
-  // const chartDataSet = useSelector(getCovidChartData);
+  const chartDataSet = useSelector(getCovidChartData);
   const stackGraphSubData = useSelector(getCovidSubData);
   const selectedCountryCode = useSelector(getSelectedCountryCode);
   const selectedCountryName = useSelector(getSelectedCountryName);
   const compareCountryCode = useSelector(getMobilityCompareCountryCode);
   const compareCountryName = useSelector(getMobilityCompareCountryName);
   const globalMapMobilityData = useSelector(getGlobalMapMobilityByDate);
-  const myColorScale = ['#2b499d', '#229C9A', '#46a1fe'];
+  const myColorScale = ['#2b499d', '#229C9A'];
 
 
   // Gets param (if there isn't already a selected country)
   useEffect(() => {
-    if(!countryCode.length) dispatch(setSelectedCountryCode(countryCodeParam));
+    if(!selectedCountryCode.length) dispatch(setSelectedCountryCode(countryCodeParam));
   }, []);
+
+  // Put country into select fields on load
+  useEffect(() => {
+    if(selectedCountryCode === '') return;
+    if(selectedCountryName === 'Worldwide' || chartDataSet.countryName !== 'Worldwide') {
+      dispatch(setSelectedCountryName(chartDataSet.countryName));
+    }  
+    dispatch(setMobilitySubregionNames(selectedCountryCode));
+  }, [selectedCountryCode, chartDataSet]);
 
   // useEffect(() => {
   //   if(!selectedCompareCountryCode) return;
@@ -88,7 +95,7 @@ export const ComparePage = () => {
           <InputLabel id="country-select-label">Choose a Country</InputLabel>
           <Select
             labelId="compare-select1-label"
-            label="compare-select1-label"
+            label="Choose a Country"
             id="compare-select1"
             value={JSON.stringify({
               countryCode: selectedCountryCode,
@@ -120,7 +127,7 @@ export const ComparePage = () => {
           <InputLabel id="country-select-label">Choose a Country</InputLabel>
           <Select
             labelId="compare-select2-label"
-            label="compare-select2-label"
+            label="Choose a Country"
             id="compare-select2"
             value={JSON.stringify({
               countryCode: compareCountryCode,
@@ -139,11 +146,11 @@ export const ComparePage = () => {
               // if(location.pathname !== '/')history.replace(`/compare/${countryCode}`);
             }}
           >
-            { (location.pathname === '/compare/') &&
+            { location.pathname.includes('/compare') &&
               <MenuItem value={JSON.stringify({
                 countryCode: '',
                 countryName: 'Worldwide'
-              })}>Choose a Country</MenuItem>
+              })}>Worldwide</MenuItem>
             }
             {selectOptions}          
           </Select>

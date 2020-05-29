@@ -10,7 +10,7 @@ export function MiniChart({ dataset, compareDataset, property }) {
   
   const svgRef = useRef();
   const wrapperRef = useRef();
-  const myColorScale = ['#46a1fe', '#229C9A', '#2b499d'];
+  const myColorScale = ['#2b499d', '#229C9A'];
  
   function formatDate(badDate) {
     return badDate.toString().slice(6, 7) + '/' + badDate.toString().slice(8, 10);
