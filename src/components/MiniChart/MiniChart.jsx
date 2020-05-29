@@ -113,7 +113,6 @@ export function MiniChart({ dataset, compareDataset, property }) {
       .attr('stroke', d => colorScale(d));
 
     // Draw compare line if there's data
-    console.log({ compareDataset });
     if((compareDataset[property.key]) && (location.pathname.includes('/compare'))) {
       svg
         .selectAll(`.${styles.graphLineCompare}`)

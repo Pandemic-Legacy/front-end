@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem, CircularProgress, Chip, Avatar } from '@material-ui/core';
-import { useStyles } from './Compare.styles';
-// import Map from '../Map/Map';
-import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidChartData, getCovidSubData, getMobilitySubData, getSelectedCountryName, getMobilityCompareCountryCode, getMobilityCompareCountryName, getMobilityCompareSubregion, getMobilityCompareSubregionNames } from '../../selectors/selectors';
-import { useParams } from 'react-router-dom';
-// import { getCovidChartData } from '../../selectors/selectors';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidChartData, getSelectedCountryName, getMobilityCompareCountryCode, getMobilityCompareCountryName, getMobilityCompareSubregion, getMobilityCompareSubregionNames } from '../../selectors/selectors';
+import { setSelectedSubregion, setMobilitySubregionNames, setSelectedCountryCode, setSelectedCountry, setSelectedCountryName, setMobilityCompareCountry, setMobilityCompareSubregion, setMobilityCompareCountryName, setMobilityCompareSubregionNames } from '../../actions/actions';
+import { useParams } from 'react-router-dom';
+import { Grid, Typography, FormControl, InputLabel, Select, MenuItem, Chip, Avatar } from '@material-ui/core';
+import { useStyles } from './Compare.styles';
 import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
-import { setSelectedSubregion, setMobilitySubregionNames, setCovidSubData, setMobilitySubData, resetCovidSubData, setSelectedCountryCode, setSelectedCountry, setSelectedCountryName, setMobilityCompareCountry, setMobilityCompareSubregion, setMobilityCompareCountryName, setMobilityCompareSubregionNames } from '../../actions/actions';
-import { useMobilityDataByCountryCode } from '../../hooks/mobilityHooks';
 
 export const Compare = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const [selectedCompareCountryCode, setSelectedCompareCountryCode] = useState('');
-  // const [mobilityCompareData, setMobilityCompareData] = useState({});
   const { countryCode: countryCodeParam } = useParams();
   const subregion = useSelector(getSelectedSubregion);
   const subregionNames = useSelector(getMobilitySubregionNames);
   const chartDataSet = useSelector(getCovidChartData);
-  const stackGraphSubData = useSelector(getCovidSubData);
   const selectedCountryCode = useSelector(getSelectedCountryCode);
   const selectedCountryName = useSelector(getSelectedCountryName);
   const compareCountryCode = useSelector(getMobilityCompareCountryCode);
@@ -47,19 +41,8 @@ export const Compare = () => {
   // Populate compare select fields with country and subregions
   useEffect(() => {
     if(compareCountryCode === '') return;
-    if(compareCountryName === 'Worldwide') {
-      dispatch(setMobilityCompareCountryName(chartDataSet.countryName));
-    }  
     dispatch(setMobilityCompareSubregionNames(compareCountryCode));
   }, [compareCountryCode, chartDataSet]);
-
-  
-  // // Save for subregions
-  //   useEffect(() => {
-  //     if(subregion === '') return dispatch(resetCovidSubData());
-  //     dispatch(setCovidSubData(countryCode, subregion));
-  //     dispatch(setMobilitySubData(countryCode, subregion));
-  //   }, [subregion]);
 
 
   // Build selects for compare country dropdown
@@ -85,7 +68,7 @@ export const Compare = () => {
 
 
   return (
-    <Grid container justify="center" className={classes.root}>
+    <Grid container justify="center" className={classes.root} spacing={3}>
       <Grid item xs={12}>
         <Typography variant="h3" align="center" className={classes.pageHeader}>Mobility Comparison</Typography>
       </Grid>
@@ -110,7 +93,7 @@ export const Compare = () => {
               };
               dispatch(setSelectedCountry(toDispatch));
               // dispatch(setSelectedCompareSubregion(''));
-              // if(location.pathname !== '/')history.replace(`/compare/${countryCode}`);
+              if(location.pathname !== '/') history.replace(`/compare/${countryCode}`);
             }}
           >
             <MenuItem value={JSON.stringify({
@@ -162,12 +145,11 @@ export const Compare = () => {
               // if(location.pathname !== '/')history.replace(`/compare/${countryCode}`);
             }}
           >
-            { location.pathname.includes('/compare') &&
-              <MenuItem value={JSON.stringify({
-                countryCode: '',
-                countryName: 'Worldwide'
-              })}>Worldwide</MenuItem>
-            }
+            <MenuItem key="default" value={JSON.stringify({
+              countryCode: '',
+              countryName: 'Worldwide'
+            })}>Choose a Country</MenuItem>
+            {/* <MenuItem value="" key="default">Choose a Country</MenuItem> */}
             {selectOptions}          
           </Select>
         </FormControl>      
@@ -189,31 +171,9 @@ export const Compare = () => {
       </Grid>
 
 
-      {/* <Grid item xs={12} md={10}>
-        { !selectOptions.length 
-          ? <Typography variant="body1">No Subregions Found</Typography>
-          : <FormControl variant="outlined" size="small" className={classes.formControl}>
-            <InputLabel id="subregion-select-label">Subregion</InputLabel>
-            <Select
-              label="Subregion"
-              labelId="subregion-select-label"
-              id="subregion-select"
-              value={subregion}
-              onChange={({ target }) => dispatch(setSelectedSubregion(target.value))}
-            >
-              <MenuItem value="" key="default">Choose a Subregion</MenuItem>
-              {selectOptions}
-            </Select>
-          </FormControl>}
-      </Grid> */}
-      
-      {/* <Grid item xs={12} md={10}>
-        <Typography variant="h3" color="primary" className={classes.title}>{countryName}</Typography>
-      </Grid> */}
-
       <Grid item xs={12} md={10} align="center" className={classes.legendTop}>
-        {selectedCountryName && <Chip variant="outlined" className={classes.chipMarginTop} style={{ color: `${myColorScale[0]}`, border: `1px solid ${myColorScale[0]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[0]}` }}> </Avatar>} label={selectedCountryName + ' ' + subregion} /> }
-        {compareCountryName && <Chip variant="outlined" className={classes.chipMarginTop} style={{ color: `${myColorScale[1]}`, border: `1px solid ${myColorScale[1]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[1]}` }}> </Avatar>} label={compareCountryName + ' ' + compareSubregion} /> }
+        {selectedCountryName && <Chip variant="outlined" className={classes.chipMarginTop} style={{ color: `${myColorScale[0]}`, border: `1px solid ${myColorScale[0]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[0]}` }}> </Avatar>} label={subregion ? subregion : selectedCountryName} /> }
+        {compareCountryCode && <Chip variant="outlined" className={classes.chipMarginTop} style={{ color: `${myColorScale[1]}`, border: `1px solid ${myColorScale[1]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[1]}` }}> </Avatar>} label={compareSubregion ? compareSubregion : compareCountryName} /> }
       </Grid>
 
       <Grid item xs={12} md={10} className={classes.graph}>
@@ -221,8 +181,8 @@ export const Compare = () => {
       </Grid>
 
       <Grid item xs={12} md={10} align="center" className={classes.legendBottom}>
-        {selectedCountryName && <Chip variant="outlined" className={classes.chipMarginBottom} style={{ color: `${myColorScale[0]}`, border: `1px solid ${myColorScale[0]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[0]}` }}> </Avatar>} label={selectedCountryName + ' ' + subregion } /> }
-        {compareCountryName && <Chip variant="outlined" className={classes.chipMarginBottom} style={{ color: `${myColorScale[1]}`, border: `1px solid ${myColorScale[1]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[1]}` }}> </Avatar>} label={compareCountryName + ' ' + compareSubregion} /> }
+        {selectedCountryName && <Chip variant="outlined" className={classes.chipMarginBottom} style={{ color: `${myColorScale[0]}`, border: `1px solid ${myColorScale[0]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[0]}` }}> </Avatar>} label={subregion ? subregion : selectedCountryName} /> }
+        {compareCountryCode && <Chip variant="outlined" className={classes.chipMarginBottom} style={{ color: `${myColorScale[1]}`, border: `1px solid ${myColorScale[1]}`, backgroundColor: 'white' }} avatar={<Avatar style={{ backgroundColor:`${myColorScale[1]}` }}> </Avatar>} label={compareSubregion ? compareSubregion : compareCountryName} /> }
       </Grid>
       
     </Grid>
