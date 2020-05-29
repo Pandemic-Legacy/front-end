@@ -144,7 +144,7 @@ function StackGraph({ data }) {
         </div>
 
       </Grid>
-      <Grid item xs={5} className={classes.legend}>   
+      <Grid item xs={10} sm={5} className={classes.legend}>   
         <Chip variant="outlined" style={{ color:'#229c9a', fontWeight: '500', border: '1px solid #229c9a', marginRight: '10px' }} avatar={<Avatar style={{ backgroundColor:'#229c9a' }}> </Avatar>} label={`Total ${selectedDropDownKey}`} />
         <br />
         <Chip variant="outlined" color="primary" avatar={<Avatar> </Avatar>} label={`Daily ${selectedDropDownKey}`} />

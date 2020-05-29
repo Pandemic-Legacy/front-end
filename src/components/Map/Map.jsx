@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { select, geoPath, geoOrthographic, scaleLinear, event, drag, geoMercator } from 'd3';
+import { select, geoPath, geoOrthographic, scaleLinear, event, drag } from 'd3';
 import { useResizeObserver } from '../../hooks/d3Hooks';
 import PropTypes from 'prop-types';
 
-import { Slider, Popover, Typography, Button, withStyles, FormControl, InputLabel, Select, MenuItem, Paper, Grid, FormLabel, RadioGroup, FormControlLabel, Radio, CircularProgress } from '@material-ui/core'; 
+import { Slider, Popover, Typography, Button, withStyles, FormControl, Paper, Grid, RadioGroup, FormControlLabel, Radio, CircularProgress } from '@material-ui/core'; 
 
 import style from './Map.css';
-import leftArrow from '../../assets/RotateLeft.png';
-import rightArrow from '../../assets/RotateRight.png';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setGlobalMobilityDataByDate, setSelectedCountry } from '../../actions/actions';
@@ -48,7 +46,7 @@ const SliderStyled = withStyles({
   },
 })(Slider);
 
-const Map = ({ mapData, countryCode = '' }) => {
+const Map = ({ mapData }) => {
   const dates = useSelector(getMobilityDates);
   const selectedCountryCode =  useSelector(getSelectedCountryCode);
   const selectedCountryName = useSelector(getSelectedCountryName);
@@ -350,7 +348,6 @@ const Map = ({ mapData, countryCode = '' }) => {
 };
 
 Map.propTypes = {
-  countryCode: PropTypes.string,
   mapData: PropTypes.object.isRequired
 };
 

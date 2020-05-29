@@ -56,6 +56,11 @@ export const individualCountry = () => {
 
   return (
     <Grid container justify="center" className={classes.root}>
+      {countryCode === 'US' && 
+        <Grid item xs={12} md={10}>
+          <USMap mapData={USMobilityMap} selectedSubregion={subregion}/>
+        </Grid>
+      }
       <Grid item xs={12} md={10}>
         <Typography variant="h3" color="primary" className={classes.title}>COVID Statistics for {countryName}</Typography>
         {/* {subregion && <Typography variant="h4" color="secondary" className={classes.title}>{subregion}</Typography>} */}
@@ -88,16 +93,8 @@ export const individualCountry = () => {
             : <StackGraph data={chartDataSet} />)
         }
       </Grid>
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12} sm={10} className={`${classes.graph} ${classes.backdrop}`}>
         <Typography variant="h3" color="primary" className={classes.title} style={{ marginBottom: '1rem' }}>Mobility Statistics</Typography>
-      </Grid>
-      {countryCode === 'US' && 
-        <Grid item xs={12} md={10}>
-          <USMap mapData={USMobilityMap} selectedSubregion={subregion}/>
-        </Grid>
-      }
-
-      <Grid item xs={12} md={10} className={classes.graph}>
         <MiniChartsContainer />
       </Grid>
 
