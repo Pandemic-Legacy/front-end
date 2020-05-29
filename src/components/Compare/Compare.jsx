@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Typography, FormControl, Input, InputLabel, Select, MenuItem, CircularProgress, Chip, Avatar } from '@material-ui/core';
-import { useStyles } from './ComparePage.styles';
+import { useStyles } from './Compare.styles';
 // import Map from '../Map/Map';
 import { getGlobalMapMobilityByDate, getSelectedCountryCode, getMobilitySubregionNames, getSelectedSubregion, getCovidChartData, getCovidSubData, getMobilitySubData, getSelectedCountryName, getMobilityCompareCountryCode, getMobilityCompareCountryName } from '../../selectors/selectors';
 import { useParams } from 'react-router-dom';
@@ -10,7 +10,7 @@ import MiniChartsContainer from '../MiniChart/MiniChartsContainer';
 import { setSelectedSubregion, setMobilitySubregionNames, setCovidSubData, setMobilitySubData, resetCovidSubData, setSelectedCountryCode, setSelectedCountry, setSelectedCountryName, setMobilityCompareCountry } from '../../actions/actions';
 import { useMobilityDataByCountryCode } from '../../hooks/mobilityHooks';
 
-export const ComparePage = () => {
+export const Compare = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   // const [selectedCompareCountryCode, setSelectedCompareCountryCode] = useState('');
@@ -198,4 +198,4 @@ export const ComparePage = () => {
   );
 };
 
-export default ComparePage;
+export default Compare;
