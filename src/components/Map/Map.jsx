@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { Slider, Popover, Typography, Button, withStyles, FormControl, InputLabel, Select, MenuItem, Paper, Grid, FormLabel, RadioGroup, FormControlLabel, Radio, CircularProgress } from '@material-ui/core'; 
 
 import style from './Map.css';
+import leftArrow from '../../assets/RotateLeft.png';
+import rightArrow from '../../assets/RotateRight.png';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setGlobalMobilityDataByDate, setSelectedCountryCode, setSelectedCountry } from '../../actions/actions';
@@ -49,26 +51,26 @@ const SliderStyled = withStyles({
 const Map = ({ mapData, countryCode = '' }) => {
   const dates = useSelector(getMobilityDates);
   const selectedCountryCode =  useSelector(getSelectedCountryCode);
+  const selectedCountryName = useSelector(getSelectedCountryName);
 
   const [property, setProperty] = useState('retailChange');
+  const [clicked, setClicked] = useState(false);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [rotating, setRotating] = useState(false);
-  const [dateIndex, setDateIndex] = useState(84); //hard coded index for now, would come from dates.length - 1
+  const [dateIndex, setDateIndex] = useState(48); //hard coded index for now, would come from dates.length - 1
   const [selectedCountryData, setSelectedCountryData] = useState({});
-  const selectedCountryName = useSelector(getSelectedCountryName);
 
   const classes = useStyles();
 
-  //use increments of 21 for more even markers
   const marks = [
-    { value: 0, label: dates[0]?.slice(5) },
-    { value: 15, label: dates[15]?.slice(5) },
-    { value: 29, label: dates[29]?.slice(5) },
-    { value: 46, label: dates[46]?.slice(5) },
-    { value: 60, label: dates[60]?.slice(5) },
-    { value: 76, label: dates[76]?.slice(5) },
-    { value: 84, label: dates[84]?.slice(5) },
+    { value: 0, label: dates[0]?.slice(5).replace('-', '/') },
+    { value: 16, label: dates[16]?.slice(5).replace('-', '/') },
+    { value: 32, label: dates[32]?.slice(5).replace('-', '/') },
+    { value: 48, label: dates[48]?.slice(5).replace('-', '/') },
+    { value: 64, label: dates[64]?.slice(5).replace('-', '/') },
+    { value: 80, label: dates[80]?.slice(5).replace('-', '/') },
+    { value: 96, label: dates[96]?.slice(5).replace('-', '/') },
   ];
 
   //PopOver
@@ -91,6 +93,7 @@ const Map = ({ mapData, countryCode = '' }) => {
   const history = useHistory();
   const isMobile = useIsMobile();
   
+
   useEffect(() => {
     if(!selectedCountryCode) return setAnchorEl(null);
     setAnchorEl(wrapperRef.current);
@@ -122,16 +125,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .translate(globePosition)
       .precision(100);
 
-    
-    
-    const selectedCountry = mapData.features
-      .find(({ properties }) => properties.iso_a2 === countryCode);
-    //Country Projection
-    const flatProjection = geoMercator()
-      .fitSize([width, height], selectedCountry)
-      .precision(50);
-
-    const pathGenerator = countryCode ? geoPath().projection(flatProjection) : geoPath().projection(projection);
+    const pathGenerator = geoPath().projection(projection);
 
     const defs = svg.append('defs');
     const linearGradient = defs.append('linearGradient')
@@ -158,7 +152,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .attr('offset', '100%').attr('stop-color', '#000')
       .attr('stop-opacity', '0');  
 
-    if(!countryCode) svg
+    svg
       .selectAll('ellipse')
       .data(['spot'])
       .join('ellipse')
@@ -169,7 +163,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .attr('class', 'noclicks')
       .style('fill', 'url(#drop_shadow)');
 
-    if(!countryCode) svg
+    svg
       .selectAll('circle')
       .data(['spot'])
       .join('circle')
@@ -180,10 +174,12 @@ const Map = ({ mapData, countryCode = '' }) => {
 
 
     
-    if(!countryCode) svg.call(drag()
-      .on('start', () => { setRotating(true);})
+    svg.call(drag()
+      .on('start', () => { 
+        setRotating(true);
+        setClicked(true);
+      })
       .on('drag', () => {
-
         const rotate = projection.rotate();
         const sensitivity = 50 / projection.scale();
 
@@ -207,14 +203,10 @@ const Map = ({ mapData, countryCode = '' }) => {
       .join('path')
       .on('click', (country) => {
         const { countryCode, countryName } = country.mobilityData;
-        if(!countryCode || !countryName) return;
         dispatch(setSelectedCountry({ countryCode, countryName }));
         setSelectedCountryData(country.mobilityData);
       })
-      .attr('class', 'country')
-      .classed(style.noData, function(d) {
-        return !d.mobilityData[property];
-      });
+      .attr('class', 'country');
     
     if(rotating) {
       map
@@ -251,18 +243,24 @@ const Map = ({ mapData, countryCode = '' }) => {
         <Paper elevation={2} className={classes.legendPaper}>
           <div ref={legendRef} 
             className={style.mapLegendContainer}
-          >% increase in travel to {property.replace('Change', '')} locations 
+          >Percent increase or decrease in travel to {property.replace('Change', '')} locations* 
           </div>
-          <p className={style.legendNoData}>No Data Available</p>
-          <div>% decrease in travel to {property.replace('Change', '')} locations</div>
+
+          <p className={style.legendNoData}>{isMobile ? 'N/A' : 'No Data Available'}</p>
+          <p>*compared to baseline, pre-pandemic measurements</p>
+
         </Paper>
       </Grid>
     
       <Grid item xs={9} sm={8}ref={wrapperRef} className={style.Map} >
         { !mapData.features 
           ? <CircularProgress /> 
-          : <svg ref={svgRef} className={style.svgStyle}></svg>
+          : (<> 
+            {!clicked && <Typography variant="body1" className={classes.dragLabel}>Click and drag to rotate</Typography>}
+            <svg ref={svgRef} className={style.svgStyle}></svg>
+          </>)
         }
+
         <Popover id={style.countryPopover} 
           className={classes.popover} 
           classes={{ paper: classes.paper }} 
@@ -275,7 +273,7 @@ const Map = ({ mapData, countryCode = '' }) => {
         >
           <Typography variant="h4">{selectedCountryName}</Typography>
           <Typography>
-            Travel to <b>{property.replace('Change', '')} locations</b> on this date was <b>{selectedCountryData[property] || 'N/A'}%</b> compared to a normal day in {selectedCountryName}.
+            Travel to <b>{property.replace('Change', '')} locations</b> on this date was <b></b>{selectedCountryData[property] || 'N/A'}% compared to a normal day in {selectedCountryName}.
           </Typography>
           <Button variant="contained" 
             color="primary" 
@@ -283,15 +281,16 @@ const Map = ({ mapData, countryCode = '' }) => {
               e.preventDefault();
               history.push(`/country/${selectedCountryCode}`);
             }}>Details</Button>
-          {/* <Button variant="contained" color="secondary" onClick={handlePopoverClose}>X</Button> */}
         </Popover>
       </Grid>
       
       <Grid item xs={12} sm={2}>
         <Paper elivation={2} className={classes.legendPaper}>
           <FormControl component="fieldset">
-            <FormLabel component="legend">Choose a Metric</FormLabel>
+
+            {/* <FormLabel component="legend">Choose a Metric</FormLabel> */}
             <RadioGroup row={isMobile} aria-label="position" name="metric" defaultValue="retailChange" onChange={({ target }) => setProperty(target.value)}>
+
               <FormControlLabel
                 value="groceryChange"
                 control={<Radio color="primary"/>}
