@@ -8,7 +8,7 @@
     /* Sets container ratio to 2:1. Should match SVG ratio defined in D3 */
     padding-bottom: 50%; 
     vertical-align: top;
-    overflow: sible;
+    overflow: hidden;
   }
 
   /* Append optional class to container for other ratios */
@@ -31,7 +31,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    overflow: visible;
+    overflow: hidden;
   
     .chartBackground {
       fill: #f6f6f6;
