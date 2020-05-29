@@ -24,11 +24,11 @@ const SliderStyled = withStyles({
     backgroundColor: '#fff',
     border: '2px solid currentColor',
     marginTop: -6,
-    marginLeft: -12
+    marginLeft: -12,
   },
   active: {},
   valueLabel: {
-    left: 'calc(-50%)'
+    left: 'calc(-50%)',
   },
   track: {
     height: 8,
@@ -56,7 +56,7 @@ const Map = ({ mapData }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [rotating, setRotating] = useState(false);
-  const [dateIndex, setDateIndex] = useState(48); //hard coded index for now, would come from dates.length - 1
+  const [dateIndex, setDateIndex] = useState(48); //hard coded index
   const [selectedCountryData, setSelectedCountryData] = useState({});
   const isMobile = useIsMobile();
   const { width: screenWidth } = useScreenDimensions();
@@ -79,16 +79,11 @@ const Map = ({ mapData }) => {
       { value: 96, label: dates[96]?.slice(5).replace('-', '/') },
     ];
 
-  //PopOver
   const [anchorEl, setAnchorEl] = useState(null);
-  // const handlePopoverOpen = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
   const open = Boolean(anchorEl);
-  //PopOver
 
   const svgRef = useRef();
   const wrapperRef = useRef();
@@ -98,8 +93,6 @@ const Map = ({ mapData }) => {
   const dispatch = useDispatch();
   const history = useHistory();
  
-  
-
   useEffect(() => {
     if(!selectedCountryCode) return setAnchorEl(null);
     setAnchorEl(wrapperRef.current);
