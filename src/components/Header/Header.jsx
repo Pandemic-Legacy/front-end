@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedCountryCode, getGlobalMapMobilityByDate, getSelectedCountryName } from '../../selectors/selectors';
-import { setSelectedCountryCode, setSelectedCountryName, setSelectedCountry, setSelectedSubregion } from '../../actions/actions';
-import { Grid, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { setSelectedCountry, setSelectedSubregion } from '../../actions/actions';
+import { Grid, Typography, FormControl, Select, MenuItem } from '@material-ui/core';
 
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useStyles } from './Header.styles';

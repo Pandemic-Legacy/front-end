@@ -10,7 +10,7 @@ import leftArrow from '../../assets/RotateLeft.png';
 import rightArrow from '../../assets/RotateRight.png';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setGlobalMobilityDataByDate, setSelectedCountryCode, setSelectedCountry } from '../../actions/actions';
+import { setGlobalMobilityDataByDate, setSelectedCountry } from '../../actions/actions';
 import { getMobilityDates, getSelectedCountryCode, getSelectedCountryName } from '../../selectors/selectors';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './Map.styles';

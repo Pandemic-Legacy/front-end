@@ -13,7 +13,8 @@ export const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.blue.main,
   },
   graph: {
-    margin: '2rem'
+    margin: '2rem',
+    minHeight: '35vh'
   },
   formControl: {
     margin: '8px 0 8px 0',

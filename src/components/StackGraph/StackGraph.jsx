@@ -14,7 +14,6 @@ function StackGraph({ data }) {
   const classes = useStyles();
   const svgRef = useRef();
   const wrapperRef = useRef();
-  const legendRef = useRef();
 
   const [selectedDropDownKey, setSelectedDropDownKey] = useState('cases');
 

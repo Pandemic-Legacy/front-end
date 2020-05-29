@@ -8,7 +8,7 @@ import { Slider, Popover, Typography, Button, withStyles, FormControl, InputLabe
 import style from './Map.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setGlobalMobilityDataByDate, setSelectedCountry, setUSMobilityDataByDate, setSelectedSubregion } from '../../actions/actions';
+import { setGlobalMobilityDataByDate, setSelectedCountry, setUSMobilityDataByDate, setSelectedSubregion, resetCovidSubData, setMobilitySubData, resetMobilitySubData } from '../../actions/actions';
 import { getMobilityDates, getSelectedCountryCode, getSelectedCountryName, getSelectedSubregion } from '../../selectors/selectors';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './Map.styles';
@@ -149,10 +149,10 @@ const Map = ({ mapData, selectedSubregion }) => {
 
       <Grid item xs={3} sm={2} >
         <Paper elevation={2} className={classes.legendPaper}>
-          {(screenWidth > 600) && <p>Percent increase or decrease in travel to {property.replace('Change', '')} locations</p>}
+          {(screenWidth > 600) && <p>Percent increase or decrease in travel to <b>{property.replace('sChange', '').replace('Change', '')}</b> locations</p>}
           <div ref={legendRef} className={style.mapLegendContainer}></div>
           <p className={style.legendNoData}>{(screenWidth < 600) ? 'N/A' : 'No Data Available'}</p>
-          {(screenWidth > 600) && <em>*compared to baseline, pre-pandemic measurements</em>}
+          {(screenWidth > 600) && <em className={classes.aside}>*compared to baseline, pre-pandemic measurements</em>}
         </Paper>
       </Grid>
     
