@@ -8,30 +8,6 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useStyles } from './Header.styles';
 import logo from '../../assets/logo.png';
 
-// const useStyles = makeStyles((theme) => ({
-//   fullWidth: {
-//     backgroundColor: 'none', 
-//     width: 'calc(100% + 48px)',
-//     margin: '0 -24px',
-//     padding: '18px 24px',
-//   },
-//   title: {
-//     color: theme.palette.common.teal.main,
-//     fontWeight: 'bold',
-//   },
-//   h1TitleLink: {
-//     color: theme.palette.primary.main,
-//     fontWeight: 'bold',
-//     textDecoration: 'none',
-//   },
-//   subtitle: {
-//     color: theme.palette.common.teal.main,
-//   },
-//   formControl: {
-//     backgroundColor: 'white',
-//   }
-// }));
-
 export const Header = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -60,7 +36,7 @@ export const Header = () => {
         <Link to='/' className={classes.h1TitleLink}>
           <section style={{ textAlign: 'center' }}> 
             <Typography variant="h1" align="center" style={{ display: 'inline' }} className={classes.title}>G</Typography>
-            <img src={logo} alt="Going Viral" style={{ width: '3rem', position: 'relative', top: '0.7rem', left: '0.2rem', margin: '0 -0.2rem 0 -0.2rem' }}/>
+            <img src={logo} alt="Going Viral" className={classes.logo}/>
             <Typography variant="h1" align="center" style={{ display: 'inline' }}className={classes.title}>ing Viral</Typography>
           </section>
           <Typography variant="h3" align="center" className={classes.subtitle}>Pandemic-Related Mobility Metrics</Typography>

@@ -252,10 +252,10 @@ const Map = ({ mapData, countryCode = '' }) => {
 
       <Grid item xs={3} sm={2} >
         <Paper elevation={2} className={classes.legendPaper}>
-          {(screenWidth > 600) && <p>Percent increase or decrease in travel to {property.replace('Change', '')} locations</p>}
+          {(screenWidth > 600) && <p>Percent increase or decrease in travel to <b>{property.replace('sChange', '').replace('Change', '')}</b> locations</p>}
           <div ref={legendRef} className={style.mapLegendContainer}></div>
           <p className={style.legendNoData}>{(screenWidth < 600) ? 'N/A' : 'No Data Available'}</p>
-          {(screenWidth > 600) && <em>*compared to baseline, pre-pandemic measurements</em>}
+          {(screenWidth > 600) && <em className={classes.aside}>*compared to baseline, pre-pandemic measurements</em>}
         </Paper>
       </Grid>
     
