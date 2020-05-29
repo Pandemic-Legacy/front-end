@@ -38,7 +38,8 @@ export const useStyles = makeStyles((theme) => ({
     color: '#0f3568',
   },
   popoverButton: {
-    marginTop: '1rem'
+    marginTop: '1rem',
+    marginRight: '1rem'
   },
   aside: {
     fontSize: '0.8rem',

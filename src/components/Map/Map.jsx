@@ -278,7 +278,13 @@ const Map = ({ mapData }) => {
             </Typography>
             : <Typography>Data for <b>{property.replace('sChange', '').replace('Change', '')}</b> travel was not available for {selectedCountryName} on this date.</Typography>
           }
-          
+          <Button variant="contained" 
+            className={classes.popoverButton}
+            color="secondary" 
+            onClick={(e) => {
+              e.preventDefault();
+              history.push(`/compare/${selectedCountryCode}`);
+            }}>Compare</Button>
           <Button variant="contained" 
             className={classes.popoverButton}
             color="primary" 
