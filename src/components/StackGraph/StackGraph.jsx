@@ -107,7 +107,10 @@ function StackGraph({ data }) {
       .attr('x', sequence => xScale(sequence.data.date)) // width of each rect
       .attr('width', xScale.bandwidth())
       .attr('y', sequence => yScale(sequence[1])) //top edge of rect, determined by [1]
-      .attr('height', sequence => yScale(sequence[0]) - yScale(sequence[1]));
+      .attr('height', sequence => {
+        if((yScale(sequence[0]) - yScale(sequence[1]) < 0)) return 0;
+        return (yScale(sequence[0]) - yScale(sequence[1]));
+      });
     // create all layers of data, stack keys
     // data for rectangles is layer
 
@@ -129,7 +132,7 @@ function StackGraph({ data }) {
       // .style('text-anchor', 'start')
       .call(yAxis);
 
-  }), [data, selectedDropDownKey, selectedSubregion, selectedCountryCode];
+  }), [dataStructure, data, selectedDropDownKey, selectedSubregion, selectedCountryCode];
 
   return (   
     <Grid container className={styles.Chart} alignItems="center" direction="row-reverse" justify="space-between">

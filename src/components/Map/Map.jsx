@@ -14,7 +14,7 @@ import { setGlobalMobilityDataByDate, setSelectedCountryCode, setSelectedCountry
 import { getMobilityDates, getSelectedCountryCode, getSelectedCountryName } from '../../selectors/selectors';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './Map.styles';
-import { useIsMobile } from '../../hooks/isMobile';
+import { useIsMobile, useScreenDimensions } from '../../hooks/isMobile';
 
 const SliderStyled = withStyles({
   root: {
@@ -152,7 +152,7 @@ const Map = ({ mapData, countryCode = '' }) => {
       .attr('offset', '100%').attr('stop-color', '#000')
       .attr('stop-opacity', '0');  
 
-    svg
+    if(!isMobile) svg
       .selectAll('ellipse')
       .data(['spot'])
       .join('ellipse')

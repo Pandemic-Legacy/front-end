@@ -9,7 +9,7 @@ import style from './Map.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setGlobalMobilityDataByDate, setSelectedCountry, setUSMobilityDataByDate, setSelectedSubregion } from '../../actions/actions';
-import { getMobilityDates, getSelectedCountryCode, getSelectedCountryName } from '../../selectors/selectors';
+import { getMobilityDates, getSelectedCountryCode, getSelectedCountryName, getSelectedSubregion } from '../../selectors/selectors';
 import { useHistory } from 'react-router-dom';
 import { useStyles } from './Map.styles';
 import { useIsMobile } from '../../hooks/isMobile';
@@ -46,7 +46,7 @@ const SliderStyled = withStyles({
   },
 })(Slider);
 
-const Map = ({ mapData }) => {
+const Map = ({ mapData, selectedSubregion }) => {
   const dates = useSelector(getMobilityDates);
   // const selectedCountryCode =  useSelector(getSelectedCountryCode);
   // const selectedCountryName = useSelector(getSelectedCountryName);
@@ -79,9 +79,12 @@ const Map = ({ mapData }) => {
     if(!dates.length) return;
     else dispatch(setUSMobilityDataByDate(dates[dateIndex]));
   }, [dateIndex]);
-  // useEffect(() => {
-  //   //find subregion in map data set to selected state (the features portion)
-  // }. [subregion])
+
+  useEffect(() => {
+    if(!selectedSubregion.length) return;
+    const newState = mapData.features.find(state => state.properties.NAME === selectedSubregion);
+    setSelectedState(newState);
+  }, [selectedSubregion]);
   
   useEffect(() => {
     if(!mapData.features) return;
@@ -212,7 +215,8 @@ const Map = ({ mapData }) => {
 };
 
 Map.propTypes = {
-  mapData: PropTypes.object.isRequired
+  mapData: PropTypes.object.isRequired,
+  selectedSubregion: PropTypes.string.isRequired
 };
 
 export default Map;

@@ -28,7 +28,6 @@ export const useStyles = makeStyles((theme) => ({
   subtitle: {
     // color: theme.palette.common.teal.main,
     color: theme.palette.secondary.main, 
-    marginBottom: '1rem',
     marginTop: '.5rem'
   },
   fullWidth: {

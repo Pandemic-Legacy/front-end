@@ -60,6 +60,7 @@ export const individualCountry = () => {
         
       </Grid>
       <Grid item xs={12} md={10}>
+
         { !selectOptions.length 
           ? <Typography variant="body1">No Subregions Found</Typography>
           : <FormControl variant="outlined" size="small" className={classes.formControl}>
@@ -78,7 +79,7 @@ export const individualCountry = () => {
       </Grid>
       {countryCode === 'US' && 
         <Grid item xs={12} md={10}>
-          <USMap mapData={USMobilityMap}/>
+          <USMap mapData={USMobilityMap} selectedSubregion={subregion}/>
         </Grid>
       }
       

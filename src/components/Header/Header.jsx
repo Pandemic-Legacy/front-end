@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedCountryCode, getGlobalMapMobilityByDate, getSelectedCountryName } from '../../selectors/selectors';
 import { setSelectedCountryCode, setSelectedCountryName, setSelectedCountry, setSelectedSubregion } from '../../actions/actions';
@@ -67,10 +67,9 @@ export const Header = () => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={3}>
-        { globalMapMobilityData.features && (location.pathname !== '/about') &&
+        { globalMapMobilityData.features && (location.pathname !== '/about') && 
         <FormControl variant="outlined" size="small" fullWidth className={classes.formControl}>
           {/* <InputLabel id="country-select-label">Choose a Country</InputLabel> */}
-          
           <Select
             labelId="country-select-label"
             id="country-select"
