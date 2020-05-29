@@ -43,7 +43,7 @@ export const individualCountry = () => {
     if(subregion === '') return dispatch(resetCovidSubData());
     dispatch(setCovidSubData(countryCode, subregion));
     dispatch(setMobilitySubData(countryCode, subregion));
-    
+
   }, [subregion]);
 
   const selectOptions = subRegionNames
@@ -55,7 +55,7 @@ export const individualCountry = () => {
   return (
     <Grid container justify="center" className={classes.root}>
       <Grid item xs={12} md={10}>
-        <Typography variant="h3" color="primary" className={classes.title}>{countryName}</Typography>
+        <Typography variant="h3" color="primary" className={classes.title}>COVID Statistics for {countryName}</Typography>
         {/* {subregion && <Typography variant="h4" color="secondary" className={classes.title}>{subregion}</Typography>} */}
         
       </Grid>
@@ -87,6 +87,7 @@ export const individualCountry = () => {
       </Grid>
 
       <Grid item xs={12} md={10} className={classes.graph}>
+        <Typography variant="h3" color="primary" className={classes.title} style={{ marginBottom: '1rem' }}>Mobility Statistics</Typography>
         <MiniChartsContainer />
       </Grid>
 
