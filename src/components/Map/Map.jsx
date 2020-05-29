@@ -60,18 +60,26 @@ const Map = ({ mapData, countryCode = '' }) => {
   const [rotating, setRotating] = useState(false);
   const [dateIndex, setDateIndex] = useState(48); //hard coded index for now, would come from dates.length - 1
   const [selectedCountryData, setSelectedCountryData] = useState({});
+  const isMobile = useIsMobile();
+  const { width: screenWidth } = useScreenDimensions();
 
   const classes = useStyles();
-
-  const marks = [
-    { value: 0, label: dates[0]?.slice(5).replace('-', '/') },
-    { value: 16, label: dates[16]?.slice(5).replace('-', '/') },
-    { value: 32, label: dates[32]?.slice(5).replace('-', '/') },
-    { value: 48, label: dates[48]?.slice(5).replace('-', '/') },
-    { value: 64, label: dates[64]?.slice(5).replace('-', '/') },
-    { value: 80, label: dates[80]?.slice(5).replace('-', '/') },
-    { value: 96, label: dates[96]?.slice(5).replace('-', '/') },
-  ];
+  
+  const marks = (!isMobile) 
+    ? [
+      { value: 0, label: dates[0]?.slice(5).replace('-', '/') },
+      { value: 16, label: dates[16]?.slice(5).replace('-', '/') },
+      { value: 32, label: dates[32]?.slice(5).replace('-', '/') },
+      { value: 48, label: dates[48]?.slice(5).replace('-', '/') },
+      { value: 64, label: dates[64]?.slice(5).replace('-', '/') },
+      { value: 80, label: dates[80]?.slice(5).replace('-', '/') },
+      { value: 96, label: dates[96]?.slice(5).replace('-', '/') },
+    ]
+    : [
+      { value: 0, label: dates[0]?.slice(5).replace('-', '/') },
+      { value: 48, label: dates[48]?.slice(5).replace('-', '/') },
+      { value: 96, label: dates[96]?.slice(5).replace('-', '/') },
+    ];
 
   //PopOver
   const [anchorEl, setAnchorEl] = useState(null);
@@ -91,7 +99,7 @@ const Map = ({ mapData, countryCode = '' }) => {
   const wrapperHeight = dimensions?.height;
   const dispatch = useDispatch();
   const history = useHistory();
-  const isMobile = useIsMobile();
+ 
   
 
   useEffect(() => {
@@ -206,7 +214,10 @@ const Map = ({ mapData, countryCode = '' }) => {
         dispatch(setSelectedCountry({ countryCode, countryName }));
         setSelectedCountryData(country.mobilityData);
       })
-      .attr('class', 'country');
+      .attr('class', 'country')
+      .classed(style.noData, (country) => {
+        if(!country.mobilityData[property]) return style.noData;
+      });
     
     if(rotating) {
       map
@@ -241,14 +252,10 @@ const Map = ({ mapData, countryCode = '' }) => {
 
       <Grid item xs={3} sm={2} >
         <Paper elevation={2} className={classes.legendPaper}>
-          <div ref={legendRef} 
-            className={style.mapLegendContainer}
-          >Percent increase or decrease in travel to {property.replace('Change', '')} locations* 
-          </div>
-
-          <p className={style.legendNoData}>{isMobile ? 'N/A' : 'No Data Available'}</p>
-          <p>*compared to baseline, pre-pandemic measurements</p>
-
+          {(screenWidth > 600) && <p>Percent increase or decrease in travel to {property.replace('Change', '')} locations</p>}
+          <div ref={legendRef} className={style.mapLegendContainer}></div>
+          <p className={style.legendNoData}>{(screenWidth < 600) ? 'N/A' : 'No Data Available'}</p>
+          {(screenWidth > 600) && <em>*compared to baseline, pre-pandemic measurements</em>}
         </Paper>
       </Grid>
     
@@ -272,10 +279,17 @@ const Map = ({ mapData, countryCode = '' }) => {
           disableRestoreFocus
         >
           <Typography variant="h4">{selectedCountryName}</Typography>
-          <Typography>
-            Travel to <b>{property.replace('Change', '')} locations</b> on this date was <b></b>{selectedCountryData[property] || 'N/A'}% compared to a normal day in {selectedCountryName}.
-          </Typography>
+          {selectedCountryData[property] 
+            ? <Typography>
+          Travel to <b>{property.replace('sChange', '').replace('Change', '')} locations</b> on this date was 
+              <b className={classes.statistic}> {selectedCountryData[property]}% </b>
+          compared to a normal day in {selectedCountryName}.
+            </Typography>
+            : <Typography>Data for <b>{property.replace('sChange', '').replace('Change', '')}</b> travel was not available for {selectedCountryName} on this date.</Typography>
+          }
+          
           <Button variant="contained" 
+            className={classes.popoverButton}
             color="primary" 
             onClick={(e) => {
               e.preventDefault();
@@ -289,7 +303,7 @@ const Map = ({ mapData, countryCode = '' }) => {
           <FormControl component="fieldset">
 
             {/* <FormLabel component="legend">Choose a Metric</FormLabel> */}
-            <RadioGroup row={isMobile} aria-label="position" name="metric" defaultValue="retailChange" onChange={({ target }) => setProperty(target.value)}>
+            <RadioGroup row={isMobile || screenWidth < 600} aria-label="position" name="metric" defaultValue="retailChange" onChange={({ target }) => setProperty(target.value)}>
 
               <FormControlLabel
                 value="groceryChange"
