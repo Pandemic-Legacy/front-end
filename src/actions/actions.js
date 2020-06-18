@@ -104,6 +104,7 @@ export const setMobilityCompareChartDataByCountryCode = (countryCode) => dispatc
 export const SET_COVID_CHART_DATA = 'SET_COVID_CHART_DATA';
 export const setCovidChartData = (countryCode) => dispatch => {
   return fetchCountryCovidData(countryCode)
+    .then(res => res.sort((a, b) => new Date(a.date) - new Date(b.date)))
     .then(res => ({
       date: res.map(item => item.date),
       countryCode: res[0].countryCode,

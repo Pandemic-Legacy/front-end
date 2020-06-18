@@ -37,7 +37,7 @@ export const Home = () => {
       </Grid>
       <Grid container justify="center" className={styles.fullWidthLightBlue}>
         <Grid item xs={12} sm={10}>
-          <Typography variant="h4" align="center" className={styles.subhead}>COVID Statistics {countryName ? `for ${countryName}` : 'Worldwide' }</Typography>
+          <Typography variant="h4" align="center" className={styles.subhead}>COVID Statistics {countryName === 'Worldwide' ? 'Worldwide' : `for ${countryName}` }</Typography>
           <LineGraph dataset={chartDataSet} />
         </Grid>
       </Grid>
