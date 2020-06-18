@@ -30,7 +30,7 @@ export function MiniChart({ dataset, compareDataset, property }) {
     // const height = width / 2;
     const width = 500;
     const height = 250;
-    const margin = { top: 20, right: 40, bottom: 30, left: 0 };
+    const margin = { top: 20, right: 50, bottom: 30, left: 20 };
 
     svg
       .attr('viewBox', `0, 0, ${width}, ${height}`)
@@ -48,7 +48,7 @@ export function MiniChart({ dataset, compareDataset, property }) {
 
     // Define axis
     const xAxis = axisBottom(xScale)
-      .ticks(dataset['date'].length / 10)
+      .ticks(6)
       .tickFormat(index => formatDate(dataset.date[index]));
     const yAxis = axisRight(yScale)
       .ticks(height / 40);

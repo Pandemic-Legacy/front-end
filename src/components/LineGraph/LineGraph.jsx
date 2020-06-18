@@ -71,7 +71,7 @@ function LineGraph({ dataset }) {
     const width = 1000;
     const height = 333;
     // Refactor: Add additional margin style per intended display size of chart
-    const margin = { top: 0, right: 100, bottom: 50, left: 10 };
+    const margin = { top: 5, right: 100, bottom: 50, left: 20 };
 
     svg
       .attr('viewBox', `0, 0, ${width}, ${height}`)
@@ -118,9 +118,9 @@ function LineGraph({ dataset }) {
     const ticks = switchedToLog ? [5, 'e'] : [height / 40];
     const yAxis = axisRight()
       .scale(yScale)
-      .ticks(...ticks)
+      .ticks(...ticks);
       // .ticks(Math.floor(maxData / 10), '~s')
-      .tickFormat(d => d);
+      // .tickFormat(d => d);
 
     // Draw axis on pre-existing elements
     svg
