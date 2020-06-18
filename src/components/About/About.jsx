@@ -3,6 +3,21 @@ import { useStyles } from './About.styles';
 import { Grid, Typography, Link } from '@material-ui/core';
 import logo from '../../assets/logo.png';
 
+// Use components to remove duplication
+const Developer = ({ name, github, linkedIn, portfolio, twitter }) => (
+  <Grid item xs={12} className={classes.google} >
+    <Typography variant="body1" className={classes.h4}>
+      {name}:
+      <Link target="_blank" href={github}>GitHub</Link>
+      /
+      <Link target="_blank" href={linkedIn}>LinkedIn</Link>
+      /
+      {profile && <Link target="_blank" href={portfolio}>Portfolio</Link>}
+      {twitter && <Link target="_blank" href={twitter}>Twitter</Link>}
+    </Typography>
+  </Grid>
+)
+
 export const About = () => {
   const classes = useStyles();
 
@@ -34,9 +49,11 @@ export const About = () => {
 
       <Grid item xs={12} className={classes.container} >
 
-        <Grid item xs={12} className={classes.google} >
-          <Typography variant="body1" className={classes.h4}>Chelsea Spangler: <Link target="_blank" href="https://github.com/cnspangler" >GitHub</Link> / <Link target="_blank" href="https://www.linkedin.com/in/chelseanspangler/">LinkedIn</Link> / <Link target="_blank" href="https://twitter.com/CN_Spangler">Twitter</Link></Typography>
-        </Grid>
+        <Developer
+          name="Chelsea Spangler"
+          github="https://github.com/cnspangler"
+          linkedIn="https://www.linkedin.com/in/chelseanspangler/"
+          twitter="https://twitter.com/CN_Spangler" />
 
         <Grid item xs={12} className={classes.google} >
           <Typography variant="body1" className={classes.h4}>Fiona Ochs: <Link target="_blank" href="https://github.com/fionaochs">GitHub</Link> / <Link target="_blank" href="https://www.linkedin.com/in/fionaochs/">LinkedIn</Link> / <Link target="_blank" href="https://fionaochs.dev/">Portfolio</Link></Typography>

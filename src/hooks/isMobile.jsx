@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 
+// this isn't stateful
+// because you don't need useEffect or useState you can
+// make this a utility function instead. it doesn't need
+// to me a hook
 export const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(()=> {
-    const mobileMatch = /iPhone|Android|iPad/;
-    if(window.navigator.userAgent.match(mobileMatch)) setIsMobile(true);
-    else setIsMobile(false);
-  }, []);
-  return isMobile;
+  return !!window.navigator.userAgent.match(mobileMatch)
 };
 
 function getScreenDimensions() {

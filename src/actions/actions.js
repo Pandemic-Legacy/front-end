@@ -3,6 +3,24 @@ import geoJson from '../data/World-map-lo-res.geo.json';
 import USgeoJson from '../data/US-States.geo.json';
 import { fetchCountryCovidData, fetchCovidSubData } from '../services/covid';
 
+const get = (value, defaultValue) => value ?? defaultValue;
+// utility function to save some maps below
+const arrayToObjectFields = (arr, ...props) => arr.reduce((acc, item) => {
+  // forEach
+  // props.forEach(prop => {
+  //   if(!acc[prop]) acc[prop] = [];
+  //   acc[prop].push(get(item[prop], 0));
+  // });
+  // return acc;
+
+  // or nested reduce
+  return props.reduce((propAcc, prop) => {
+    if(!propAcc[prop]) propAcc[prop] = [];
+    propAcc[prop].push(item[prop]);
+    return propAcc;
+  }, acc);
+}, {});
+
 
 export const SET_GLOBAL_MAP_MOBILITY_BY_DATE = 'SET_GLOBAL_MAP_MOBILITY_BY_DATE';
 export const setGlobalMobilityDataByDate = (date) => dispatch => {
@@ -63,12 +81,13 @@ export const setMobilityChartDataByCountryCode = (countryCode) => dispatch => {
       date: sortedRes.map(item => item.date),
       countryCode: sortedRes[0].countryCode,
       countryName: sortedRes[0].countryName,
-      retailChange: sortedRes.map(item => item.retailChange ?? 0),
-      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
-      parksChange: sortedRes.map(item => item.parksChange ?? 0),
-      transitChange: sortedRes.map(item => item.transitChange ?? 0),
-      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
-      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+      ...arrayToObjectFields(sortedRes,
+        'retailChange',
+        'groceryChange',
+        'parksChange',
+        'transitChange',
+        'workplacesChange',
+        'residentialChange')
     }))
     .then(formattedRes => {
       dispatch({
@@ -86,12 +105,13 @@ export const setMobilityCompareChartDataByCountryCode = (countryCode) => dispatc
       date: sortedRes.map(item => item.date),
       countryCode: sortedRes[0].countryCode,
       countryName: sortedRes[0].countryName,
-      retailChange: sortedRes.map(item => item.retailChange ?? 0),
-      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
-      parksChange: sortedRes.map(item => item.parksChange ?? 0),
-      transitChange: sortedRes.map(item => item.transitChange ?? 0),
-      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
-      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+      ...arrayToObjectFields(sortedRes,
+        'retailChange',
+        'groceryChange',
+        'parksChange',
+        'transitChange',
+        'workplacesChange',
+        'residentialChange')
     }))
     .then(formattedRes => {
       dispatch({
@@ -109,12 +129,13 @@ export const setCovidChartData = (countryCode) => dispatch => {
       date: res.map(item => item.date),
       countryCode: res[0].countryCode,
       countryName: res[0].countryName,
-      totalCases: res.map(item => item.totalCases ?? 0),
-      newCases: res.map(item => item.newCases ?? 0),
-      totalRecovered: res.map(item => item.totalRecovered ?? 0),
-      newRecovered: res.map(item => item.newRecovered ?? 0),
-      totalDeaths: res.map(item => item.totalDeaths ?? 0),
-      newDeaths: res.map(item => item.newDeaths ?? 0),
+      ...arrayToObjectFields(sortedRes,
+        'totalCases',
+        'newCases',
+        'totalRecovered',
+        'newRecovered',
+        'totalDeaths',
+        'newDeaths'),
       totalCurrentCases: res.map(item => (item.totalCases ?? 0) - (item.totalRecovered ?? 0))
     }))
     .then(covidData => {
@@ -200,7 +221,7 @@ export const setMobilityDates = () => dispatch => {
 export const SET_MOBILITY_SUBREGION_NAMES = 'SET_MOBILITY_SUBREGION_NAMES';
 export const setMobilitySubregionNames = (countryCode) => dispatch => {
   fetchMobilitySubregions(countryCode)
-    .then(res => {  
+    .then(res => {
       return res.reduce((acc, curr) => {
         if(curr.subRegion1 === null) return acc;
         if(acc?.includes(curr.subRegion1)) return acc;
@@ -219,7 +240,7 @@ export const setMobilitySubregionNames = (countryCode) => dispatch => {
 export const SET_MOBILITY_COMPARE_SUBREGION_NAMES = 'SET_MOBILITY_COMPARE_SUBREGION_NAMES';
 export const setMobilityCompareSubregionNames = (countryCode) => dispatch => {
   fetchMobilitySubregions(countryCode)
-    .then(res => {  
+    .then(res => {
       return res.reduce((acc, curr) => {
         if(curr.subRegion1 === null) return acc;
         if(acc?.includes(curr.subRegion1)) return acc;
@@ -244,12 +265,13 @@ export const setCovidSubregions = (countryCode) => dispatch => {
       countryName: res[0].countryName,
       subRegion1: res[0].subRegion1,
       subRegion2: res[0].subRegion2,
-      totalCases: res.map(item => item.totalCases ?? 0),
-      newCases: res.map(item => item.newCases ?? 0),
-      totalRecovered: res.map(item => item.totalRecovered ?? 0),
-      newRecovered: res.map(item => item.newRecovered ?? 0),
-      totalDeaths: res.map(item => item.totalDeaths ?? 0),
-      newDeaths: res.map(item => item.newDeaths ?? 0)
+      ...arrayToObjectFields(sortedRes,
+        'totalCases',
+        'newCases',
+        'totalRecovered',
+        'newRecovered',
+        'totalDeaths',
+        'newDeaths')
     }))
     .then(covidSubregions => {
       dispatch({
@@ -266,12 +288,14 @@ export const setCovidSubData = (countryCode, subRegion1) => dispatch => {
       countryCode: res[0].countryCode,
       countryName: res[0].countryName,
       subRegion1: res.map(item => item.subRegion1 ?? 0),
-      totalCases: res.map(item => item.totalCases ?? 0),
-      newCases: res.map(item => item.newCases ?? 0),
-      totalRecovered: res.map(item => item.totalRecovered ?? 0),
-      newRecovered: res.map(item => item.newRecovered ?? 0),
-      totalDeaths: res.map(item => item.totalDeaths ?? 0),
-      newDeaths: res.map(item => item.newDeaths ?? 0)
+      ...arrayToObjectFields(sortedRes,
+        'subRegion1',
+        'totalCases',
+        'newCases',
+        'totalRecovered',
+        'newRecovered',
+        'totalDeaths',
+        'newDeaths'),
     }))
     .then(covidSubData => {
       dispatch({
@@ -289,13 +313,14 @@ export const setMobilitySubData = (countryCode, subRegion1) => dispatch => {
       date: sortedRes.map(item => item.date),
       countryCode: sortedRes[0].countryCode,
       countryName: sortedRes[0].countryName,
-      subRegion1: sortedRes.map(item => item.subRegion1 ?? 0),
-      retailChange: sortedRes.map(item => item.retailChange ?? 0),
-      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
-      parksChange: sortedRes.map(item => item.parksChange ?? 0),
-      transitChange: sortedRes.map(item => item.transitChange ?? 0),
-      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
-      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+      ...arrayToObjectFields(sortedRes,
+        'subregion1',
+        'retailChange',
+        'groceryChange',
+        'parksChange',
+        'transitChange',
+        'workplacesChange',
+        'residentialChange')
     }))
     .then(formattedRes => {
       dispatch({
@@ -321,13 +346,14 @@ export const setMobilityCompareSubData = (countryCode, subRegion1) => dispatch =
       date: sortedRes.map(item => item.date),
       countryCode: sortedRes[0].countryCode,
       countryName: sortedRes[0].countryName,
-      subRegion1: sortedRes.map(item => item.subRegion1 ?? 0),
-      retailChange: sortedRes.map(item => item.retailChange ?? 0),
-      groceryChange: sortedRes.map(item => item.groceryChange ?? 0),
-      parksChange: sortedRes.map(item => item.parksChange ?? 0),
-      transitChange: sortedRes.map(item => item.transitChange ?? 0),
-      workplacesChange: sortedRes.map(item => item.workplacesChange ?? 0),
-      residentialChange: sortedRes.map(item => item.residentialChange ?? 0),
+      ...arrayToObjectFields(sortedRes,
+        'subRegion1',
+        'retailChange',
+        'groceryChange',
+        'parksChange',
+        'transitChange',
+        'workplacesChange',
+        'residentialChange')
     }))
     .then(formattedRes => {
       dispatch({
